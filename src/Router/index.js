@@ -1,4 +1,5 @@
 import { Link, createBrowserRouter } from "react-router-dom"
+import DetailRecipe from "../Pages/DetailRecipe";
 
 const router = createBrowserRouter([
 	{
@@ -11,8 +12,8 @@ const router = createBrowserRouter([
 	  ),
 	},
 	{
-	  path: "about",
-	  element: <div>About</div>,
+	  path: "/detail/:slug",
+	  element: <DetailRecipe/>,
 	},
   ]);
 
