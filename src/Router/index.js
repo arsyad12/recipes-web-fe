@@ -1,15 +1,11 @@
-import { Link, createBrowserRouter } from "react-router-dom"
+import { createBrowserRouter } from "react-router-dom"
 import DetailRecipe from "../Pages/DetailRecipe";
+import Home from "../Pages/Home";
 
 const router = createBrowserRouter([
 	{
 	  path: "/",
-	  element: (
-		<div>
-		  <h1>Hello World</h1>
-		  <Link to="about">About Us</Link>
-		</div>
-	  ),
+	  element: <Home/>,
 	},
 	{
 	  path: "/detail/:slug",
