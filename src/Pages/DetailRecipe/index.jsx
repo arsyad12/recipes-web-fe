@@ -1,19 +1,24 @@
 import axios from 'axios'
 import React from 'react'
-import { Link } from 'react-router-dom'
 import YouTube from 'react-youtube'
+import Navbar from '../../Components/Navbar'
+import Footer from '../../Components/Footer'
 
 const style = {
-  navLeftLink: {
-    color: 'black',
-    backgroundColor: 'white',
-    fontWeight: 600
-  },
   h1: {
     color: 'var(--recipe-color-lavender)',
     textAlign: 'center',
     marginBottom: '10px',
     fontWeight: 600
+  },
+  comentBtn: {
+    width: '180px',
+    height: '53px',
+    fontWeight: 600,
+    color: 'var(--recipe-color-lavender)',
+    backgroundColor: '#efc81a',
+    textAlign: 'center',
+    borderRadius: '36px'
   }
 }
 
@@ -60,28 +65,7 @@ export default function DetailRecipe() {
 
   return (
     <div>
-
-      <nav className='container d-flex justify-content-between my-4'>
-        <div className='nav-left d-flex gap-5 align-items-center'>
-          <div className='nav-left-container d-flex align-items-center'>
-
-            <img style={{ height: '64px' }} src="/logo-h.svg" alt="logo" />
-
-
-          </div>
-          <div className='nav-left-container'>
-            <Link to='/'><span style={style.navLeftLink} className='nav-left-link'>Home</span></Link>
-          </div>
-          <div className='nav-left-container'>
-            <Link to='/addrecipe'><span style={style.navLeftLink} className='nav-left-link'>Add Recipe</span></Link>
-          </div>
-          <div className='nav-left-container'>
-            <Link to='/profile'><span style={style.navLeftLink} className='nav-left-link'>Profile</span></Link>
-          </div>
-        </div>
-        <div className='nav-right'></div>
-      </nav>
-
+      <Navbar />
       <article id='foodRecipeDetail' className='container d-flex flex-column' style={{ padding: '3vh 10vw 3vh 10vw' }}>
         <section className='container d-flex flex-column m-auto'>
 
@@ -138,10 +122,7 @@ export default function DetailRecipe() {
 
         <div id='form-coment' className='text-center my-5 m-auto' style={{ width: '900px', maxWidth: '90%' }}>
           <textarea className='form-control mb-2' rows="3" style={{ backgroundColor: '#F6F5F4' }} />
-          <button className='btn my-2' style={{
-            width: '180px', height: '53px', fontWeight: 600,
-            color: 'white', backgroundColor: '#efc81a', textAlign: 'center'
-          }}>
+          <button className='btn my-2 shadow-sm' style={style.comentBtn}>
             Comment
           </button>
         </div>
@@ -163,42 +144,7 @@ export default function DetailRecipe() {
             ))}
         </div>
       </article>
-
-      <footer className='d-flex justify-content-between flex-column p-5'
-        style={{ backgroundColor: '#EFC81A', height: '400px', textAlign: 'center', alignContent: 'center' }}>
-        <div style={{ marginTop: '6vh' }}>
-          <p style={{
-            color: '#2E266F',
-            textAlign: 'center',
-            fontSize: '4vh',
-            fontStyle: 'normal',
-            fontWeight: 600,
-            textTransform: 'capitalize'
-          }}>Eat, Cook, Repeat</p>
-          <p style={{
-            color: '#707070',
-            textAlign: 'center',
-            fontSize: '16px',
-            fontStyle: 'normal',
-            fontWeight: 400,
-            textTransform: 'capitalize'
-          }}>Share your best recipe by uploading here !</p>
-        </div>
-
-        <div>
-          <p style={{
-            color: '#707070',
-            textAlign: 'center',
-            fontSize: '16px',
-            fontStyle: 'normal',
-            fontWeight: 400,
-            textTransform: 'capitalize'
-          }}>Product • Company • Learn more • Get in touch </p>
-        </div>
-
-      </footer>
-
-
+      <Footer />
     </div>
   )
 }
