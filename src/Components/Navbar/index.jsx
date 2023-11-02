@@ -37,7 +37,14 @@ export default function Navbar() {
 						</div>
 					</Link>
 				</div>
-				<div className='nav-right'></div>
+				<div className='nav-right'>
+					<Link to='/'>
+						<div className='nav-right-container shadow-sm p-2 d-flex align-items-center gap-2' style={{ borderRadius: '36px' }}>
+							<span style={style.navLeftLink} className='nav-right-link'>Hi there!</span>
+							<img className='shadow-sm' style={{ height: '48px', borderRadius: '50%' }} src="/profile.svg" alt="logo" />
+						</div>
+					</Link>
+				</div>
 
 			</nav>
 
