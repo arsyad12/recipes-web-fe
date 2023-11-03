@@ -28,7 +28,7 @@ const style = {
 export default function Footer() {
 	return (
 		<>
-			<footer className='d-flex justify-content-between flex-column p-5'
+			<footer className='d-flex justify-content-between flex-column p-5 mt-5'
 				style={style.Footer}>
 
 				<div>
