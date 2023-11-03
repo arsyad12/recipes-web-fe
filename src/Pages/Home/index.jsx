@@ -97,15 +97,26 @@ export default function Home() {
 				</div>
 				<div className="container">
 					<div className='row'>
-						<div className='col-md-4 col-xs-12 p-2' style={{ borderRadius: '20px', wordWrap: 'break-word' }} >
-
-							<img style={{ width: '100%', maxHeight: '400px', objectFit: 'cover', objectPosition: 'center', borderRadius: '12px' }}
+						<div className='col-md-4 col-xs-12 p-3 ' style={{ borderRadius: '20px', wordWrap: 'break-word' }} >
+							<img style={{ width: '100%', minWidth: '240px', maxHeight: '400px', objectFit: 'cover', objectPosition: 'center', borderRadius: '12px' }}
 								src="/assets/img/popularFood.png" alt="popularFood" />
-
-							<button className='btn' style={{ margin: '-100px 0 0 20px', backgroundColor: 'var(--recipe-color-yellow)', borderRadius: '8px' }}>
-								<p style={{ textWrap: 'wrap', fontSize: '18px', fontWeight: 600, margin: 'unset', color: 'black'}}>Ayam bakar suka bumi</p>
+							<button className='btn' style={{ margin: '-100px 0 0 20px', backgroundColor: '#00000055', borderRadius: '8px' }}>
+								<p style={{ textWrap: 'wrap', fontSize: '18px', fontWeight: 600, margin: 'unset', color: 'white' }}>Ayam bakar suka bumi</p>
 							</button>
-
+						</div>
+						<div className='col-md-4 col-xs-12 p-3 ' style={{ borderRadius: '20px', wordWrap: 'break-word' }} >
+							<img style={{ width: '100%', minWidth: '240px', maxHeight: '400px', objectFit: 'cover', objectPosition: 'center', borderRadius: '12px' }}
+								src="/assets/img/popularFood.png" alt="popularFood" />
+							<button className='btn' style={{ margin: '-100px 0 0 20px', backgroundColor: '#00000055', borderRadius: '8px' }}>
+								<p style={{ textWrap: 'wrap', fontSize: '18px', fontWeight: 600, margin: 'unset', color: 'white' }}>Ayam bakar suka bumi</p>
+							</button>
+						</div>
+						<div className='col-md-4 col-xs-12 p-3 ' style={{ borderRadius: '20px', wordWrap: 'break-word' }} >
+							<img style={{ width: '100%', minWidth: '240px', maxHeight: '400px', objectFit: 'cover', objectPosition: 'center', borderRadius: '12px' }}
+								src="/assets/img/popularFood.png" alt="popularFood" />
+							<button className='btn' style={{ margin: '-100px 0 0 20px', backgroundColor: '#00000055', borderRadius: '8px' }}>
+								<p style={{ textWrap: 'wrap', fontSize: '18px', fontWeight: 600, margin: 'unset', color: 'white' }}>Ayam bakar suka bumi</p>
+							</button>
 						</div>
 					</div>
 				</div>
