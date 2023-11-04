@@ -5,39 +5,40 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../../Components/Navbar'
 
-export default function Login() {
 
-	const [email, setEmail] = React.useState([])
-	const [password, setPassword] = React.useState([])
-	const [isLoading, setIsLoading] = React.useState(false)
+export default function Register() {
+	const [email, setEmail] = React.useState('')
+	const [password, setPassword] = React.useState('')
+	const [firstname, setFirstname] = React.useState('')
+	const [lastname, setLastname] = React.useState('')
+
 	const [authError, setAuthError] = React.useState('')
 	const [inputError, setInputError] = React.useState([])
-	const [pageLoginState, setPageLoginState] = React.useState(false)
-	const navigate = useNavigate()
-	const [timeLeft, setTimeLeft] = React.useState(5)
 
-	const signButtonHandler = () => {
+	const [pageRegisterState, setPageRegisterState] = React.useState(false)
+	const [isLoading, setIsLoading] = React.useState(false)
+	const [timeLeft, setTimeLeft] = React.useState(5)
+	const navigate = useNavigate()
+
+	const registerButtonHandler = () => {
 		axios({
 			method: 'post',
-			url: 'https://tickitz-be.onrender.com/rizqi/auth/login',
+			url: 'https://tickitz-be.onrender.com/rizqi/auth/register',
 			data: {
 				email,
-				password
+				password,
+				firstname,
+				lastname
 			}
-		}).then(res => {
-			localStorage.setItem('user', JSON.stringify(res.data.data.result))
-			localStorage.setItem('token', `Bearer ${res.data.data.token}`)
-			setPageLoginState(true)
+		}).then(() => {
+			setPageRegisterState(true)
 		}).catch(err => {
+
 			if (err.response.status === 422) {
 				setInputError(err.response.data.messages)
 			}
 
 			if (err.response.status === 400) {
-				setAuthError(err.response.data.messages)
-			}
-
-			if (err.response.data.messages === 'Wrong password') {
 				setAuthError(err.response.data.messages)
 			}
 
@@ -48,54 +49,87 @@ export default function Login() {
 
 	React.useEffect(() => {
 
-		if (pageLoginState) {
+		if (localStorage.getItem('user') || localStorage.getItem('token')) {
+			navigate('/')
+		}
+
+		if (pageRegisterState) {
 			setTimeout(() => {
 				for (let time = timeLeft; time > 0; time--) {
 					setTimeLeft(timeLeft - 1)
 				}
 				if (timeLeft === 0) {
-					return navigate('/')
+					return navigate('/user/login')
 				}
 			}, 1000)
 		}
 
-		if (!pageLoginState) {
-			if (localStorage.getItem('user') || localStorage.getItem('token')) {
-				navigate('/')
-			}
-		}
-
-	}, [isLoading, authError, pageLoginState, navigate, timeLeft])
+	}, [isLoading, authError, pageRegisterState, navigate, timeLeft])
 
 	return (
 		<>
 			<div className='nav-auth'>
 				<Navbar />
 			</div>
-			<div id='Page-Login' className='Page-Auth'>
-
+			<div id='Page-Register' className='Page-Auth'>
 				<div className='row m-auto'>
 					<div id='left-item' className='col-md-6'>
 						<img src='/logo-h.svg' alt="logo" />
 						<p><span className="tagline">Eat, Cook, Repeat</span></p>
 					</div>
-					<div className='container m-auto col-md-6'>
+					<div className='m-auto col-md-5'>
 						<div id="right-item">
 							<div className='text-center'>
 								<p >
 									<span className='WellcomeText'>
-										Wellcome
+										Let's Get Started !
 									</span>
 								</p>
-								<p>Log in into your exiting account</p>
+								<p>Create new account to access all features</p>
 							</div>
 
 							<div className="alert alert-danger" role="alert" hidden={authError === '' ? true : false}>
 								{authError}
 							</div>
 
-							<div className="alert alert-success" role="alert" hidden={pageLoginState ? false : true}>
-								Login success, redirect to home in {timeLeft}
+							<div className="alert alert-success" role="alert" hidden={pageRegisterState ? false : true}>
+								Register success, Check your email. redirect to login in {timeLeft}
+							</div>
+
+							<div className="form-group my-2">
+								<label htmlFor="firstname" className='form-lable d-flex flex-row justify-content-between'>
+									<span className="form-lable">First Name</span>
+									<span className='form-validation'
+										style={{ color: '#a50000' }}
+										hidden={!inputError.hasOwnProperty('firstname') ? true : false}>
+										Full Name is required
+									</span>
+								</label>
+								<input id='firstname' type="text" className='form-control form-control-lg' placeholder='Write your First Name'
+									onChange={e => {
+										setFirstname(e.target.value)
+										if (inputError.hasOwnProperty('firstname')) {
+											delete inputError.firstname
+										}
+									}} />
+							</div>
+
+							<div className="form-group my-2">
+								<label htmlFor="lastname" className='form-lable d-flex flex-row justify-content-between'>
+									<span className="form-lable">Last Name</span>
+									<span className='form-validation'
+										style={{ color: '#a50000' }}
+										hidden={!inputError.hasOwnProperty('lastname') ? true : false}>
+										Full Name is required
+									</span>
+								</label>
+								<input id='lastname' type="text" className='form-control form-control-lg' placeholder='Write your Last Name'
+									onChange={e => {
+										setLastname(e.target.value)
+										if (inputError.hasOwnProperty('lastname')) {
+											delete inputError.lastname
+										}
+									}} />
 							</div>
 
 							<div className="form-group my-2">
@@ -138,13 +172,12 @@ export default function Login() {
 								onClick={() => {
 									setAuthError('')
 									setIsLoading(true)
-									signButtonHandler()
+									registerButtonHandler()
 								}}>
-								{isLoading ? 'Loading...' : 'Login'}
+								{isLoading ? 'Loading...' : 'Register'}
 							</button>
 
-							{/* <p className='text-center'>Forgot your password? <Link to='/user/reset-password'>Reset now?</Link></p> */}
-							<p className='text-center'>Don't have an account? <Link to='/user/register'>Register</Link></p>
+							<p className='text-center'>Already have account ? <Link to='/user/login'>login</Link></p>
 							<p className='text-center'><Link to='/'>Back to home</Link></p>
 						</div>
 					</div>
