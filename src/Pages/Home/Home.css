@@ -1,0 +1,56 @@
+
+@media screen and (max-width: 992px) {
+
+	.headerImg {
+		right: 2vw !important;
+		width: unset;
+		max-width: 100%;
+	}
+
+	.sectionR {
+		width: 100vh !important;
+		left: 2vw !important;
+		right: 2vw !important;
+	}
+
+}
+
+@media screen and (max-width: 768px) {
+
+	.headerL,
+	.headerR {
+		width: 50vw !important;
+	}
+
+
+	.headerBox h1 {
+		font-size: 7vw !important;
+	}
+
+	.headerBox {
+		top: 22vh !important;
+		left: 12vw !important;
+		margin-right: 2vw;
+	}
+
+	.headerImg {
+		top: 40vh !important;
+		right: 10vw !important;
+		width: unset;
+		max-width: 80%;
+	}
+
+}
+
+
+@media screen and (max-width: 576px) {
+
+	.decoration {
+		display: none
+	}
+
+	.rightDecoration {
+		top: 5%;
+	}
+
+}
