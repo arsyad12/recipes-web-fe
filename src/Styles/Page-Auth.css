@@ -1,0 +1,221 @@
+#left-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+    background-size: cover;
+    background-color: #b79600;
+    background-image: url('../../public/assets/img/splash.jpg');
+    background-blend-mode: soft-light;
+}
+
+#left-item img {
+    width: 320px;
+    margin-bottom: 20px;
+    border-radius: 84px;
+}
+
+h1 {
+    color: #121212;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.144px;
+}
+
+.WellcomeText {
+    color: var(--recipe-color-yellow);
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.144px;
+}
+
+.tagline {
+    max-width: 440px;
+}
+
+#left-item p {
+    color: rgba(255, 255, 255, 0.80);
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.144px;
+}
+
+/* Button  */
+
+#button-auth {
+    color: white;
+    background-color: var(--recipe-color-yellow);
+    border: unset;
+    height: 64px;
+
+    font-weight: 900;
+}
+
+#button-auth:hover {
+    background-image: var(--tic-branding-gradient-hover);
+    border: unset;
+}
+
+/* End of Button */
+
+#right-item {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 20%;
+    max-height: 100vh;
+}
+
+#right-item a {
+    color: var(--tic-branding-color-middle);
+}
+
+#right-item label {
+    margin-bottom: 5px;
+}
+
+
+#right-item .form-lable {
+    color: #4E4B66;
+
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+#right-item input[placeholder] {
+    color: #535353;
+
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.75px;
+}
+
+/* Forgot Password Spesific rule */
+
+div#Page-ForgotPassword div#Body-ForgotPassword div#left-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    padding: 6%;
+}
+
+div#Page-ForgotPassword div#Body-ForgotPassword div#left-item img {
+    max-width: 256px;
+    margin-bottom: 14vh;
+
+}
+
+div#Page-ForgotPassword div#Body-ForgotPassword div#left-item h1 {
+    color: #000000;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.144px;
+}
+
+
+div#Page-ForgotPassword div#Body-ForgotPassword div#left-item p {
+    color: rgba(255, 255, 255, 0.70);
+
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.168px;
+}
+
+/* End of Forgot Password Spesific rule */
+
+/* Dot Element */
+
+.dot-body {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 30px;
+}
+
+.dot-number {
+    border-radius: 50%;
+    background-color: transparent;
+    border: #fff solid;
+    border-width: 2px;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    padding-top: 3%;
+}
+
+.dot-title {
+    color: #fff;
+    font-weight: 900;
+}
+
+.dot-content {
+    color: #fff;
+}
+
+/* End of Dot Element */
+
+
+/* Navbar */
+.nav-auth {
+    display: none;
+}
+
+@media screen and (max-width: 992px) {
+
+    #left-item img {
+        max-width: 90%;
+    }
+
+    .tagline {
+        font-size: 4vw;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+
+    #left-item {
+        display: none;
+    }
+
+    .nav-auth {
+        display: unset;
+    }
+
+    .Page-Auth {
+        padding: 5%;
+        padding-top: 1vh;
+    }
+
+    #right-item {
+        padding: 8%;
+    }
+
+    #right-item h1 {
+        margin-bottom: 10px;
+    }
+
+    div#Page-ForgotPassword div#Body-ForgotPassword div#left-item {
+        display: none;
+    }
+
+
+}
