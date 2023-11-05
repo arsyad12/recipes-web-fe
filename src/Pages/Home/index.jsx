@@ -93,7 +93,8 @@ export default function Home() {
 								{
 									popularRecipe?.map((recipe, index) => {
 										return (
-											<section key={index} className='container' >
+
+											<section key={index} className='container desktop-component' >
 												<div className='row'>
 													<div className='sectionL col-md-6 col-12' style={style.sectionL}>
 														<div style={style.sectionLableContainer}>
@@ -123,6 +124,8 @@ export default function Home() {
 													</div>
 												</div>
 											</section>
+
+
 										)
 									})
 								}
@@ -132,7 +135,7 @@ export default function Home() {
 								{
 									newRecipe?.map((recipe, index) => {
 										return (
-											<section key={index} className='container' >
+											<section key={index} className='container desktop-component' >
 												<div className='row'>
 													<div className='sectionL col-md-6 col-12' style={style.sectionL}>
 														<div style={style.sectionLableContainer}>
@@ -168,14 +171,84 @@ export default function Home() {
 								}
 								{/* End of New Recipe Section */}
 
-
-								<div className='my-5' >
-									<div className='container my-5' >
+								{/* Mobile Component */}
+								{
+									popularRecipe?.map((recipe, index) => {
+										return (
+											<div className='container mobile-component'>
+												<div className='row'>
+													<div className='col-md-12 mt-5 p-3 text-center m-auto'>
+														<div style={{ margin: '0 auto' }}>
+															<p className='mb-5 sectionLable' style={style.sectionLable}>Polular For You !</p>
+														</div>
+														<div style={{ height: '400px', width: '400px', margin: '0 auto' }}>
+															<img style={{ height: '100%', width: '100%', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px' }}
+																src={recipe.image} alt="food" />
+														</div>
+													</div>
+													<div className='col-md-12 mb-5 p-3 text-center d-flex flex-column justify-content-center align-items-center'>
+														<div className='sectionTitleContainer' >
+															<h2 style={style.sectionTitle}>
+																{recipe.title}
+															</h2>
+															<hr style={{ borderWidth: '3px', width: '10vw', alignSelf: 'center !important', margin: '0 auto' }} />
+															<p className='my-2'>
+																{recipe.sort_desc}
+															</p>
+															<Link to={`/detail/${String(recipe.title).split(' ').join('-').toLowerCase()}`}>
+																<button className='btn my-2 shadow-sm' style={style.contentBtn}>
+																	Lihat Resep
+																</button>
+															</Link>
+														</div>
+													</div>
+												</div>
+											</div>
+										)
+									})
+								}
+								{
+									newRecipe?.map((recipe, index) => {
+										return (
+											<div className='container mobile-component'>
+												<div className='row'>
+													<div className='col-md-12 p-3 text-center m-auto'>
+														<div style={{ margin: '0 auto' }}>
+															<p className='mb-5 sectionLable' style={style.sectionLable}>New Recipe</p>
+														</div>
+														<div style={{ height: '400px', width: '400px', margin: '0 auto' }}>
+															<img style={{ height: '100%', width: '100%', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px' }}
+																src={recipe.image} alt="food" />
+														</div>
+													</div>
+													<div className='col-md-12 mb-5 p-3 text-center d-flex flex-column justify-content-center align-items-center'>
+														<div className='sectionTitleContainer' >
+															<h2 style={style.sectionTitle}>
+																{recipe.title}
+															</h2>
+															<hr style={{ borderWidth: '3px', width: '10vw', alignSelf: 'center !important', margin: '0 auto' }} />
+															<p className='my-2'>
+																{recipe.sort_desc}
+															</p>
+															<Link to={`/detail/${String(recipe.title).split(' ').join('-').toLowerCase()}`}>
+																<button className='btn my-2 shadow-sm' style={style.contentBtn}>
+																	Lihat Resep
+																</button>
+															</Link>
+														</div>
+													</div>
+												</div>
+											</div>
+										)
+									})
+								}
+								{/* End of Mobile Component */}
+									<div className='container my-5 m-auto' >
 										<div style={{ borderLeft: 'var(--recipe-color-yellow) solid', borderWidth: '7px', padding: '0px 0px 0px 15px' }}>
-											<p style={style.sectionLable}>Tummy, Happy!</p>
+											<p style={style.sectionLable}>Tummy Happy!</p>
 										</div>
 									</div>
-									<div className="container">
+									<div className="container" style={{margin: '0 auto'}}>
 										<div className='row'>
 											{recipeList?.map((recipe, index) => {
 												return (
@@ -211,7 +284,8 @@ export default function Home() {
 
 										</div>
 									</div>
-								</div ></>
+							
+							</>
 			}
 
 
