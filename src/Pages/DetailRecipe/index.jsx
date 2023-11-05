@@ -88,9 +88,9 @@ export default function DetailRecipe() {
         loading === undefined ? "" :
           loading === true ? <Loading /> :
             !(foodDetail?.hasOwnProperty('id')) ?
-              <div className='d-flex flex-column justify-content-center align-items-center' style={{height: '43vh'}}>
+              <div className='d-flex flex-column justify-content-center align-items-center' style={{ height: '43vh' }}>
                 <Error404 />
-                <p style={{fontWeight: 600}}>We're Sorry, Page you want to visit not found.</p>
+                <p style={{ fontWeight: 600 }}>We're Sorry, Page you want to visit not found.</p>
               </div> :
               <article id='foodRecipeDetail' className='container d-flex flex-column' style={{ padding: '3vh 10vw 3vh 10vw' }}>
                 <section className='container d-flex flex-column m-auto'>
