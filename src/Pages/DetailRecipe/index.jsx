@@ -42,7 +42,7 @@ export default function DetailRecipe() {
       if (Object.keys(foodDetail).length === 0) {
         const food = await axios({
           method: 'post',
-          url: `${String(window.env.BE_URL)}/recipes/${slug}/detail`,
+          url: `${String(window.env.BE_URL)}/recipes/detail`,
           data: {
             title: String(slug?.split('-').join(' '))
           }
