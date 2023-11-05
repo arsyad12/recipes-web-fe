@@ -4,6 +4,9 @@ import Footer from '../../Components/Footer'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import './Home.css'
+import Loading from '../../Components/Loading'
+import Error404 from '../../Components/Error404'
+
 
 const style = {
 	h1: { color: 'var(--recipe-color-lavender)', fontSize: '48px', fontWeight: 900 },
@@ -27,7 +30,7 @@ export default function Home() {
 	const [popularRecipe, setPopularRecipe] = React.useState([]);
 	const [newRecipe, setNewRecipe] = React.useState([]);
 
-	const [loading, setLoading] = React.useState(false)
+	const [loading, setLoading] = React.useState(undefined)
 
 
 	const initPage = async () => {
@@ -78,129 +81,140 @@ export default function Home() {
 			</header>
 			{/* End Of Header */}
 
-			{/* Popular Recipe Section */}
 			{
-				popularRecipe?.map((recipe, index) => {
-					return (
-						<section key={index} className='container' >
-							<div className='row'>
-								<div className='sectionL col-md-6 col-12' style={style.sectionL}>
-									<div style={style.sectionLableContainer}>
-										<p className='sectionLable' style={style.sectionLable}>Polular For You !</p>
+				loading === undefined ? "" :
+					loading === true ? <Loading /> :
+						recipeList?.length === 0 ?
+							<div className='d-flex flex-column justify-content-center align-items-center' style={{ height: '43vh' }}>
+								<Error404 />
+								<p style={{ fontWeight: 600 }}>We're Sorry, No Content Found.</p>
+							</div> : <>
+								{/* Popular Recipe Section */}
+								{
+									popularRecipe?.map((recipe, index) => {
+										return (
+											<section key={index} className='container' >
+												<div className='row'>
+													<div className='sectionL col-md-6 col-12' style={style.sectionL}>
+														<div style={style.sectionLableContainer}>
+															<p className='sectionLable' style={style.sectionLable}>Polular For You !</p>
+														</div>
+														<div className='decoration' style={style.popularDecoration}> </div>
+														<div style={{ position: 'absolute', left: '5%', top: '25%', maxWidth: '400px', height: '400px' }}>
+															<img style={{ height: '100%', width: '100%', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px' }}
+																src={recipe.image} alt="food" />
+														</div>
+													</div>
+													<div className='sectionR col-md-6 col-12' style={style.sectionR}>
+														<div className='sectionTitleContainer' style={{ position: 'absolute', top: '30%' }}>
+															<h2 style={style.sectionTitle}>
+																{recipe.title}
+															</h2>
+															<hr style={{ borderWidth: '3px', width: '120px' }} />
+															<p>
+																{recipe.sort_desc}
+															</p>
+															<Link to={`/detail/${String(recipe.title).split(' ').join('-').toLowerCase()}`}>
+																<button className='btn my-2 shadow-sm' style={style.contentBtn}>
+																	Lihat Resep
+																</button>
+															</Link>
+														</div>
+													</div>
+												</div>
+											</section>
+										)
+									})
+								}
+								{/* End of Popular Recipe Section */}
+
+								{/* New Recipe Section */}
+								{
+									newRecipe?.map((recipe, index) => {
+										return (
+											<section key={index} className='container' >
+												<div className='row'>
+													<div className='sectionL col-md-6 col-12' style={style.sectionL}>
+														<div style={style.sectionLableContainer}>
+															<p className='sectionLable' style={style.sectionLable}>New Recipe</p>
+														</div>
+														<div className='decoration' style={style.newRecipeDecoration}>
+														</div>
+														<div style={{ position: 'absolute', left: '8%', top: '30.6%', maxWidth: '400px', height: '400px' }}>
+															<img style={{ height: '100%', width: '100%', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px' }}
+																src={recipe.image} alt="food" />
+														</div>
+													</div>
+													<div className='sectionR col-md-6 col-12' style={style.sectionR}>
+														<div className='sectionTitleContainer' style={{ position: 'absolute', top: '30%' }}>
+															<h2 style={style.sectionTitle}>
+																{recipe.title}
+															</h2>
+															<hr style={{ borderWidth: '3px', width: '120px' }} />
+															<p>
+																{recipe.sort_desc}
+															</p>
+															<Link to={`/detail/${String(recipe.title).split(' ').join('-').toLowerCase()}`}>
+																<button className='btn my-2 shadow-sm' style={style.contentBtn}>
+																	Lihat Resep
+																</button>
+															</Link>
+														</div>
+													</div>
+												</div>
+											</section>
+										)
+									})
+								}
+								{/* End of New Recipe Section */}
+
+
+								<div className='my-5' >
+									<div className='container my-5' >
+										<div style={{ borderLeft: 'var(--recipe-color-yellow) solid', borderWidth: '7px', padding: '0px 0px 0px 15px' }}>
+											<p style={style.sectionLable}>Tummy, Happy!</p>
+										</div>
 									</div>
-									<div className='decoration' style={style.popularDecoration}> </div>
-									<div style={{ position: 'absolute', left: '5%', top: '25%', maxWidth: '400px', height: '400px' }}>
-										<img style={{ height: '100%', width: '100%', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px' }}
-											src={recipe.image} alt="food" />
+									<div className="container">
+										<div className='row'>
+											{recipeList?.map((recipe, index) => {
+												return (
+													<>
+														<div key={index} className='col-lg-4 col-md-5 col-sm-6 col-xs-12 p-3 '
+															style={{ borderRadius: '20px', wordWrap: 'break-word', position: 'relative' }} >
+															<Link to={`/detail/${String(recipe.title).split(' ').join('-').toLowerCase()}`}>
+																<div style={{ height: '400px' }}>
+																	<img style={{
+																		width: '100%', height: '100%',
+																		minWidth: '5vw',
+																		objectFit: 'cover',
+																		objectPosition: 'center', borderRadius: '12px'
+																	}}
+																		src={recipe.image} alt="popularFood" />
+																</div>
+
+																<button className='btn'
+																	style={{ top: '350px', left: '40px', backgroundColor: '#00000055', borderRadius: '8px', position: 'absolute' }}>
+																	<p style={{ textWrap: 'wrap', fontSize: '18px', fontWeight: 600, margin: 'unset', color: 'white' }}>
+																		{recipe.title}
+																	</p>
+																</button>
+
+															</Link>
+														</div >
+													</>
+
+
+												)
+											})}
+
+
+										</div>
 									</div>
-								</div>
-								<div className='sectionR col-md-6 col-12' style={style.sectionR}>
-									<div className='sectionTitleContainer' style={{ position: 'absolute', top: '30%' }}>
-										<h2 style={style.sectionTitle}>
-											{recipe.title}
-										</h2>
-										<hr style={{ borderWidth: '3px', width: '120px' }} />
-										<p>
-											{recipe.sort_desc}
-										</p>
-										<Link to={`/detail/${String(recipe.title).split(' ').join('-').toLowerCase()}`}>
-											<button className='btn my-2 shadow-sm' style={style.contentBtn}>
-												Lihat Resep
-											</button>
-										</Link>
-									</div>
-								</div>
-							</div>
-						</section>
-					)
-				})
+								</div ></>
 			}
-			{/* End of Popular Recipe Section */}
-
-			{/* New Recipe Section */}
-			{
-				newRecipe?.map((recipe, index) => {
-					return (
-						<section key={index} className='container' >
-							<div className='row'>
-								<div className='sectionL col-md-6 col-12' style={style.sectionL}>
-									<div style={style.sectionLableContainer}>
-										<p className='sectionLable' style={style.sectionLable}>New Recipe</p>
-									</div>
-									<div className='decoration' style={style.newRecipeDecoration}>
-									</div>
-									<div style={{ position: 'absolute', left: '8%', top: '30.6%', maxWidth: '400px', height: '400px' }}>
-										<img style={{ height: '100%', width: '100%', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px' }}
-											src={recipe.image} alt="food" />
-									</div>
-								</div>
-								<div className='sectionR col-md-6 col-12' style={style.sectionR}>
-									<div className='sectionTitleContainer' style={{ position: 'absolute', top: '30%' }}>
-										<h2 style={style.sectionTitle}>
-											{recipe.title}
-										</h2>
-										<hr style={{ borderWidth: '3px', width: '120px' }} />
-										<p>
-											{recipe.sort_desc}
-										</p>
-										<Link to={`/detail/${String(recipe.title).split(' ').join('-').toLowerCase()}`}>
-											<button className='btn my-2 shadow-sm' style={style.contentBtn}>
-												Lihat Resep
-											</button>
-										</Link>
-									</div>
-								</div>
-							</div>
-						</section>
-					)
-				})
-			}
-			{/* End of New Recipe Section */}
 
 
-			<div className='my-5' >
-				<div className='container my-5' >
-					<div style={{ borderLeft: 'var(--recipe-color-yellow) solid', borderWidth: '7px', padding: '0px 0px 0px 15px' }}>
-						<p style={style.sectionLable}>Tummy, Happy!</p>
-					</div>
-				</div>
-				<div className="container">
-					<div className='row'>
-						{recipeList?.map((recipe, index) => {
-							return (
-								<>
-									<div key={index} className='col-lg-4 col-md-5 col-sm-6 col-xs-12 p-3 '
-										style={{ borderRadius: '20px', wordWrap: 'break-word', position: 'relative' }} >
-										<Link to={`/detail/${String(recipe.title).split(' ').join('-').toLowerCase()}`}>
-											<div style={{ height: '400px' }}>
-												<img style={{
-													width: '100%', height: '100%',
-													minWidth: '5vw',
-													objectFit: 'cover',
-													objectPosition: 'center', borderRadius: '12px'
-												}}
-													src={recipe.image} alt="popularFood" />
-											</div>
-
-											<button className='btn'
-												style={{ top: '350px', left: '40px', backgroundColor: '#00000055', borderRadius: '8px', position: 'absolute' }}>
-												<p style={{ textWrap: 'wrap', fontSize: '18px', fontWeight: 600, margin: 'unset', color: 'white' }}>
-													{recipe.title}
-												</p>
-											</button>
-
-										</Link>
-									</div >
-								</>
-
-
-							)
-						})}
-
-
-					</div>
-				</div>
-			</div >
 
 
 			<Footer />
