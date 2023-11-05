@@ -10,15 +10,15 @@ const style = {
 	headerL: { width: '70vw', height: '100vh', backgroundColor: 'white', zIndex: '-3', marginTop: '-112px' },
 	headerR: { width: '30vw', height: '100vh', backgroundColor: 'var(--recipe-color-yellow)', zIndex: '-2', marginTop: '-112px', position: 'relative' },
 	headerBox: { padding: '20px', position: 'absolute', maxWidth: '500px', left: '16vw', top: '35vh', backgroundColor: 'white', borderRadius: '20px' },
-	headerImg: { width: '600px', position: 'absolute', zIndex: -1, right: '12vw', top: '20vh' },
-	sectionL: { height: '80vh', position: 'relative', minWidth: '450px' },
-	sectionR: { height: '80vh', position: 'relative' },
+	headerImg: { width: '600px', position: 'absolute', zIndex: '-1', right: '12vw', top: '20vh' },
+	sectionL: { height: '70vh', position: 'relative' },
+	sectionR: { height: '70vh', position: 'relative' },
 	sectionLable: { color: 'var(--recipe-color-black)', fontSize: '48px', fontWeight: 900, margin: '0 auto' },
 	sectionLableContainer: { borderLeft: 'var(--recipe-color-yellow) solid', borderWidth: '7px', padding: '0px 0px 0px 15px', position: 'absolute', top: '5%' },
 	sectionTitle: { color: 'var(--recipe-color-black)', fontSize: '48px', fontWeight: 900 },
-	newRecipeDecoration: { position: 'absolute', left: 0, top: '25%', zIndex: -1, height: '350px', width: '240px', backgroundColor: 'var(--recipe-color-yellow)', borderRadius: '5px' },
 	contentBtn: { width: '180px', height: '53px', fontWeight: 600, color: 'white', backgroundColor: '#efc81a', textAlign: 'center', borderRadius: '36px' },
-	popularDecoration: { position: 'absolute', left: '15%', top: '30%', width: '400px', height: '400px', border: 'var(--recipe-color-yellow) solid', borderRadius: '10px' }
+	newRecipeDecoration: { position: 'absolute', left: 0, top: '25%', zIndex: -1, height: '350px', width: '240px', backgroundColor: 'var(--recipe-color-yellow)', borderRadius: '5px' },
+	popularDecoration: { position: 'absolute', left: '15%', top: '30%', width: '400px', height: '400px', border: 'var(--recipe-color-yellow) solid', borderRadius: '10px' },
 }
 
 export default function Home() {
@@ -27,26 +27,39 @@ export default function Home() {
 	const [popularRecipe, setPopularRecipe] = React.useState([]);
 	const [newRecipe, setNewRecipe] = React.useState([]);
 
+	const [loading, setLoading] = React.useState(false)
+
 
 	const initPage = async () => {
 		try {
+			setLoading(true)
 			const list = await axios({ method: 'get', url: `${window.env.BE_URL}/home/list` })
 			const popular = await axios({ method: 'get', url: `${window.env.BE_URL}/home/popular` })
 			const newRcp = await axios({ method: 'get', url: `${window.env.BE_URL}/home/new` })
-			console.log(newRcp)
 			setRecipeList(list?.data?.data)
 			setPopularRecipe(popular?.data?.data)
 			setNewRecipe(newRcp?.data?.data)
+			console.log(list)
 		} catch (error) {
 			console.log(error)
+		} finally {
+			setLoading(false)
 		}
 	}
 
 	React.useEffect(() => {
 
-		initPage()
+		if (
+			recipeList.length === 0 ||
+			popularRecipe.length === 0 ||
+			newRecipe.length === 0
+		) {
 
-	}, [])
+			initPage()
+		}
+
+
+	}, [loading, newRecipe.length, popularRecipe.length, recipeList.length])
 
 
 
@@ -71,19 +84,18 @@ export default function Home() {
 					return (
 						<section key={index} className='container' >
 							<div className='row'>
-								<div className='col-md-6 col-12' style={style.sectionL}>
+								<div className='sectionL col-md-6 col-12' style={style.sectionL}>
 									<div style={style.sectionLableContainer}>
-										<p style={style.sectionLable}>Polular For You !</p>
+										<p className='sectionLable' style={style.sectionLable}>Polular For You !</p>
 									</div>
 									<div className='decoration' style={style.popularDecoration}> </div>
-									<img style={{
-										position: 'absolute', left: '5%', top: '25%', width: '400px',
-										height: '400px', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px'
-									}}
-										src={recipe.image} alt="food" />
+									<div style={{ position: 'absolute', left: '5%', top: '25%', maxWidth: '400px', height: '400px' }}>
+										<img style={{ height: '100%', width: '100%', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px' }}
+											src={recipe.image} alt="food" />
+									</div>
 								</div>
 								<div className='sectionR col-md-6 col-12' style={style.sectionR}>
-									<div style={{ position: 'absolute', top: '30%' }}>
+									<div className='sectionTitleContainer' style={{ position: 'absolute', top: '30%' }}>
 										<h2 style={style.sectionTitle}>
 											{recipe.title}
 										</h2>
@@ -109,21 +121,21 @@ export default function Home() {
 			{
 				newRecipe?.map((recipe, index) => {
 					return (
-						<section keys={index} className='container' >
+						<section key={index} className='container' >
 							<div className='row'>
-								<div className='col-md-6 col-12' style={style.sectionL}>
+								<div className='sectionL col-md-6 col-12' style={style.sectionL}>
 									<div style={style.sectionLableContainer}>
-										<p style={style.sectionLable}>Polular For You !</p>
+										<p className='sectionLable' style={style.sectionLable}>New Recipe</p>
 									</div>
-									<div className='decoration' style={style.newRecipeDecoration}> </div>
-									<img style={{
-										position: 'absolute', left: '8%', top: '30.6%', width: '400px',
-										height: '400px', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px'
-									}}
-										src={recipe.image} alt="food" />
+									<div className='decoration' style={style.newRecipeDecoration}>
+									</div>
+									<div style={{ position: 'absolute', left: '8%', top: '30.6%', maxWidth: '400px', height: '400px' }}>
+										<img style={{ height: '100%', width: '100%', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px' }}
+											src={recipe.image} alt="food" />
+									</div>
 								</div>
 								<div className='sectionR col-md-6 col-12' style={style.sectionR}>
-									<div style={{ position: 'absolute', top: '30%' }}>
+									<div className='sectionTitleContainer' style={{ position: 'absolute', top: '30%' }}>
 										<h2 style={style.sectionTitle}>
 											{recipe.title}
 										</h2>
