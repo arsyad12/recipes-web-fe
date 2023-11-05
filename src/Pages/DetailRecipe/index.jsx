@@ -6,6 +6,7 @@ import Footer from '../../Components/Footer'
 import { useParams } from 'react-router-dom'
 import Loading from '../../Components/Loading'
 import Error404 from '../../Components/Error404'
+import './detailRecipe.css'
 
 const style = {
   h1: {
@@ -76,6 +77,10 @@ export default function DetailRecipe() {
   React.useEffect(() => {
     initpage()
 
+    if (!(foodDetail?.hasOwnProperty('id'))) {
+      window.scrollTo(0, 0)
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foodDetail, comments, loading])
 
@@ -140,14 +145,19 @@ export default function DetailRecipe() {
                     </ul>
                   </div>
 
-                  <div className='mt-2 desktop-component'>
-                    <YouTube videoId={foodDetail?.video_url?.split('=')[1]} />
-                  </div>
-
                   <div>
-                    <button className='btn my-2 shadow-sm' style={style.comentBtn}>
-                      Comment
-                    </button>
+                    <h3>Videos</h3>
+
+                    <div className='mt-2 desktop-component'>
+                      <YouTube videoId={foodDetail?.video_url?.split('=')[1]} />
+                    </div>
+
+                    <ul className='mobile-component'>
+                      <li><a href={foodDetail?.video_url} target='blank' >
+                        See Video On Youtube.
+                      </a></li>
+                    </ul>
+
                   </div>
 
                 </section>
