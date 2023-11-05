@@ -181,7 +181,7 @@ export default function Home() {
 														<div style={{ margin: '0 auto' }}>
 															<p className='mb-5 sectionLable' style={style.sectionLable}>Polular For You !</p>
 														</div>
-														<div style={{ height: '400px', width: '400px', margin: '0 auto' }}>
+														<div style={{ height: '400px', maxWidth: '400px', margin: '0 auto' }}>
 															<img style={{ height: '100%', width: '100%', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px' }}
 																src={recipe.image} alt="food" />
 														</div>
@@ -216,7 +216,7 @@ export default function Home() {
 														<div style={{ margin: '0 auto' }}>
 															<p className='mb-5 sectionLable' style={style.sectionLable}>New Recipe</p>
 														</div>
-														<div style={{ height: '400px', width: '400px', margin: '0 auto' }}>
+														<div style={{ height: '400px', maxWidth: '400px', margin: '0 auto' }}>
 															<img style={{ height: '100%', width: '100%', objectFit: 'cover', objectPosition: 'center', borderRadius: '10px' }}
 																src={recipe.image} alt="food" />
 														</div>
