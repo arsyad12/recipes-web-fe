@@ -1,3 +1,24 @@
+@media screen and (max-height: 870px) {
+	.sectionL,
+	.sectionR {
+		height: 70vh !important;
+	}
+}
+
+
+@media screen and (max-height: 611px) {
+	.headerImg {
+		top: 11.7vh !important;
+		right: 5vw !important;
+		width: unset;
+		max-width: 80% !important;
+	}
+
+	.sectionL,
+	.sectionR {
+		height: 100vh !important;
+	}
+}
 
 @media screen and (max-width: 992px) {
 
@@ -7,9 +28,9 @@
 		max-width: 100%;
 	}
 
-	.sectionR {
+	.sectionL, .sectionR {
 		width: 100vh !important;
-		left: 2vw !important;
+		left: unset !important;
 		right: 2vw !important;
 	}
 
@@ -51,6 +72,30 @@
 
 	.rightDecoration {
 		top: 5%;
+	}
+
+	.sectionLable {
+		font-size: 10vw !important;
+	}
+
+	.sectionTitleContainer {
+		top: 12vh !important;
+	}
+
+	.sectionL {
+		height: 60vh !important;
+	}
+
+	.sectionR {
+		height: 45vh !important;
+	}
+
+	.sectionL, .sectionR {
+		width: 100vw !important;
+	}
+
+	.sectionImageContainer {
+		width: 100vw !important;
 	}
 
 }
