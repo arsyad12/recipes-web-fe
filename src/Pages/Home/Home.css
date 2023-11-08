@@ -28,6 +28,10 @@
 		max-width: 100%;
 	}
 
+	header {
+		margin-top: -14px !important;
+	}
+
 	.sectionL, .sectionR {
 		width: 100vh !important;
 		left: unset !important;
