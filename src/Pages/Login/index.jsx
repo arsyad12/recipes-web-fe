@@ -28,8 +28,9 @@ export default function Login() {
     })
       .then((res) => {
         console.log(res);
-        localStorage.setItem("user", JSON.stringify(res.data.result));
-        localStorage.setItem("token", `Bearer ${res.data.keyToken}`);
+        console.log(res.data.result)
+        localStorage.setItem("user", JSON.stringify(res.data.data));
+        localStorage.setItem("token", `Bearer ${res.data.token}`);
         setPageLoginState(true);
       })
       .catch((err) => {

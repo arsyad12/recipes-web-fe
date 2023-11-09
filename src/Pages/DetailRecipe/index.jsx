@@ -34,7 +34,10 @@ export default function DetailRecipe() {
   const [advice, setAdvice] = React.useState([])
   const [comments, setComments] = React.useState([])
   const [loading, setLoading] = React.useState(undefined)
-
+  const [recipesUid,setRecipesUid] =React.useState([])
+  const [getDataUser,setDataUser] =React.useState(JSON.parse(localStorage.getItem("user")))
+  const [userComment,setUserComment] = React.useState('')
+  const [userToken,setUserToken] = React.useState(JSON.stringify(localStorage.getItem("token")))
   const { slug } = useParams()
 
   const initpage = async () => {
@@ -45,17 +48,19 @@ export default function DetailRecipe() {
           method: 'post',
           url: `${String(window.env.BE_URL)}/recipes/detail`,
           data: {
-            title: String(slug?.split('-').join(' '))
+            title: String(slug?.split('-').join(' ')) 
           }
         })
 
         console.log(String(slug?.split('-').join(' ')))
         setFoodDetail(food?.data?.data[0])
-
+        setRecipesUid(food.data?.data[0]?.receipt_uid)
         setIngredient(food?.data?.data[0]?.ingredients?.ingridient)
         setSteps(food?.data?.data[0]?.ingredients?.steps)
         setAdvice(food?.data?.data[0]?.ingredients?.advice)
         setUtils(food?.data?.data[0]?.ingredients?.utils)
+         
+        
 
         if (food.data.data[0].receipt_uid) {
           const comment = await axios({
@@ -65,13 +70,39 @@ export default function DetailRecipe() {
           console.log(comment)
           setComments(comment.data.data)
         }
-      }
-
+      }  
+       
     } catch (error) {
       console.log(error)
     } finally {
       setLoading(false)
     }
+  }
+
+  const commentHandler = async(req,res)=>{
+
+    try {
+  
+      const postComment = await axios({
+        method: 'post',
+        url: `${String(window.env.BE_URL)}/comments`,
+        data: {
+          recipeUid: recipesUid,
+          userUid: getDataUser?.user_uid,
+          message: userComment
+        }
+      }, 
+      {
+        headers: {
+          Authorization: `Bearer ${userToken.slice(7,-1)}`
+          
+        },
+      }
+       )
+    } catch (error) {
+      console.log(error)
+    }
+    
   }
 
   React.useEffect(() => {
@@ -84,7 +115,11 @@ export default function DetailRecipe() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foodDetail, comments, loading])
 
-  console.log(foodDetail)
+  // console.log(foodDetail)
+  // console.log(recipesUid) 
+  console.log(userComment)
+  console.log(getDataUser)
+  console.log(userToken.slice(7,-1))
 
   return (
     <div>
@@ -163,8 +198,8 @@ export default function DetailRecipe() {
                 </section>
 
                 <div id='form-coment' className='text-center my-5 m-auto' style={{ width: '900px', maxWidth: '90%' }}>
-                  <textarea className='form-control mb-2' rows="3" style={{ backgroundColor: '#F6F5F4' }} />
-                  <button className='btn my-2 shadow-sm' style={style.comentBtn}>
+                  <textarea className='form-control mb-2' rows="3" style={{ backgroundColor: '#F6F5F4' }} onChange={((item)=>{setUserComment(item.target.value)})} />
+                  <button className='btn my-2 shadow-sm' style={style.comentBtn} onClick={()=>commentHandler()}>
                     Comment
                   </button>
                 </div>
