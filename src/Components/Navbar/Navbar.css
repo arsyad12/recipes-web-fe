@@ -2,6 +2,27 @@
 	display: none !important;
 }
 
+.dropdown-menu {
+	background-color: transparent;
+	border: unset;	
+}
+
+.dropdown-item {
+	font-weight: 600;
+	color: var(--recipe-color-lavender);
+	background-color: white;
+	border-radius: 20px;
+	height: 40px;
+	float: unset;
+	position: unset;
+}
+
+.dropdown-item:active {
+	color: white;
+	background-color: var(--recipe-color-yellow);
+	border: white solid;
+}
+
 
 @media screen and (max-width: 992px) {
 	.desktop-component {
@@ -9,7 +30,7 @@
 	}
 
 	.mobile-component {
-		display: block !important;
+		display:flex !important;
 	}
 	
 }

@@ -24,11 +24,9 @@ export default function Login() {
       data: {
         email,
         password,
-      },
+      }
     })
       .then((res) => {
-        console.log(res);
-        console.log(res.data.result)
         localStorage.setItem("user", JSON.stringify(res.data.data));
         localStorage.setItem("token", `Bearer ${res.data.token}`);
         setPageLoginState(true);
