@@ -35,9 +35,9 @@ export default function DetailRecipe() {
   const [comments, setComments] = React.useState([])
   const [loading, setLoading] = React.useState(undefined)
   const [recipesUid,setRecipesUid] =React.useState([])
-  const [getDataUser,setDataUser] =React.useState(JSON.parse(localStorage.getItem("user")))
+  const [getDataUser,setDataUser] =React.useState({})
   const [userComment,setUserComment] = React.useState('')
-  const [userToken,setUserToken] = React.useState(JSON.stringify(localStorage.getItem("token")))
+  const [userToken,setUserToken] = React.useState('')
   const { slug } = useParams()
 
   const initpage = async () => {
@@ -90,15 +90,13 @@ export default function DetailRecipe() {
           recipeUid: recipesUid,
           userUid: getDataUser?.user_uid,
           message: userComment
-        }
-      }, 
-      {
-        headers: {
-          Authorization: `Bearer ${userToken.slice(7,-1)}`
-          
         },
-      }
-       )
+        headers: {
+          Authorization: userToken
+        }
+      })
+
+      console.log(postComment)
     } catch (error) {
       console.log(error)
     }
@@ -107,6 +105,13 @@ export default function DetailRecipe() {
 
   React.useEffect(() => {
     initpage()
+
+    if (localStorage.getItem('user') && localStorage.getItem('token')) {
+      setUserToken(localStorage.getItem('token'))
+      setDataUser(JSON.parse(localStorage.getItem('user')))
+    }
+
+
 
     if (!(foodDetail?.hasOwnProperty('id'))) {
       window.scrollTo(0, 0)
