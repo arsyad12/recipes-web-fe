@@ -54,7 +54,7 @@ export default function DetailRecipe() {
 
         console.log(String(slug?.split('-').join(' ')))
         setFoodDetail(food?.data?.data[0])
-        setRecipesUid(food.data?.data[0]?.receipt_uid)
+        setRecipesUid(food.data?.data[0]?.recipes_uid)
         setIngredient(food?.data?.data[0]?.ingredients?.ingridient)
         setSteps(food?.data?.data[0]?.ingredients?.steps)
         setAdvice(food?.data?.data[0]?.ingredients?.advice)
@@ -62,10 +62,10 @@ export default function DetailRecipe() {
          
         
 
-        if (food.data.data[0].receipt_uid) {
+        if (food.data.data[0].recipes_uid) {
           const comment = await axios({
             method: 'get',
-            url: `${window.env.BE_URL}/recipes/${food.data.data[0].receipt_uid}/detail/comments`
+            url: `${window.env.BE_URL}/recipes/${food.data.data[0].recipes_uid}/detail/comments`
           })
           console.log(comment)
           setComments(comment.data.data)
