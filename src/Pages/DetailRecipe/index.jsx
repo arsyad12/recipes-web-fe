@@ -88,7 +88,6 @@ export default function DetailRecipe() {
         url: `${String(window.env.BE_URL)}/comments`,
         data: {
           recipeUid: recipesUid,
-          userUid: getDataUser?.user_uid,
           message: userComment
         },
         headers: {
