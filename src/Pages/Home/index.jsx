@@ -7,6 +7,9 @@ import './Home.css'
 import Loading from '../../Components/Loading'
 import Error404 from '../../Components/Error404'
 
+import recipes, * as recipesSlices from "../../slices/home";
+import { useSelector, useDispatch } from "react-redux";
+
 
 const style = {
 	h1: { color: 'var(--recipe-color-lavender)', fontSize: '48px', fontWeight: 900 },
@@ -26,8 +29,10 @@ const style = {
 
 export default function Home() {
 
-	const [recipeList, setRecipeList] = React.useState([]);
-	const [popularRecipe, setPopularRecipe] = React.useState([]);
+	  const state = useSelector((state) => state);
+	  const {recipes:{resultList,resultPopular,resultNewRecipes}} = state
+	  const dispatch = useDispatch()
+
 	const [newRecipe, setNewRecipe] = React.useState([]);
 
 	const [loading, setLoading] = React.useState(undefined)
@@ -39,8 +44,9 @@ export default function Home() {
 			const list = await axios({ method: 'get', url: `${window.env.BE_URL}/home/list` })
 			const popular = await axios({ method: 'get', url: `${window.env.BE_URL}/home/popular` })
 			const newRcp = await axios({ method: 'get', url: `${window.env.BE_URL}/home/new` })
-			setRecipeList(list?.data?.data)
-			setPopularRecipe(popular?.data?.data)
+			// setresultList(list?.data?.data)
+			dispatch(recipesSlices.setResultList(list?.data?.data));
+			dispatch(recipesSlices.setResultPopular(popular?.data?.data));
 			setNewRecipe(newRcp?.data?.data)
 			console.log(list)
 		} catch (error) {
@@ -53,8 +59,8 @@ export default function Home() {
 	React.useEffect(() => {
 
 		if (
-			recipeList.length === 0 ||
-			popularRecipe.length === 0 ||
+			resultList.length === 0 ||
+			resultPopular.length === 0 ||
 			newRecipe.length === 0
 		) {
 
@@ -62,7 +68,7 @@ export default function Home() {
 		}
 
 
-	}, [loading, newRecipe.length, popularRecipe.length, recipeList.length])
+	}, [loading, newRecipe.length, resultPopular.length, resultList.length])
 
 
 
@@ -84,14 +90,14 @@ export default function Home() {
 			{
 				loading === undefined ? "" :
 					loading === true ? <Loading /> :
-						recipeList?.length === 0 ?
+						resultList?.length === 0 ?
 							<div className='d-flex flex-column justify-content-center align-items-center' style={{ height: '43vh' }}>
 								<Error404 />
 								<p style={{ fontWeight: 600 }}>We're Sorry, No Content Found.</p>
 							</div> : <>
 								{/* Popular Recipe Section */}
 								{
-									popularRecipe?.map((recipe, index) => {
+									resultPopular?.map((recipe, index) => {
 										return (
 
 											<section key={index} className='container desktop-component' >
@@ -173,7 +179,7 @@ export default function Home() {
 
 								{/* Mobile Component */}
 								{
-									popularRecipe?.map((recipe, index) => {
+									resultPopular?.map((recipe, index) => {
 										return (
 											<div className='container mobile-component'>
 												<div className='row'>
@@ -250,7 +256,7 @@ export default function Home() {
 									</div>
 									<div className="container" style={{margin: '0 auto'}}>
 										<div className='row'>
-											{recipeList?.map((recipe, index) => {
+											{resultList?.map((recipe, index) => {
 												return (
 													<>
 														<div key={index} className='col-lg-4 col-md-5 col-sm-6 col-xs-12 p-3 '
