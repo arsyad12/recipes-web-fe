@@ -120,7 +120,7 @@ export default function SearchRecipe() {
             className="mx-auto p-2"
             style={{ fontWeight: 900, fontSize: 24 }}
           >
-            Result ✨
+            Popular Recipe ✨
           </div>
           <div className="row">
             {listRecipe?.map((recipe, index) => {
@@ -165,7 +165,7 @@ export default function SearchRecipe() {
             className="mx-auto p-2"
             style={{ fontWeight: 900, fontSize: 24 }}
           >
-            Resep populer ✨
+            Result ✨
           </div>
           <div className="row">
             {searchR?.map((recipe, index) => {
