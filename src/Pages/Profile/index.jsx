@@ -3,6 +3,7 @@ import "./profile.css";
 
 import Navbar from "../../Components/Navbar/index";
 import Footer from "../../Components/Footer/index";
+import { Link } from "react-router-dom";
 
 const style = {
   profileImage: {
@@ -13,6 +14,11 @@ const style = {
 };
 
 function Profile() {
+
+  const [isNavOpen, setIsNavOpen] = React.useState(false);
+
+  console.log(isNavOpen)
+
   return (
     <>
       <Navbar />
@@ -25,10 +31,27 @@ function Profile() {
             style={{ width: 80, height: 80 }}
           />
         </div>
-        <div>
+        <div className="d-flex pt-3">
           <h4>Arsyad</h4>
+          <img
+            src="/assets/img/pen.jpg"
+            alt="edit profile"
+            style={{ width: 40, height: 35 }}
+            onClick={() => setIsNavOpen((isFalse) => !isFalse)}
+          />
         </div>
       </div>
+
+{isNavOpen?(
+      <div class="container">
+        <div class="mt-3 d-flex flex-column align-items-center">
+        <Link to='/form-edit'>
+        <button type="button" class="btn btn-secondary">Edit Profile</button>
+        </Link>
+        <button type="button" class="btn btn-secondary mt-3">Reset Password</button>
+        </div>
+      </div>
+      ):null}
 
       <div class="container">
         <div class="mt-5 row align-items-start">
