@@ -11,24 +11,19 @@ export const counterSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    //reducer berguna untuk mengubah nilai dari  state yang awal menjadi hasil terkini dari sebuah proses di page lain
     setResultList: (state, action) => {
-      state.resultList = action.payload; //nilai payload didapat dari hasil API atau hasil sebuah proses di page lain
+      state.resultList = action.payload;
     },
     setResultPopular: (state, action) => {
-      state.resultPopular = action.payload; //nilai payload didapat dari hasil API atau hasil sebuah proses di page lain
+      state.resultPopular = action.payload;
     },
     setResultNewRecipe: (state, action) => {
-      state.resultNewRecipe = action.payload; //nilai payload didapat dari hasil API atau hasil sebuah proses di page lain
+      state.resultNewRecipe = action.payload;
     },
-  }, 
+  },
 });
 
-// kita export si setter agar bisa diakses di halaman lain
-export const {
-  setResultList,
-  setResultPopular,
-  setResultNewRecipe
-} = counterSlice.actions;
+export const { setResultList, setResultPopular, setResultNewRecipe } =
+  counterSlice.actions;
 
 export default counterSlice.reducer;
