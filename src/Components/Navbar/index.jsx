@@ -43,7 +43,7 @@ export default function Navbar() {
 							<span style={style.navLeftLink} className='nav-left-link'>Add Recipe</span>
 						</div>
 					</Link>
-					<Link to='/'>
+					<Link to='/profile'>
 						<div className='nav-container shadow-sm p-3 desktop-component' style={{ borderRadius: '36px', backgroundColor: 'white' }}>
 							<span style={style.navLeftLink} className='nav-left-link'>Profile</span>
 						</div>
