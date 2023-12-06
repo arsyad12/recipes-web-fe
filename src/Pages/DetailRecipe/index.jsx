@@ -36,7 +36,7 @@ export default function DetailRecipe() {
   console.log(state)
 
   const {
-    recipes: {resultFoodDetail,resultRecipeUid, resultIngredients, resultSteps },
+    recipes: {resultFoodDetail,resultRecipeUid, resultIngredients, resultSteps, resultAdvice },
   } = state;
 
   const dispatch = useDispatch();
@@ -44,7 +44,6 @@ export default function DetailRecipe() {
 
 
   const [utils, setUtils] = React.useState([])
-  const [advice, setAdvice] = React.useState([])
   const [comments, setComments] = React.useState([])
   const [loading, setLoading] = React.useState(undefined)
   const [getDataUser,setDataUser] =React.useState({})
@@ -71,7 +70,7 @@ export default function DetailRecipe() {
         dispatch(recipesSlices.setResultRecipeUid(food.data?.data[0]?.recipes_uid))
         dispatch(recipesSlices.setResultIngredients(food?.data?.data[0]?.ingredients?.ingridient))
         dispatch(recipesSlices.setResultSteps(food?.data?.data[0]?.ingredients?.steps))
-        setAdvice(food?.data?.data[0]?.ingredients?.advice)
+        dispatch(recipesSlices.setResultAdvice(food?.data?.data[0]?.ingredients?.advice))
         setUtils(food?.data?.data[0]?.ingredients?.utils)
          
         
@@ -192,7 +191,7 @@ export default function DetailRecipe() {
                   <div>
                     <h3>Advice</h3>
                     <ul>
-                      {advice?.map(
+                      {resultAdvice?.map(
                         (sugest) => <li>{sugest}</li>
                       )}
                     </ul>

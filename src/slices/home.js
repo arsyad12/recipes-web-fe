@@ -9,6 +9,7 @@ const initialState = {
   resultRecipesUid:[],
   resultIngredients:[],
   resultSteps:[],
+  resultAdvice:[],
 };
 
 export const counterSlice = createSlice({
@@ -36,6 +37,9 @@ export const counterSlice = createSlice({
     setResultSteps: (state, action) => {
       state.resultSteps = action.payload;
     },
+    setResultAdvice: (state, action) => {
+      state.resultAdvice = action.payload;
+    },
   },
 });
 
@@ -46,7 +50,8 @@ export const {
   setResultFoodDetail,
   setResultRecipeUid,
   setResultIngredients,
-  setResultSteps
+  setResultSteps,
+  setResultAdvice
 } = counterSlice.actions;
 
 export default counterSlice.reducer;
