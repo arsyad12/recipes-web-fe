@@ -7,41 +7,39 @@ import axios from "axios";
 
 function FormEdit() {
   const resultToken = localStorage.getItem("token").slice(7);
-  const[photo,setPhoto]=React.useState('')
+  const [photo, setPhoto] = React.useState("");
+  const [file, setFile] = React.useState();
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const[dataUser,setDataUser] =React.useState([])
+  const [dataUser, setDataUser] = React.useState([]);
 
-  console.log(photo.slice(12))
-
+  console.log(file);
 
   React.useEffect(() => {
-    axios.get('http://localhost:3001/user/profile',{
-      headers:{
-        Authorization:`Bearer ${resultToken}`,
-      }
-    }).then((res) => {
-      
-      setDataUser(res?.data?.data)
-
-    })
-  }, [])
+    axios
+      .get("http://localhost:3001/user/profile", {
+        headers: {
+          Authorization: `Bearer ${resultToken}`,
+        },
+      })
+      .then((res) => {
+        setDataUser(res?.data?.data);
+      });
+  }, []);
 
   const editPhotoHandler = () => {
+    const form = new FormData();
+    form.append("myfile", file);
+
     axios
-      .post(
-        "http://localhost:3001/user/profile/update-photo",
-        {
-          password: password,
+      .post("http://localhost:3001/user/profile/update-photo", form, {
+        headers: {
+          Authorization: `Bearer ${resultToken}`,
+          "Content-Type": "multipart/form-data",
         },
-        {
-          headers: {
-            Authorization: `Bearer ${resultToken}`,
-          },
-        }
-      )
+      })
       .then((res) => {
         console.log(res);
       })
@@ -49,6 +47,10 @@ function FormEdit() {
         console.log(err);
       });
   };
+
+  function handleChange(e) {
+    setFile(URL.createObjectURL(e.target.files[0]));
+  }
 
   const editIdentityHandler = () => {
     axios
@@ -106,20 +108,39 @@ function FormEdit() {
         <div>
           <div className="d-flex flex-row justify-content-center gap-5">
             <div>
-              <img
-                src={dataUser.photo_profile}
-                alt="profile"
-                style={{ width: 80, height: 80 }}
+              {file ? (
+                <img
+                  src={file}
+                  alt="profile"
+                  style={{ width: 80, height: 80 }}
+                />
+              ) : (
+                <img
+                  src={dataUser.photo_profile}
+                  alt="profile"
+                  style={{ width: 80, height: 80 }}
+                />
+              )}
+            </div>
+
+            <div>
+              <input
+                className="mt-4 "
+                type="file"
+                name="myfile"
+                accept="image/png, image/gif, image/jpeg"
+                onChange={handleChange}
               />
             </div>
+
             <div>
-              <button type="button" className="btn btn-warning mt-4" onClick={(()=>editPhotoHandler())}>
-                <input
-                  type="file"
-                  name="myImage"
-                  accept="image/png, image/gif, image/jpeg"
-                  onChange={((item)=>setPhoto(item.target.value))}
-                />
+              <button
+                type="button"
+                className="btn btn-warning mt-3"
+                onClick={() => {
+                  editPhotoHandler();
+                }}
+              >
                 Edit Photo
               </button>
             </div>
