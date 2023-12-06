@@ -1,23 +1,35 @@
 import React from "react";
 import "./profile.css";
+import axios from "axios";
 
 import Navbar from "../../Components/Navbar/index";
 import Footer from "../../Components/Footer/index";
 import { Link } from "react-router-dom";
 
-const style = {
-  profileImage: {
-    width: 80,
-    height: 80,
-    jusifyContent: "center",
-  },
-};
+
 
 function Profile() {
-
+  const resultToken = localStorage.getItem("token").slice(7);
   const [isNavOpen, setIsNavOpen] = React.useState(false);
+  const[dataUser,setDataUser] =React.useState([])
+
+  console.log(dataUser)
 
   console.log(isNavOpen)
+
+  React.useEffect(() => {
+    axios.get('http://localhost:3001/user/profile',{
+      headers:{
+        Authorization:`Bearer ${resultToken}`,
+      }
+    }).then((res) => {
+      
+      setDataUser(res?.data?.data)
+
+    })
+  }, [])
+
+ 
 
   return (
     <>
@@ -26,13 +38,13 @@ function Profile() {
       <div class="d-flex flex-column mb-3 align-items-center mt-5">
         <div>
           <img
-            src="/assets/img/burger.png"
+            src={dataUser.photo_profile}
             alt="profile"
             style={{ width: 80, height: 80 }}
           />
         </div>
         <div className="d-flex pt-3">
-          <h4>Arsyad</h4>
+          <h4>{dataUser.first_name}</h4>
           <img
             src="/assets/img/pen.jpg"
             alt="edit profile"
@@ -48,7 +60,6 @@ function Profile() {
         <Link to='/form-edit'>
         <button type="button" class="btn btn-secondary">Edit Profile</button>
         </Link>
-        <button type="button" class="btn btn-secondary mt-3">Reset Password</button>
         </div>
       </div>
       ):null}

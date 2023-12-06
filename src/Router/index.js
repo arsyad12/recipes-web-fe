@@ -3,6 +3,9 @@ import DetailRecipe from "../Pages/DetailRecipe";
 import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
+import Profile from "../Pages/Profile";
+import EditProfile from "../Pages/FormEdit/index"
+
 
 const router = createBrowserRouter([
 	{
@@ -20,6 +23,16 @@ const router = createBrowserRouter([
 	{
 		path: "/user/register",
 		element: <Register />
+
+	},
+	{
+		path: "/profile",
+		element: <Profile />
+
+	},
+	{
+		path: "/form-edit",
+		element: <EditProfile />
 
 	}
 ]);

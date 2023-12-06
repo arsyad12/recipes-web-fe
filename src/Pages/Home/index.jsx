@@ -337,7 +337,7 @@ export default function Home() {
           {/* Mobile Component */}
           {resultPopular?.map((recipe, index) => {
             return (
-              <div className="container mobile-component">
+              <div key={index} className="container mobile-component">
                 <div className="row">
                   <div className="col-md-12 mt-5 p-3 text-center m-auto">
                     <div style={{ margin: "0 auto" }}>
@@ -401,7 +401,7 @@ export default function Home() {
           })}
           {resultNewRecipe?.map((recipe, index) => {
             return (
-              <div className="container mobile-component">
+              <div key={index} className="container mobile-component">
                 <div className="row">
                   <div className="col-md-12 p-3 text-center m-auto">
                     <div style={{ margin: "0 auto" }}>
