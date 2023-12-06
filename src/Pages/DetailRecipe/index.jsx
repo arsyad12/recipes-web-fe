@@ -38,6 +38,8 @@ export default function DetailRecipe() {
   const [getDataUser, setDataUser] = React.useState({});
   const [userComment, setUserComment] = React.useState("");
   const [userToken, setUserToken] = React.useState("");
+  const [mesgError, setMesgerror] = React.useState(null);
+  const [sucesNotif, setSucessNotif] = React.useState(null);
   const { slug } = useParams();
 
   const initpage = async () => {
@@ -77,7 +79,6 @@ export default function DetailRecipe() {
     }
   };
 
-
   const commentHandler = async (req, res) => {
     try {
       const postComment = await axios({
@@ -92,8 +93,15 @@ export default function DetailRecipe() {
         },
       });
 
-      console.log(postComment);
+      if (postComment != 0) {
+        setSucessNotif("Add comment sucessfully");
+      }
     } catch (error) {
+      if (error?.message === "Request failed with status code 422") {
+        setMesgerror(error?.response?.data?.message);
+      } else if (error?.message === "Request failed with status code 401") {
+        setMesgerror("Please Login First");
+      }
       console.log(error);
     }
   };
@@ -213,6 +221,18 @@ export default function DetailRecipe() {
               </ul>
             </div>
           </section>
+
+          {sucesNotif ? (
+            <div className="alert alert-success" role="alert">
+              {sucesNotif}
+            </div>
+          ) : null}
+
+          {mesgError ? (
+            <div className="alert alert-danger" role="alert">
+              {mesgError}
+            </div>
+          ) : null}
 
           <div
             id="form-coment"
