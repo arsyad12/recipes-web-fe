@@ -36,19 +36,18 @@ export default function DetailRecipe() {
   console.log(state)
 
   const {
-    recipes: {resultFoodDetail },
+    recipes: {resultFoodDetail,resultRecipeUid, resultIngredients },
   } = state;
 
   const dispatch = useDispatch();
 
 
-  const [ingredients, setIngredient] = React.useState([])
+
   const [steps, setSteps] = React.useState([])
   const [utils, setUtils] = React.useState([])
   const [advice, setAdvice] = React.useState([])
   const [comments, setComments] = React.useState([])
   const [loading, setLoading] = React.useState(undefined)
-  const [recipesUid,setRecipesUid] =React.useState([])
   const [getDataUser,setDataUser] =React.useState({})
   const [userComment,setUserComment] = React.useState('')
   const [userToken,setUserToken] = React.useState('')
@@ -70,9 +69,8 @@ export default function DetailRecipe() {
   
         
         dispatch(recipesSlices.setResultFoodDetail(food?.data?.data[0]))
-
-        setRecipesUid(food.data?.data[0]?.recipes_uid)
-        setIngredient(food?.data?.data[0]?.ingredients?.ingridient)
+        dispatch(recipesSlices.setResultRecipeUid(food.data?.data[0]?.recipes_uid))
+        dispatch(recipesSlices.setResultIngredients(food?.data?.data[0]?.ingredients?.ingridient))
         setSteps(food?.data?.data[0]?.ingredients?.steps)
         setAdvice(food?.data?.data[0]?.ingredients?.advice)
         setUtils(food?.data?.data[0]?.ingredients?.utils)
@@ -104,7 +102,7 @@ export default function DetailRecipe() {
         method: 'post',
         url: `${String(window.env.BE_URL)}/comments`,
         data: {
-          recipeUid: recipesUid,
+          recipeUid: resultRecipeUid,
           message: userComment
         },
         headers: {
@@ -137,7 +135,7 @@ export default function DetailRecipe() {
   }, [resultFoodDetail, comments, loading])
 
   // console.log(resultFoodDetail)
-  // console.log(recipesUid) 
+  // console.log(resultRecipeUid) 
   console.log(userComment)
   console.log(getDataUser)
   console.log(userToken.slice(7,-1))
@@ -168,7 +166,7 @@ export default function DetailRecipe() {
                   <div>
                     <h3>Ingredients</h3>
                     <ul>
-                      {ingredients?.map(
+                      {resultIngredients?.map(
                         (ingredient) => <li>{ingredient}</li>
                       )}
                     </ul>
