@@ -8,6 +8,9 @@ import Loading from '../../Components/Loading'
 import Error404 from '../../Components/Error404'
 import './detailRecipe.css'
 
+import recipes, * as recipesSlices from "../../slices/home";
+import { useSelector, useDispatch } from "react-redux";
+
 const style = {
   h1: {
     color: 'var(--recipe-color-lavender)',
@@ -27,7 +30,18 @@ const style = {
 }
 
 export default function DetailRecipe() {
-  const [foodDetail, setFoodDetail] = React.useState({})
+
+  const state = useSelector((state) => state);
+
+  console.log(state)
+
+  const {
+    recipes: {resultFoodDetail },
+  } = state;
+
+  const dispatch = useDispatch();
+
+
   const [ingredients, setIngredient] = React.useState([])
   const [steps, setSteps] = React.useState([])
   const [utils, setUtils] = React.useState([])
@@ -43,7 +57,7 @@ export default function DetailRecipe() {
   const initpage = async () => {
     try {
       setLoading(true)
-      if (Object.keys(foodDetail).length === 0) {
+      if (Object.keys(resultFoodDetail).length === 0) {
         const food = await axios({
           method: 'post',
           url: `${String(window.env.BE_URL)}/recipes/detail`,
@@ -53,7 +67,10 @@ export default function DetailRecipe() {
         })
 
         console.log(String(slug?.split('-').join(' ')))
-        setFoodDetail(food?.data?.data[0])
+  
+        
+        dispatch(recipesSlices.setResultFoodDetail(food?.data?.data[0]))
+
         setRecipesUid(food.data?.data[0]?.recipes_uid)
         setIngredient(food?.data?.data[0]?.ingredients?.ingridient)
         setSteps(food?.data?.data[0]?.ingredients?.steps)
@@ -112,14 +129,14 @@ export default function DetailRecipe() {
 
 
 
-    if (!(foodDetail?.hasOwnProperty('id'))) {
+    if (!(resultFoodDetail?.hasOwnProperty('id'))) {
       window.scrollTo(0, 0)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [foodDetail, comments, loading])
+  }, [resultFoodDetail, comments, loading])
 
-  // console.log(foodDetail)
+  // console.log(resultFoodDetail)
   // console.log(recipesUid) 
   console.log(userComment)
   console.log(getDataUser)
@@ -131,7 +148,7 @@ export default function DetailRecipe() {
       {
         loading === undefined ? "" :
           loading === true ? <Loading /> :
-            !(foodDetail?.hasOwnProperty('id')) ?
+            !(resultFoodDetail?.hasOwnProperty('id')) ?
               <div className='d-flex flex-column justify-content-center align-items-center' style={{ height: '43vh' }}>
                 <Error404 />
                 <p style={{ fontWeight: 600 }}>We're Sorry, Page you want to visit not found.</p>
@@ -139,12 +156,12 @@ export default function DetailRecipe() {
               <article id='foodRecipeDetail' className='container d-flex flex-column' style={{ padding: '3vh 10vw 3vh 10vw' }}>
                 <section className='container d-flex flex-column m-auto'>
 
-                  <h1 style={style.h1}>{foodDetail?.title}</h1>
+                  <h1 style={style.h1}>{resultFoodDetail?.title}</h1>
 
                   <div className='mb-1 m-auto'>
                     <figure style={{ textAlign: 'center', maxWidth: '600px', margin: '0px 0px 30px 0px' }}>
-                      <img className='my-4' style={{ borderRadius: '20px', width: '100%' }} src={foodDetail?.image} alt="foodDetail.title" />
-                      <figcaption>{foodDetail?.title}</figcaption>
+                      <img className='my-4' style={{ borderRadius: '20px', width: '100%' }} src={resultFoodDetail?.image} alt="resultFoodDetail.title" />
+                      <figcaption>{resultFoodDetail?.title}</figcaption>
                     </figure>
                   </div>
 
@@ -188,11 +205,11 @@ export default function DetailRecipe() {
                     <h3>Videos</h3>
 
                     <div className='mt-2 desktop-component'>
-                      <YouTube videoId={foodDetail?.video_url?.split('=')[1]} />
+                      <YouTube videoId={resultFoodDetail?.video_url?.split('=')[1]} />
                     </div>
 
                     <ul className='mobile-component'>
-                      <li><a href={foodDetail?.video_url} target='blank' >
+                      <li><a href={resultFoodDetail?.video_url} target='blank' >
                         See Video On Youtube.
                       </a></li>
                     </ul>
