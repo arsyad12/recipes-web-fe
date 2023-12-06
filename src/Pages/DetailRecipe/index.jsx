@@ -36,14 +36,13 @@ export default function DetailRecipe() {
   console.log(state)
 
   const {
-    recipes: {resultFoodDetail,resultRecipeUid, resultIngredients },
+    recipes: {resultFoodDetail,resultRecipeUid, resultIngredients, resultSteps },
   } = state;
 
   const dispatch = useDispatch();
 
 
 
-  const [steps, setSteps] = React.useState([])
   const [utils, setUtils] = React.useState([])
   const [advice, setAdvice] = React.useState([])
   const [comments, setComments] = React.useState([])
@@ -71,7 +70,7 @@ export default function DetailRecipe() {
         dispatch(recipesSlices.setResultFoodDetail(food?.data?.data[0]))
         dispatch(recipesSlices.setResultRecipeUid(food.data?.data[0]?.recipes_uid))
         dispatch(recipesSlices.setResultIngredients(food?.data?.data[0]?.ingredients?.ingridient))
-        setSteps(food?.data?.data[0]?.ingredients?.steps)
+        dispatch(recipesSlices.setResultSteps(food?.data?.data[0]?.ingredients?.steps))
         setAdvice(food?.data?.data[0]?.ingredients?.advice)
         setUtils(food?.data?.data[0]?.ingredients?.utils)
          
@@ -184,7 +183,7 @@ export default function DetailRecipe() {
                   <div>
                     <h3>Steps</h3>
                     <ul>
-                      {steps?.map(
+                      {resultSteps?.map(
                         (step) => <li>{step}</li>
                       )}
                     </ul>
