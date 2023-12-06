@@ -17,17 +17,10 @@ export default function SearchRecipe() {
 	const [loading, setLoading] = React.useState(undefined);
 	const [searchR, setSearchR] = React.useState(undefined)
 	const [search, setSearch] = React.useState('')
-	
+	const [listRecipe, setListRecipe] = React.useState(undefined)
 
 
 	// console.log(state)
-
-	const {
-		recipes: { resultList, resultNewRecipe, resultPopular },
-	} = state;
-
-	const dispatch = useDispatch();
-
 
 	const initPage = async () => {
 		try {
@@ -36,17 +29,8 @@ export default function SearchRecipe() {
 				method: "get",
 				url: `${window.env.BE_URL}/home/list`,
 			});
-			const popular = await axios({
-				method: "get",
-				url: `${window.env.BE_URL}/home/popular`,
-			});
-			const newRcp = await axios({
-				method: "get",
-				url: `${window.env.BE_URL}/home/new`,
-			});
-			dispatch(recipesSlices.setResultList(list?.data?.data));
-			dispatch(recipesSlices.setResultPopular(popular?.data?.data));
-			dispatch(recipesSlices.setResultNewRecipe(newRcp?.data?.data));
+			// console.log(list.data.data)
+			setListRecipe(list.data.data)
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -104,12 +88,12 @@ export default function SearchRecipe() {
 			{/* Search Content */}
 			{/* For Recipe Content */}
 			{
-				loading ? <Loading /> : !searchR ? null :
+				loading ? <Loading /> : searchR ? null :
 					<div className="container my-4" style={{ margin: "0 auto" }}>
 						<div className='mx-auto p-2' style={{ fontWeight: 900, fontSize: 24 }}>Result ✨</div>
 						<div className="row">
 							{
-								searchR?.map((recipe, index) => {
+								listRecipe?.map((recipe, index) => {
 									return (
 										<div key={index} className="col-lg-4 col-md-5 col-sm-6 col-xs-12 p-3 ">
 											<Link to={`/detail/${String(recipe.title).split(" ").join("-").toLowerCase()}`}>
@@ -132,7 +116,7 @@ export default function SearchRecipe() {
 
 			{/* For Recipe Content */}
 			{
-				loading ? <Loading /> : searchR ? null :
+				loading ? <Loading /> : !searchR ? null :
 					<div className="container my-4" style={{ margin: "0 auto" }}>
 						<div className='mx-auto p-2' style={{ fontWeight: 900, fontSize: 24 }}>Resep populer ✨</div>
 						<div className="row">
