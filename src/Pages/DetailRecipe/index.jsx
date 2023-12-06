@@ -240,3 +240,4 @@ export default function DetailRecipe() {
     </div>
   )
 }
+
