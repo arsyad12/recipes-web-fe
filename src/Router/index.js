@@ -4,8 +4,8 @@ import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import Profile from "../Pages/Profile";
-import EditProfile from "../Pages/FormEdit/index"
-
+import EditProfile from "../Pages/FormEdit"
+import SearchRecipe from '../Pages/SearchRecipe'
 
 const router = createBrowserRouter([
 	{
@@ -34,7 +34,12 @@ const router = createBrowserRouter([
 		path: "/form-edit",
 		element: <EditProfile />
 
-	}
+	},
+	{
+		path: "/search",
+		element: <SearchRecipe />
+
+	},
 ]);
 
 export default router
