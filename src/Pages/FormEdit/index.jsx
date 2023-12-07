@@ -7,7 +7,8 @@ import axios from "axios";
 
 function FormEdit() {
   const resultToken = localStorage.getItem("token").slice(7);
-  const [photo, setPhoto] = React.useState("");
+  const [photo, setPhoto] = React.useState(undefined);
+  const [preview, setPreview] = React.useState(undefined);
   const [file, setFile] = React.useState();
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -31,7 +32,7 @@ function FormEdit() {
 
   const editPhotoHandler = () => {
     const form = new FormData();
-    form.append("myfile", file);
+    form.append("user-photo", file);
 
     axios
       .post(`${window.env.BE_URL}/user/profile/update-photo`, form, {
@@ -47,10 +48,6 @@ function FormEdit() {
         console.log(err);
       });
   };
-
-  function handleChange(e) {
-    setFile(URL.createObjectURL(e.target.files[0]));
-  }
 
   const editIdentityHandler = () => {
     axios
@@ -132,7 +129,7 @@ function FormEdit() {
                   type="file"
                   name="myfile"
                   accept="image/png, image/gif, image/jpeg"
-                  onChange={handleChange}
+                  onChange={e=>setFile(e.target.files[0])}
                 />
               </div>
 
