@@ -7,17 +7,16 @@ import axios from "axios";
 
 function FormEdit() {
   const resultToken = localStorage.getItem("token").slice(7);
-  const [photo, setPhoto] = React.useState(undefined);
-  const [preview, setPreview] = React.useState(undefined);
-  const [file, setFile] = React.useState();
+  const [preview, setPreview] = React.useState(undefined); //value preview
+  const [file, setFile] = React.useState(); //value file photo
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [dataUser, setDataUser] = React.useState([]);
-
-
-
+  const [loading, setLoading] = React.useState(false);
+  const [isSucces, setSuccess] = React.useState(false);
+  const [isErr, setErr] = React.useState(false);
   React.useEffect(() => {
     axios
       .get(`${window.env.BE_URL}/user/profile`, {
@@ -31,6 +30,7 @@ function FormEdit() {
   }, []);
 
   const editPhotoHandler = () => {
+    setLoading(true);
     const form = new FormData();
     form.append("user-photo", file);
 
@@ -43,9 +43,24 @@ function FormEdit() {
       })
       .then((res) => {
         console.log(res);
+        setLoading(false);
+        setSuccess(true);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       })
       .catch((err) => {
         console.log(err);
+
+        const errFileEmpty = err?.response?.data?.message;
+
+        setErr(errFileEmpty);
+        
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+
       });
   };
 
@@ -93,12 +108,29 @@ function FormEdit() {
       });
   };
 
+  const handlePreview = (imagePreview) => {
+    setPreview(URL.createObjectURL(imagePreview.target.files[0]));
+  };
+
   return (
     <>
       <Navbar />
+
       <div className="container">
+        {isSucces ? (
+          <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Well done! Update data succes</h4>
+          </div>
+        ) : null}
+
+        {isErr ? (
+          <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">{`Photo canot be empty ${isErr}`}</h4>
+          </div>
+        ) : null}
+
         {/* photo */}
-        <div class="card mt-5 shadow">
+        <div class="container card mt-5 shadow">
           <div class="card-body mb-5">
             <div>
               <h3 style={{ textAlign: "center", paddingTop: 20 }}>
@@ -108,17 +140,17 @@ function FormEdit() {
 
             <div className="d-flex flex-row justify-content-center gap-5">
               <div>
-                {file ? (
+                {preview ? (
                   <img
-                    src={file}
+                    src={preview}
                     alt="profile"
-                    style={{ width: 80, height: 80 }}
+                    style={{ width: 80, height: 80,borderRadius:50}}
                   />
                 ) : (
                   <img
                     src={dataUser.photo_profile}
                     alt="profile"
-                    style={{ width: 80, height: 80 }}
+                    style={{ width: 80, height: 80,borderRadius:50}}
                   />
                 )}
               </div>
@@ -129,7 +161,10 @@ function FormEdit() {
                   type="file"
                   name="myfile"
                   accept="image/png, image/gif, image/jpeg"
-                  onChange={e=>setFile(e.target.files[0])}
+                  onChange={(e) => {
+                    handlePreview(e);
+                    setFile(e.target.files[0]);
+                  }}
                 />
               </div>
 
@@ -137,11 +172,12 @@ function FormEdit() {
                 <button
                   type="button"
                   className="btn btn-warning mt-3"
+                  disabled={loading}
                   onClick={() => {
                     editPhotoHandler();
                   }}
                 >
-                  Edit Photo
+                  {loading ? "Loading..." : "Edit Photo"}
                 </button>
               </div>
             </div>
@@ -153,10 +189,10 @@ function FormEdit() {
         <div class="card mt-5 shadow">
           <div class="card-body m-4">
             <div>
-            <h3 style={{ textAlign: "center", paddingTop: 30 }}>
-              Edit Profil Identity
-            </h3>
-          </div>
+              <h3 style={{ textAlign: "center", paddingTop: 30 }}>
+                Edit Profil Identity
+              </h3>
+            </div>
             <div className="form-group">
               <label for="exampleInputEmail1" className="mt-4">
                 First Name
