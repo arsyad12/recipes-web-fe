@@ -18,7 +18,7 @@ function Profile() {
   console.log(isNavOpen)
 
   React.useEffect(() => {
-    axios.get('http://localhost:3001/user/profile',{
+    axios.get(`${window.env.BE_URL}/user/profile`,{
       headers:{
         Authorization:`Bearer ${resultToken}`,
       }
