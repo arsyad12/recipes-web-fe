@@ -100,7 +100,7 @@ const style = {
 export default function Home() {
   const state = useSelector((state) => state);
 
-  console.log(state)
+  console.log(state);
 
   const {
     recipes: { resultList, resultNewRecipe, resultPopular },
@@ -135,11 +135,18 @@ export default function Home() {
     }
   };
 
+
   React.useEffect(() => {
     if (
       resultList.length === 0 ||
       resultPopular.length === 0 ||
       resultNewRecipe?.length === 0
+    ) {
+      initPage();
+    } else if (
+      resultList.length > 0 ||
+      resultPopular.length > 0 ||
+      resultNewRecipe?.length > 0
     ) {
       initPage();
     }
