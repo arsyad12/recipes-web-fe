@@ -15,7 +15,7 @@ function FormEdit() {
   const [password, setPassword] = React.useState("");
   const [dataUser, setDataUser] = React.useState([]);
 
-  console.log(file);
+
 
   React.useEffect(() => {
     axios
@@ -100,145 +100,164 @@ function FormEdit() {
     <>
       <Navbar />
       <div className="container">
-        <div>
-          <h3 style={{ textAlign: "center", paddingTop: 20 }}>Edit Photo</h3>
-        </div>
-
         {/* photo */}
-        <div>
-          <div className="d-flex flex-row justify-content-center gap-5">
+        <div class="card mt-5 shadow">
+          <div class="card-body mb-5">
             <div>
-              {file ? (
-                <img
-                  src={file}
-                  alt="profile"
-                  style={{ width: 80, height: 80 }}
-                />
-              ) : (
-                <img
-                  src={dataUser.photo_profile}
-                  alt="profile"
-                  style={{ width: 80, height: 80 }}
-                />
-              )}
+              <h3 style={{ textAlign: "center", paddingTop: 20 }}>
+                Edit Photo
+              </h3>
             </div>
 
+            <div className="d-flex flex-row justify-content-center gap-5">
+              <div>
+                {file ? (
+                  <img
+                    src={file}
+                    alt="profile"
+                    style={{ width: 80, height: 80 }}
+                  />
+                ) : (
+                  <img
+                    src={dataUser.photo_profile}
+                    alt="profile"
+                    style={{ width: 80, height: 80 }}
+                  />
+                )}
+              </div>
+
+              <div>
+                <input
+                  className="mt-4 "
+                  type="file"
+                  name="myfile"
+                  accept="image/png, image/gif, image/jpeg"
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-warning mt-3"
+                  onClick={() => {
+                    editPhotoHandler();
+                  }}
+                >
+                  Edit Photo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* photo */}
+
+        {/* identity */}
+        <div class="card mt-5 shadow">
+          <div class="card-body m-4">
             <div>
+            <h3 style={{ textAlign: "center", paddingTop: 30 }}>
+              Edit Profil Identity
+            </h3>
+          </div>
+            <div className="form-group">
+              <label for="exampleInputEmail1" className="mt-4">
+                First Name
+              </label>
               <input
-                className="mt-4 "
-                type="file"
-                name="myfile"
-                accept="image/png, image/gif, image/jpeg"
-                onChange={handleChange}
+                className="form-control "
+                defaultValue={dataUser.first_name}
+                onChange={(item) => setFirstName(item.target.value)}
+              />
+              <label for="exampleInputEmail1" className="mt-4">
+                Last Name
+              </label>
+              <input
+                className="form-control "
+                defaultValue={dataUser.last_name}
+                onChange={(item) => setLastName(item.target.value)}
+              />
+              <label for="exampleInputEmail1" className="mt-4">
+                Phone Number
+              </label>
+              <input
+                className="form-control "
+                defaultValue={dataUser.phone_number}
+                onChange={(item) => setPhoneNumber(item.target.value)}
               />
             </div>
 
+            <button
+              className="btn btn-primary mt-3"
+              onClick={() => {
+                editIdentityHandler();
+              }}
+            >
+              Edit Identity
+            </button>
+          </div>
+        </div>
+        {/* identity */}
+
+        {/* email */}
+        <div class="card mt-5 shadow">
+          <div class="card-body m-4">
             <div>
-              <button
-                type="button"
-                className="btn btn-warning mt-3"
-                onClick={() => {
-                  editPhotoHandler();
-                }}
-              >
-                Edit Photo
+              <h3 style={{ textAlign: "center", paddingTop: 30 }}>
+                Edit Email
+              </h3>
+            </div>
+
+            <div>
+              <div className="form-group">
+                <label for="exampleInputEmail1" className="mt-4">
+                  Email
+                </label>
+                <input
+                  className="form-control "
+                  defaultValue={dataUser.email}
+                />
+              </div>
+
+              <button type="submit" className="btn btn-primary mt-3">
+                Submit
               </button>
             </div>
           </div>
         </div>
-
-        {/* photo */}
-
-        {/* identity */}
-        <div>
-          <h3 style={{ textAlign: "center", paddingTop: 60 }}>
-            Edit Profil Identity
-          </h3>
-        </div>
-        <div>
-          <div className="form-group">
-            <label for="exampleInputEmail1" className="mt-4">
-              First Name
-            </label>
-            <input
-              className="form-control "
-              defaultValue={dataUser.first_name}
-              onChange={(item) => setFirstName(item.target.value)}
-            />
-            <label for="exampleInputEmail1" className="mt-4">
-              Last Name
-            </label>
-            <input
-              className="form-control "
-              defaultValue={dataUser.last_name}
-              onChange={(item) => setLastName(item.target.value)}
-            />
-            <label for="exampleInputEmail1" className="mt-4">
-              Phone Number
-            </label>
-            <input
-              className="form-control "
-              defaultValue={dataUser.phone_number}
-              onChange={(item) => setPhoneNumber(item.target.value)}
-            />
-          </div>
-
-          <button
-            className="btn btn-primary mt-3"
-            onClick={() => {
-              editIdentityHandler();
-            }}
-          >
-            Edit Identity
-          </button>
-        </div>
-        {/* identity */}
-
-        {/* email */}
-        <div>
-          <h3 style={{ textAlign: "center", paddingTop: 40 }}>Edit Email</h3>
-        </div>
-
-        <div>
-          <div className="form-group">
-            <label for="exampleInputEmail1" className="mt-4">
-              Email
-            </label>
-            <input className="form-control " defaultValue={dataUser.email} />
-          </div>
-
-          <button type="submit" className="btn btn-primary mt-3">
-            Submit
-          </button>
-        </div>
         {/* email */}
 
         {/* password */}
-        <div>
-          <h3 style={{ textAlign: "center", paddingTop: 40 }}>Edit Password</h3>
-        </div>
+        <div class="card mt-5 shadow">
+          <div class="card-body m-4">
+            <div>
+              <h3 style={{ textAlign: "center", paddingTop: 30 }}>
+                Edit Password
+              </h3>
+            </div>
+            <div>
+              <div className="form-group">
+                <label for="exampleInputEmail1" className="mt-4">
+                  Password
+                </label>
+                <input
+                  className="form-control "
+                  placeholder="Enter Password"
+                  onChange={(item) => {
+                    setPassword(item.target.value);
+                  }}
+                />
+              </div>
 
-        <div>
-          <div className="form-group">
-            <label for="exampleInputEmail1" className="mt-4">
-              Password
-            </label>
-            <input
-              className="form-control "
-              placeholder="Enter Password"
-              onChange={(item) => {
-                setPassword(item.target.value);
-              }}
-            />
+              <button
+                type="submit"
+                className="btn btn-primary mt-3"
+                onClick={() => editPasswordHandler()}
+              >
+                Edit Password
+              </button>
+            </div>
           </div>
-
-          <button
-            type="submit"
-            className="btn btn-primary mt-3"
-            onClick={() => editPasswordHandler()}
-          >
-            Edit Password
-          </button>
         </div>
         {/* password */}
       </div>
