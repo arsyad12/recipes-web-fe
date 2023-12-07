@@ -19,7 +19,7 @@ function FormEdit() {
 
   React.useEffect(() => {
     axios
-      .get("http://localhost:3001/user/profile", {
+      .get(`${window.env.BE_URL}/user/profile`, {
         headers: {
           Authorization: `Bearer ${resultToken}`,
         },
@@ -34,7 +34,7 @@ function FormEdit() {
     form.append("myfile", file);
 
     axios
-      .post("http://localhost:3001/user/profile/update-photo", form, {
+      .post(`${window.env.BE_URL}/user/profile/update-photo`, form, {
         headers: {
           Authorization: `Bearer ${resultToken}`,
           "Content-Type": "multipart/form-data",
@@ -55,7 +55,7 @@ function FormEdit() {
   const editIdentityHandler = () => {
     axios
       .put(
-        "http://localhost:3001/user/profile/edit",
+        `${window.env.BE_URL}/user/profile/edit`,
         {
           first_name: firstName,
           last_name: lastName,
@@ -78,7 +78,7 @@ function FormEdit() {
   const editPasswordHandler = () => {
     axios
       .put(
-        "http://localhost:3001/user/profile/update-password",
+        `${window.env.BE_URL}/user/profile/update-password`,
         {
           password: password,
         },
@@ -162,7 +162,7 @@ function FormEdit() {
             </label>
             <input
               className="form-control "
-              placeholder={dataUser.first_name}
+              defaultValue={dataUser.first_name}
               onChange={(item) => setFirstName(item.target.value)}
             />
             <label for="exampleInputEmail1" className="mt-4">
@@ -170,7 +170,7 @@ function FormEdit() {
             </label>
             <input
               className="form-control "
-              placeholder={dataUser.last_name}
+              defaultValue={dataUser.last_name}
               onChange={(item) => setLastName(item.target.value)}
             />
             <label for="exampleInputEmail1" className="mt-4">
@@ -178,7 +178,7 @@ function FormEdit() {
             </label>
             <input
               className="form-control "
-              placeholder={dataUser.phone_number}
+              defaultValue={dataUser.phone_number}
               onChange={(item) => setPhoneNumber(item.target.value)}
             />
           </div>
@@ -204,7 +204,7 @@ function FormEdit() {
             <label for="exampleInputEmail1" className="mt-4">
               Email
             </label>
-            <input className="form-control " placeholder={dataUser.email} />
+            <input className="form-control " defaultValue={dataUser.email} />
           </div>
 
           <button type="submit" className="btn btn-primary mt-3">
