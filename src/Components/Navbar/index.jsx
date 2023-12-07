@@ -74,7 +74,7 @@ export default function Navbar() {
                   </span>
                 </div>
               </Link>
-              <Link to="/">
+              <Link to="/add-recipe">
                 <div
                   className="nav-container shadow-sm p-3 desktop-component"
                   style={{ borderRadius: "36px", backgroundColor: "white" }}
