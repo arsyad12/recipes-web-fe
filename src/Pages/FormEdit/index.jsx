@@ -108,9 +108,6 @@ function FormEdit() {
       });
   };
 
-  const handlePreview = (imagePreview) => {
-    setPreview(URL.createObjectURL(imagePreview.target.files[0]));
-  };
 
   return (
     <>
@@ -160,10 +157,10 @@ function FormEdit() {
                   className="mt-4 "
                   type="file"
                   name="myfile"
-                  accept="image/png, image/gif, image/jpeg"
+                  accept="image/*"
                   onChange={(e) => {
-                    handlePreview(e);
                     setFile(e.target.files[0]);
+                    setPreview(URL.createObjectURL(e.target.files[0]));
                   }}
                 />
               </div>
@@ -177,7 +174,7 @@ function FormEdit() {
                     editPhotoHandler();
                   }}
                 >
-                  {loading ? "Loading..." : "Edit Photo"}
+                  {loading ? "Loading..." : "Update Photo"}
                 </button>
               </div>
             </div>
