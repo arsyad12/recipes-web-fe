@@ -48,6 +48,16 @@ export default function Navbar() {
                   </span>
                 </div>
               </Link>
+              <Link to="/search">
+                <div
+                  className="nav-container shadow-sm p-3 desktop-component"
+                  style={{ borderRadius: "36px", backgroundColor: "white" }}
+                >
+                  <span style={style.navLeftLink} className="nav-left-link">
+                    Search Recipe
+                  </span>
+                </div>
+              </Link>
             </>
           ) : (
             <>
@@ -71,6 +81,16 @@ export default function Navbar() {
                 >
                   <span style={style.navLeftLink} className="nav-left-link">
                     Home
+                  </span>
+                </div>
+              </Link>
+              <Link to="/search">
+                <div
+                  className="nav-container shadow-sm p-3 desktop-component"
+                  style={{ borderRadius: "36px", backgroundColor: "white" }}
+                >
+                  <span style={style.navLeftLink} className="nav-left-link">
+                    Search Recipe
                   </span>
                 </div>
               </Link>
