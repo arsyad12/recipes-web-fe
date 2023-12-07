@@ -162,7 +162,7 @@ function FormEdit() {
             </label>
             <input
               className="form-control "
-              placeholder={dataUser.first_name}
+              defaultValue={dataUser.first_name}
               onChange={(item) => setFirstName(item.target.value)}
             />
             <label for="exampleInputEmail1" className="mt-4">
@@ -170,7 +170,7 @@ function FormEdit() {
             </label>
             <input
               className="form-control "
-              placeholder={dataUser.last_name}
+              defaultValue={dataUser.last_name}
               onChange={(item) => setLastName(item.target.value)}
             />
             <label for="exampleInputEmail1" className="mt-4">
@@ -178,7 +178,7 @@ function FormEdit() {
             </label>
             <input
               className="form-control "
-              placeholder={dataUser.phone_number}
+              defaultValue={dataUser.phone_number}
               onChange={(item) => setPhoneNumber(item.target.value)}
             />
           </div>
@@ -204,7 +204,7 @@ function FormEdit() {
             <label for="exampleInputEmail1" className="mt-4">
               Email
             </label>
-            <input className="form-control " placeholder={dataUser.email} />
+            <input className="form-control " defaultValue={dataUser.email} />
           </div>
 
           <button type="submit" className="btn btn-primary mt-3">
