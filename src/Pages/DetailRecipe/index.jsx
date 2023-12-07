@@ -36,8 +36,10 @@ export default function DetailRecipe() {
   console.log(state)
 
   const {
-    recipes: { resultFoodDetail, resultRecipeUid, resultIngredients, resultSteps, resultAdvice, resultUtils },
+    recipes: { resultFoodDetail, resultRecipesUid, resultIngredients, resultSteps, resultAdvice, resultUtils },
   } = state;
+
+  console.log(resultRecipesUid)
 
   const dispatch = useDispatch();
 
@@ -64,7 +66,6 @@ export default function DetailRecipe() {
         })
 
         console.log(String(slug?.split('-').join(' ')))
-
 
         dispatch(recipesSlices.setResultFoodDetail(food?.data?.data[0]))
         dispatch(recipesSlices.setResultRecipeUid(food.data?.data[0]?.recipes_uid))
@@ -99,7 +100,7 @@ export default function DetailRecipe() {
         method: 'post',
         url: `${String(window.env.BE_URL)}/comments`,
         data: {
-          recipeUid: resultRecipeUid,
+          recipeUid: resultRecipesUid,
           message: userComment
         },
         headers: {
