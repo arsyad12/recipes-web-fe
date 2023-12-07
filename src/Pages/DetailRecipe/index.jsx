@@ -68,8 +68,8 @@ export default function DetailRecipe() {
         dispatch(recipesSlices.setResultRecipeUid(food.data?.data[0]?.recipes_uid))
         dispatch(recipesSlices.setResultIngredients(food?.data?.data[0]?.ingredients?.ingridient))
         dispatch(recipesSlices.setResultSteps(food?.data?.data[0]?.ingredients?.steps))
-        dispatch(recipesSlices.setResultAdvice(food?.data?.data[0]?.ingredients?.advice))
-        dispatch(recipesSlices.setResultUtils(food?.data?.data[0]?.ingredients?.utils))       
+        // dispatch(recipesSlices.setResultAdvice(food?.data?.data[0]?.ingredients?.advice))
+        // dispatch(recipesSlices.setResultUtils(food?.data?.data[0]?.ingredients?.utils))       
         
 
         if (food.data.data[0].recipes_uid) {
