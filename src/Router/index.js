@@ -6,6 +6,8 @@ import Register from "../Pages/Register";
 import Profile from "../Pages/Profile";
 import EditProfile from "../Pages/FormEdit"
 import SearchRecipe from '../Pages/SearchRecipe'
+import AddRecipe from "../Pages/AddRecipe";
+
 
 const router = createBrowserRouter([
 	{
@@ -38,6 +40,11 @@ const router = createBrowserRouter([
 	{
 		path: "/search",
 		element: <SearchRecipe />
+
+	},
+	{
+		path: "/add-recipe",
+		element: <AddRecipe />
 
 	},
 ]);
