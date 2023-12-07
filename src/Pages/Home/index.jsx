@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import Navbar from "../../Components/Navbar";
 import Footer from "../../Components/Footer";
@@ -100,7 +101,7 @@ const style = {
 export default function Home() {
   const state = useSelector((state) => state);
 
-  console.log(state)
+  console.log(state);
 
   const {
     recipes: { resultList, resultNewRecipe, resultPopular },
@@ -135,6 +136,7 @@ export default function Home() {
     }
   };
 
+
   React.useEffect(() => {
     if (
       resultList.length === 0 ||
@@ -142,13 +144,16 @@ export default function Home() {
       resultNewRecipe?.length === 0
     ) {
       initPage();
+    } else if (
+      resultList.length > 0 ||
+      resultPopular.length > 0 ||
+      resultNewRecipe?.length > 0
+    ) {
+      initPage();
     }
-  }, [
-    loading,
-    resultNewRecipe?.length,
-    resultPopular.length,
-    resultList.length,
-  ]);
+  }, []);
+
+
 
   return (
     <>
