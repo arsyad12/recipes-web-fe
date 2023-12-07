@@ -15,7 +15,7 @@ function FormEdit() {
   const [password, setPassword] = React.useState("");
   const [dataUser, setDataUser] = React.useState([]);
 
-  console.log(file);
+
 
   React.useEffect(() => {
     axios
