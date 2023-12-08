@@ -14,7 +14,7 @@ export default function Navbar() {
   const [profile, setProfile] = React.useState({});
 
   React.useEffect(() => {
-    if (localStorage.getItem("token") !== null && localStorage.getItem("user") !== null ) {
+    if (localStorage.getItem("token") !== undefined && localStorage.getItem("user") !== undefined ) {
       setProfile(JSON.parse(localStorage.getItem("user")));
     }
   }, []);
