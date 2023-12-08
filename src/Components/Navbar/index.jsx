@@ -146,7 +146,7 @@ export default function Navbar() {
               >
                 <div>
                   <span style={style.navLeftLink} className="nav-right-link">
-                    Hi, {profile.first_name}
+                    Hi, {profile?.first_name}
                   </span>
                 </div>
                 <img
