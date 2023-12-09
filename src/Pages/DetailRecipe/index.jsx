@@ -1,3 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-unused-vars */
 import axios from 'axios'
 import React from 'react'
 import YouTube from 'react-youtube'
@@ -8,8 +11,8 @@ import Loading from '../../Components/Loading'
 import Error404 from '../../Components/Error404'
 import './detailRecipe.css'
 
-import recipes, * as recipesSlices from "../../slices/home";
-import { useSelector, useDispatch } from "react-redux";
+import recipes, * as recipesSlices from '../../slices/home'
+import { useSelector, useDispatch } from 'react-redux'
 
 const style = {
   h1: {
@@ -29,28 +32,26 @@ const style = {
   }
 }
 
-export default function DetailRecipe() {
-
-  const state = useSelector((state) => state);
+export default function DetailRecipe () {
+  const state = useSelector((state) => state)
 
   console.log(state)
 
   const {
-    recipes: { resultFoodDetail, resultRecipesUid, resultIngredients, resultSteps, resultAdvice, resultUtils },
-  } = state;
+    recipes: { resultFoodDetail, resultRecipesUid, resultIngredients, resultSteps, resultAdvice, resultUtils }
+  } = state
 
   console.log(resultRecipesUid)
 
-  const dispatch = useDispatch();
-
+  const dispatch = useDispatch()
 
   const [comments, setComments] = React.useState([])
   const [loading, setLoading] = React.useState(undefined)
   const [getDataUser, setDataUser] = React.useState({})
   const [userComment, setUserComment] = React.useState('')
   const [userToken, setUserToken] = React.useState('')
-  const [mesgError, setMesgerror] = React.useState(null);
-  const [sucesNotif, setSucessNotif] = React.useState(null);
+  const [mesgError, setMesgerror] = React.useState(null)
+  const [sucesNotif, setSucessNotif] = React.useState(null)
   const { slug } = useParams()
 
   const initpage = async () => {
@@ -72,8 +73,7 @@ export default function DetailRecipe() {
         dispatch(recipesSlices.setResultIngredients(food?.data?.data[0]?.ingredients?.ingridient))
         dispatch(recipesSlices.setResultSteps(food?.data?.data[0]?.ingredients?.steps))
         // dispatch(recipesSlices.setResultAdvice(food?.data?.data[0]?.ingredients?.advice))
-        // dispatch(recipesSlices.setResultUtils(food?.data?.data[0]?.ingredients?.utils))       
-
+        // dispatch(recipesSlices.setResultUtils(food?.data?.data[0]?.ingredients?.utils))
 
         if (food.data.data[0].recipes_uid) {
           const comment = await axios({
@@ -84,7 +84,6 @@ export default function DetailRecipe() {
           setComments(comment.data.data)
         }
       }
-
     } catch (error) {
       console.log(error)
     } finally {
@@ -93,9 +92,7 @@ export default function DetailRecipe() {
   }
 
   const commentHandler = async (req, res) => {
-
     try {
-
       const postComment = await axios({
         method: 'post',
         url: `${String(window.env.BE_URL)}/comments`,
@@ -109,18 +106,17 @@ export default function DetailRecipe() {
       })
 
       console.log(postComment)
-      if (postComment != 0) {
-        setSucessNotif("Add comment sucessfully");
+      if (postComment !== 0) {
+        setSucessNotif('Add comment sucessfully')
       }
     } catch (error) {
       console.log(error)
-      if (error?.message === "Request failed with status code 422") {
-        setMesgerror(error?.response?.data?.message);
-      } else if (error?.message === "Request failed with status code 401") {
-        setMesgerror("Please Login First");
+      if (error?.message === 'Request failed with status code 422') {
+        setMesgerror(error?.response?.data?.message)
+      } else if (error?.message === 'Request failed with status code 401') {
+        setMesgerror('Please Login First')
       }
     }
-
   }
 
   React.useEffect(() => {
@@ -131,17 +127,13 @@ export default function DetailRecipe() {
       setDataUser(JSON.parse(localStorage.getItem('user')))
     }
 
-
-
     if (!(resultFoodDetail?.hasOwnProperty('id'))) {
       window.scrollTo(0, 0)
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resultFoodDetail, comments, loading])
 
   // console.log(resultFoodDetail)
-  // console.log(resultRecipeUid) 
+  // console.log(resultRecipeUid)
   console.log(userComment)
   console.log(getDataUser)
   console.log(userToken.slice(7, -1))
@@ -150,14 +142,16 @@ export default function DetailRecipe() {
     <div>
       <Navbar />
       {
-        loading === undefined ? "" :
-          loading === true ? <Loading /> :
-            !(resultFoodDetail?.hasOwnProperty('id')) ?
-              <div className='d-flex flex-column justify-content-center align-items-center' style={{ height: '43vh' }}>
+        loading === undefined
+          ? ''
+          : loading === true
+            ? <Loading />
+            : !(resultFoodDetail?.hasOwnProperty('id'))
+              ? <div className='d-flex flex-column justify-content-center align-items-center' style={{ height: '43vh' }}>
                 <Error404 />
                 <p style={{ fontWeight: 600 }}>We're Sorry, Page you want to visit not found.</p>
-              </div> :
-              <article id='foodRecipeDetail' className='container d-flex flex-column' style={{ padding: '3vh 10vw 3vh 10vw' }}>
+              </div>
+              : <article id='foodRecipeDetail' className='container d-flex flex-column' style={{ padding: '3vh 10vw 3vh 10vw' }}>
                 <section className='container d-flex flex-column m-auto'>
 
                   <h1 style={style.h1}>{resultFoodDetail?.title}</h1>
@@ -173,21 +167,19 @@ export default function DetailRecipe() {
                     <h3>Ingredients</h3>
                     <ul>
                       {resultIngredients?.map(
-                        (ingredient) => <li>{ingredient}</li>
+                        (ingredient, index) => <li key={index}>{ingredient}</li>
                       )}
                     </ul>
                   </div>
-
 
                   <div>
                     <h3>Steps</h3>
                     <ul>
                       {resultSteps?.map(
-                        (step) => <li>{step}</li>
+                        (step, index) => <li key={index}>{step}</li>
                       )}
                     </ul>
                   </div>
-
 
                   <div>
                     <h3>Videos</h3>
@@ -206,17 +198,21 @@ export default function DetailRecipe() {
 
                 </section>
 
-                {sucesNotif ? (
-                  <div className="alert alert-success" role="alert">
-                    {sucesNotif}
-                  </div>
-                ) : null}
+                {sucesNotif
+                  ? (
+                    <div className="alert alert-success" role="alert">
+                      {sucesNotif}
+                    </div>
+                  )
+                  : null}
 
-                {mesgError ? (
-                  <div className="alert alert-danger" role="alert">
-                    {mesgError}
-                  </div>
-                ) : null}
+                {mesgError
+                  ? (
+                    <div className="alert alert-danger" role="alert">
+                      {mesgError}
+                    </div>
+                  )
+                  : null}
 
                 <div id='form-coment' className='text-center my-5 m-auto' style={{ width: '900px', maxWidth: '90%' }}>
                   <textarea className='form-control mb-2' rows="3" style={{ backgroundColor: '#F6F5F4' }} onChange={((item) => { setUserComment(item.target.value) })} />
@@ -227,10 +223,10 @@ export default function DetailRecipe() {
 
                 <div >
                   <h2 className='mb-4' style={{ fontWeight: 600 }}>Comments</h2>
-                  {comments.length === 0 ?
-                    "No Comment Found" :
-                    comments?.map((item) => (
-                      <div className='d-flex flex-row gap-3 mt-3'>
+                  {comments.length === 0
+                    ? 'No Comment Found'
+                    : comments?.map((item, index) => (
+                      <div key={index} className='d-flex flex-row gap-3 mt-3'>
                         <div>
                           <img style={{ width: '64px', borderRadius: '50%' }} src={item.photo} alt="profile" />
                         </div>
@@ -247,4 +243,3 @@ export default function DetailRecipe() {
     </div>
   )
 }
-

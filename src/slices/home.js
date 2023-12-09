@@ -1,51 +1,51 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  //initial value berguna seperti react.usstate yang memberikan nilai default pada state
+  // initial value berguna seperti react.usstate yang memberikan nilai default pada state
   resultList: [],
   resultPopular: [],
   resultNewRecipe: [],
   resultFoodDetail: [],
-  resultRecipesUid:null,
-  resultIngredients:[],
-  resultSteps:[],
-  resultAdvice:[],
-  resultUtils:[]
-};
+  resultRecipesUid: null,
+  resultIngredients: [],
+  resultSteps: [],
+  resultAdvice: [],
+  resultUtils: []
+}
 
 export const counterSlice = createSlice({
-  name: "counter",
+  name: 'counter',
   initialState,
   reducers: {
     setResultList: (state, action) => {
-      state.resultList = action.payload;
+      state.resultList = action.payload
     },
     setResultPopular: (state, action) => {
-      state.resultPopular = action.payload;
+      state.resultPopular = action.payload
     },
     setResultNewRecipe: (state, action) => {
-      state.resultNewRecipe = action.payload;
+      state.resultNewRecipe = action.payload
     },
     setResultFoodDetail: (state, action) => {
-      state.resultFoodDetail = action.payload;
+      state.resultFoodDetail = action.payload
     },
     setResultRecipeUid: (state, action) => {
-      state.resultRecipesUid = action.payload;
+      state.resultRecipesUid = action.payload
     },
     setResultIngredients: (state, action) => {
-      state.resultIngredients = action.payload;
+      state.resultIngredients = action.payload
     },
     setResultSteps: (state, action) => {
-      state.resultSteps = action.payload;
+      state.resultSteps = action.payload
     },
     setResultAdvice: (state, action) => {
-      state.resultAdvice = action.payload;
+      state.resultAdvice = action.payload
     },
     setResultUtils: (state, action) => {
-      state.resultUtils = action.payload;
-    },
-  },
-});
+      state.resultUtils = action.payload
+    }
+  }
+})
 
 export const {
   setResultList,
@@ -57,6 +57,6 @@ export const {
   setResultSteps,
   setResultAdvice,
   setResultUtils
-} = counterSlice.actions;
+} = counterSlice.actions
 
-export default counterSlice.reducer;
+export default counterSlice.reducer

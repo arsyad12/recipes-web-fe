@@ -1,23 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  //initial value berguna seperti react.usstate yang memberikan nilai default pada state
-  resultComment: [],
-};
+  // initial value berguna seperti react.usstate yang memberikan nilai default pada state
+  resultComment: []
+}
 
 export const counterSlice = createSlice({
-  name: "counter",
+  name: 'counter',
   initialState,
   reducers: {
     setResultComment: (state, action) => {
-      state.resultComment = action.payload;
-    },
-  },
-});
+      state.resultComment = action.payload
+    }
+  }
+})
 
 export const {
-  setResultComment,
+  setResultComment
 
-} = counterSlice.actions;
+} = counterSlice.actions
 
-export default counterSlice.reducer;
+export default counterSlice.reducer

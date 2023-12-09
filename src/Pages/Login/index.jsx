@@ -1,73 +1,74 @@
-import React from "react";
-import "../../Styles/Page-Auth.css";
-import "../../index.css";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Navbar from "../../Components/Navbar";
+/* eslint-disable react/no-unescaped-entities */
+import React from 'react'
+import '../../Styles/Page-Auth.css'
+import '../../index.css'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import Navbar from '../../Components/Navbar'
 
-export default function Login() {
-  const [email, setEmail] = React.useState([]);
-  const [password, setPassword] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [authError, setAuthError] = React.useState("");
-  const [inputError, setInputError] = React.useState(null);
-  const [pageLoginState, setPageLoginState] = React.useState(false);
-  const navigate = useNavigate();
-  const [timeLeft, setTimeLeft] = React.useState(5);
+export default function Login () {
+  const [email, setEmail] = React.useState([])
+  const [password, setPassword] = React.useState([])
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [authError, setAuthError] = React.useState('')
+  const [inputError, setInputError] = React.useState(null)
+  const [pageLoginState, setPageLoginState] = React.useState(false)
+  const navigate = useNavigate()
+  const [timeLeft, setTimeLeft] = React.useState(5)
 
   console.log(inputError)
 
   const signButtonHandler = () => {
     axios({
-      method: "post",
+      method: 'post',
       url: `${window.env.BE_URL}/user/login`,
       data: {
         email,
-        password,
+        password
       }
     })
       .then((res) => {
-        localStorage.setItem("user", JSON.stringify(res.data.data));
-        localStorage.setItem("token", `Bearer ${res.data.token}`);
-        setPageLoginState(true);
+        localStorage.setItem('user', JSON.stringify(res.data.data))
+        localStorage.setItem('token', `Bearer ${res.data.token}`)
+        setPageLoginState(true)
       })
       .catch((err) => {
         if (err.response.status === 404) {
-          setInputError(err.response.data.massage);
+          setInputError(err.response.data.massage)
         }
 
         if (err.response.status === 401) {
-        	setAuthError(err.response.data.message)
+          setAuthError(err.response.data.message)
         }
 
         // if (err.response.data.messages === 'Wrong password') {
-        // 	setAuthError(err.response.data.messages)
+        // setAuthError(err.response.data.messages)
         // }
-        console.log(err);
+        console.log(err)
       })
       .finally(() => {
-        setIsLoading(false);
-      });
-  };
+        setIsLoading(false)
+      })
+  }
 
   React.useEffect(() => {
     if (pageLoginState) {
       setTimeout(() => {
         for (let time = timeLeft; time > 0; time--) {
-          setTimeLeft(timeLeft - 1);
+          setTimeLeft(timeLeft - 1)
         }
         if (timeLeft === 0) {
-          return navigate("/");
+          return navigate('/')
         }
-      }, 1000);
+      }, 1000)
     }
 
     if (!pageLoginState) {
-      if (localStorage.getItem("user") || localStorage.getItem("token")) {
-        navigate("/");
+      if (localStorage.getItem('user') || localStorage.getItem('token')) {
+        navigate('/')
       }
     }
-  }, [isLoading, authError, pageLoginState, navigate, timeLeft]);
+  }, [isLoading, authError, pageLoginState, navigate, timeLeft])
 
   return (
     <>
@@ -94,7 +95,7 @@ export default function Login() {
               <div
                 className="alert alert-danger"
                 role="alert"
-                hidden={authError === "" ? true : false}
+                hidden={authError === ''}
               >
                 {authError}
               </div>
@@ -102,16 +103,18 @@ export default function Login() {
               <div
                 className="alert alert-success"
                 role="alert"
-                hidden={pageLoginState ? false : true}
+                hidden={!pageLoginState}
               >
                 Login success, redirect to home in {timeLeft}
               </div>
 
-              {inputError ? (
-                <div className="alert alert-danger" role="alert">
-                  {inputError}
-                </div>
-              ) : null}
+              {inputError
+                ? (
+                  <div className="alert alert-danger" role="alert">
+                    {inputError}
+                  </div>
+                )
+                : null}
 
               <div className="form-group my-2">
                 <label
@@ -126,7 +129,7 @@ export default function Login() {
                   className="form-control form-control-lg"
                   placeholder="Write your email"
                   onChange={(e) => {
-                    setEmail(e.target.value);
+                    setEmail(e.target.value)
                   }}
                 />
               </div>
@@ -136,7 +139,7 @@ export default function Login() {
                   htmlFor="password"
                   className="form-lable d-flex flex-row justify-content-between"
                 >
-                  <span className="form-lable">Password</span>{" "}
+                  <span className="form-lable">Password</span>{' '}
                 </label>
                 <input
                   id="password"
@@ -144,7 +147,7 @@ export default function Login() {
                   className="form-control form-control-lg"
                   placeholder="Write your password"
                   onChange={(e) => {
-                    setPassword(e.target.value);
+                    setPassword(e.target.value)
                   }}
                 />
               </div>
@@ -153,12 +156,14 @@ export default function Login() {
                 id="button-auth"
                 className="btn signup-button my-4"
                 onClick={() => {
-                  setAuthError("");
-                  setIsLoading(true);
-                  signButtonHandler();
+                  setAuthError('')
+                  setIsLoading(true)
+                  signButtonHandler()
                 }}
               >
-                {isLoading ? "Loading..." : "Login"}
+                {isLoading
+                  ? 'Loading...'
+                  : 'Login'}
               </button>
 
               {/* <p className='text-center'>Forgot your password? <Link to='/user/reset-password'>Reset now?</Link></p> */}
@@ -173,5 +178,5 @@ export default function Login() {
         </div>
       </div>
     </>
-  );
+  )
 }
