@@ -190,6 +190,12 @@ div#Page-ForgotPassword div#Body-ForgotPassword div#left-item p {
 
 }
 
+@media screen and (max-height: 768px) and (min-width: 768px) {
+    .right-container {
+        overflow-y: auto;
+    }
+}
+
 @media screen and (max-width: 768px) {
 
     #left-item {
