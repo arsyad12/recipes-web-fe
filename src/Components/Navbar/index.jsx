@@ -1,38 +1,39 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./Navbar.css";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import './Navbar.css'
 
 const style = {
   navLeftLink: {
-    color: "var(--recipe-color-lavender)",
-    backgroundColor: "white",
-    fontWeight: 600,
-  },
-};
+    color: 'var(--recipe-color-lavender)',
+    backgroundColor: 'white',
+    fontWeight: 600
+  }
+}
 
-export default function Navbar() {
-  const [profile, setProfile] = React.useState({});
+export default function Navbar () {
+  const [profile, setProfile] = React.useState({})
 
   React.useEffect(() => {
     if (localStorage.getItem("token") !== undefined && localStorage.getItem("user") !== undefined ) {
       setProfile(JSON.parse(localStorage.getItem("user")));
     }
-  }, []);
+  }, [])
 
   return (
-    <>
-      <nav className="container d-flex justify-content-between my-4 align-items-center">
-        <div className="nav-left d-flex gap-2 align-items-center">
-          {!localStorage.getItem("token") && !localStorage.getItem("user") ? (
+
+    <nav className="container d-flex justify-content-between my-4 align-items-center">
+      <div className="nav-left d-flex gap-2 align-items-center">
+        {!localStorage.getItem('token') && !localStorage.getItem('user')
+          ? (
             <>
               <Link to="/">
                 <div
                   className="nav-container d-flex align-items-center"
-                  style={{ height: "64px", borderRadius: "30px" }}
+                  style={{ height: '64px', borderRadius: '30px' }}
                 >
                   <img
                     className="shadow-sm"
-                    style={{ height: "64px", borderRadius: "30px" }}
+                    style={{ height: '64px', borderRadius: '30px' }}
                     src="/logo-h.svg"
                     alt="logo"
                   />
@@ -41,7 +42,7 @@ export default function Navbar() {
               <Link to="/">
                 <div
                   className="nav-container shadow-sm p-3 desktop-component"
-                  style={{ borderRadius: "36px", backgroundColor: "white" }}
+                  style={{ borderRadius: '36px', backgroundColor: 'white' }}
                 >
                   <span style={style.navLeftLink} className="nav-left-link">
                     Home
@@ -51,7 +52,7 @@ export default function Navbar() {
               <Link to="/search">
                 <div
                   className="nav-container shadow-sm p-3 desktop-component"
-                  style={{ borderRadius: "36px", backgroundColor: "white" }}
+                  style={{ borderRadius: '36px', backgroundColor: 'white' }}
                 >
                   <span style={style.navLeftLink} className="nav-left-link">
                     Search Recipe
@@ -59,16 +60,17 @@ export default function Navbar() {
                 </div>
               </Link>
             </>
-          ) : (
+          )
+          : (
             <>
               <Link to="/">
                 <div
                   className="nav-container d-flex align-items-center"
-                  style={{ height: "64px", borderRadius: "30px" }}
+                  style={{ height: '64px', borderRadius: '30px' }}
                 >
                   <img
                     className="shadow-sm"
-                    style={{ height: "64px", borderRadius: "30px" }}
+                    style={{ height: '64px', borderRadius: '30px' }}
                     src="/logo-h.svg"
                     alt="logo"
                   />
@@ -77,7 +79,7 @@ export default function Navbar() {
               <Link to="/">
                 <div
                   className="nav-container shadow-sm p-3 desktop-component"
-                  style={{ borderRadius: "36px", backgroundColor: "white" }}
+                  style={{ borderRadius: '36px', backgroundColor: 'white' }}
                 >
                   <span style={style.navLeftLink} className="nav-left-link">
                     Home
@@ -87,7 +89,7 @@ export default function Navbar() {
               <Link to="/search">
                 <div
                   className="nav-container shadow-sm p-3 desktop-component"
-                  style={{ borderRadius: "36px", backgroundColor: "white" }}
+                  style={{ borderRadius: '36px', backgroundColor: 'white' }}
                 >
                   <span style={style.navLeftLink} className="nav-left-link">
                     Search Recipe
@@ -97,7 +99,7 @@ export default function Navbar() {
               <Link to="/add-recipe">
                 <div
                   className="nav-container shadow-sm p-3 desktop-component"
-                  style={{ borderRadius: "36px", backgroundColor: "white" }}
+                  style={{ borderRadius: '36px', backgroundColor: 'white' }}
                 >
                   <span style={style.navLeftLink} className="nav-left-link">
                     Add Recipe
@@ -107,7 +109,7 @@ export default function Navbar() {
               <Link to="/profile">
                 <div
                   className="nav-container shadow-sm p-3 desktop-component"
-                  style={{ borderRadius: "36px", backgroundColor: "white" }}
+                  style={{ borderRadius: '36px', backgroundColor: 'white' }}
                 >
                   <span style={style.navLeftLink} className="nav-left-link">
                     Profile
@@ -116,33 +118,35 @@ export default function Navbar() {
               </Link>
             </>
           )}
-        </div>
+      </div>
 
-        <div className="nav-right d-flex">
-          {/* Desktop Menu */}
-          {!localStorage.getItem("token") && !localStorage.getItem("user") ? (
+      <div className="nav-right d-flex">
+        {/* Desktop Menu */}
+        {!localStorage.getItem('token') && !localStorage.getItem('user')
+          ? (
             <Link to="/user/login">
               <div
                 className="nav-container shadow-sm p-2 d-flex align-items-center gap-2 desktop-component"
-                style={{ borderRadius: "36px", backgroundColor: "white" }}
+                style={{ borderRadius: '36px', backgroundColor: 'white' }}
               >
                 <span style={style.navLeftLink} className="nav-right-link">
                   Login
                 </span>
                 <img
                   className="shadow-sm"
-                  style={{ height: "48px", borderRadius: "50%" }}
+                  style={{ height: '48px', borderRadius: '50%' }}
                   src="/profile.svg"
                   alt="logo"
                 />
               </div>
             </Link>
-          ) : (
-            <div class="btn-group">
+          )
+          : (
+            <div className="btn-group">
               <div
                 className="nav-container shadow-sm p-2 d-flex align-items-center gap-2 desktop-component"
                 data-bs-toggle="dropdown"
-                style={{ borderRadius: "36px", backgroundColor: "white" }}
+                style={{ borderRadius: '36px', backgroundColor: 'white' }}
               >
                 <div>
                   <span style={style.navLeftLink} className="nav-right-link">
@@ -151,20 +155,20 @@ export default function Navbar() {
                 </div>
                 <img
                   className="shadow-sm"
-                  style={{ height: "48px", borderRadius: "50%" }}
+                  style={{ height: '48px', borderRadius: '50%' }}
                   src={profile?.photo_profile}
                   alt="logo"
                 />
               </div>
-              <ul class="dropdown-menu dropdown-menu-lg-end desktop-component">
+              <ul className="dropdown-menu dropdown-menu-lg-end desktop-component">
                 <li>
                   <button
-                    class="dropdown-item shadow-sm text-center"
+                    className="dropdown-item shadow-sm text-center"
                     type="button"
                     onClick={() => {
-                      setProfile({});
-                      localStorage.removeItem("user");
-                      localStorage.removeItem("token");
+                      setProfile({})
+                      localStorage.removeItem('user')
+                      localStorage.removeItem('token')
                     }}
                   >
                     Logout
@@ -173,28 +177,29 @@ export default function Navbar() {
               </ul>
             </div>
           )}
-          {/* End Of Desktop Menu */}
-          {/* Burger Menu */}
+        {/* End Of Desktop Menu */}
+        {/* Burger Menu */}
 
-          {!localStorage.getItem("token") && !localStorage.getItem("user") ? (
-            <div class="btn-group">
+        {!localStorage.getItem('token') && !localStorage.getItem('user')
+          ? (
+            <div className="btn-group">
               <div
                 className="nav-container shadow-sm p-2 d-flex align-items-center gap-2 mobile-component"
                 data-bs-toggle="dropdown"
-                style={{ borderRadius: "36px", backgroundColor: "white" }}
+                style={{ borderRadius: '36px', backgroundColor: 'white' }}
               >
                 <img
                   className="shadow-sm"
-                  style={{ height: "48px", borderRadius: "50%" }}
+                  style={{ height: '48px', borderRadius: '50%' }}
                   src="/profile.svg"
                   alt="logo"
                 />
               </div>
-              <ul class="dropdown-menu dropdown-menu-lg-end">
+              <ul className="dropdown-menu dropdown-menu-lg-end">
                 <li className="">
                   <Link to="/user/login">
                     <button
-                      class="dropdown-item shadow text-center my-1 mobile-component"
+                      className="dropdown-item shadow text-center my-1 mobile-component"
                       type="button"
                     >
                       Login
@@ -204,7 +209,7 @@ export default function Navbar() {
                 <li className="">
                   <Link to="/user/register">
                     <button
-                      class="dropdown-item shadow text-center my-1 mobile-component"
+                      className="dropdown-item shadow text-center my-1 mobile-component"
                       type="button"
                     >
                       Register
@@ -213,25 +218,26 @@ export default function Navbar() {
                 </li>
               </ul>
             </div>
-          ) : (
-            <div class="btn-group">
+          )
+          : (
+            <div className="btn-group">
               <div
                 className="nav-container shadow-sm p-2 d-flex align-items-center gap-2 mobile-component"
                 data-bs-toggle="dropdown"
-                style={{ borderRadius: "36px", backgroundColor: "white" }}
+                style={{ borderRadius: '36px', backgroundColor: 'white' }}
               >
                 <img
                   className="shadow-sm"
-                  style={{ height: "48px", borderRadius: "50%" }}
+                  style={{ height: '48px', borderRadius: '50%' }}
                   src={profile?.photo_profile}
                   alt="logo"
                 />
               </div>
-              <ul class="dropdown-menu dropdown-menu-lg-end">
+              <ul className="dropdown-menu dropdown-menu-lg-end">
                 <li>
-                  <Link style={{ textAlign: "center" }} to="/user/profile">
+                  <Link style={{ textAlign: 'center' }} to="/user/profile">
                     <button
-                      class="dropdown-item shadow text-center my-1 mobile-component"
+                      className="dropdown-item shadow text-center my-1 mobile-component"
                       type="button"
                     >
                       <div>Profile</div>
@@ -241,7 +247,7 @@ export default function Navbar() {
                 <li>
                   <Link to="/user/recipes">
                     <button
-                      class="dropdown-item shadow text-center my-1 mobile-component"
+                      className="dropdown-item shadow text-center my-1 mobile-component"
                       type="button"
                     >
                       Add Recipe
@@ -251,7 +257,7 @@ export default function Navbar() {
                 <li>
                   <Link to="/">
                     <button
-                      class="dropdown-item shadow text-center my-1 mobile-component"
+                      className="dropdown-item shadow text-center my-1 mobile-component"
                       type="button"
                     >
                       Home
@@ -260,12 +266,12 @@ export default function Navbar() {
                 </li>
                 <li>
                   <button
-                    class="dropdown-item shadow text-center my-1 mobile-component"
+                    className="dropdown-item shadow text-center my-1 mobile-component"
                     type="button"
                     onClick={() => {
-                      setProfile({});
-                      localStorage.removeItem("user");
-                      localStorage.removeItem("token");
+                      setProfile({})
+                      localStorage.removeItem('user')
+                      localStorage.removeItem('token')
                     }}
                   >
                     Logout
@@ -274,9 +280,9 @@ export default function Navbar() {
               </ul>
             </div>
           )}
-          {/* End of Burger Menu */}
-        </div>
-      </nav>
-    </>
-  );
+        {/* End of Burger Menu */}
+      </div>
+    </nav>
+
+  )
 }
