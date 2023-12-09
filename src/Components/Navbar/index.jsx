@@ -14,8 +14,8 @@ export default function Navbar () {
   const [profile, setProfile] = React.useState({})
 
   React.useEffect(() => {
-    if (localStorage.getItem('token') && localStorage.getItem('user')) {
-      setProfile(JSON.parse(localStorage.getItem('user')))
+    if (localStorage.getItem("token") !== undefined && localStorage.getItem("user") !== undefined ) {
+      setProfile(JSON.parse(localStorage.getItem("user")));
     }
   }, [])
 
@@ -150,7 +150,7 @@ export default function Navbar () {
               >
                 <div>
                   <span style={style.navLeftLink} className="nav-right-link">
-                    Hi, {profile.first_name}
+                    Hi, {profile?.first_name}
                   </span>
                 </div>
                 <img
