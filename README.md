@@ -9,7 +9,11 @@ Developer :
 - Gusti Muhammad Wardi Wanto
 
 URL : <https://recipes-web-fe.vercel.app>  
-  
+
+## Screenshoots
+
+![overview](./docs/Pictures/overview.png)  
+
 ## How to Run
 
 To run this app, you need to running the the backend first, get backend at <https://github.com/Team-A-Pijarcamp-Batch-15/receipes-web-be>, then you can setup the backend first. after the backend setup finish, you can get the URL from your console or terminal. or if you deploy on cloud, you can get the URL from your cloud provider.
@@ -23,7 +27,3 @@ To run this app, you need to running the the backend first, get backend at <http
 ### Run on production
 
 On production has a variety way to run the application, but the most important is **Environment Setup** and **The Knowledge about your cloud provider, to run this app.** for this you can read the documentation that provided by your cloud provider.
-
-## Screenshoots
-
-![overview](./docs/Pictures/overview.png)
