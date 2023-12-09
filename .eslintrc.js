@@ -36,6 +36,8 @@ module.exports = {
   rules: {
     indent: ['warn', 2],
     quotes: ['warn', 'single'],
+    semi: 'warn',
+    'space-in-parens': ['warn', 'never'],
     'no-tabs': ['warn', { allowIndentationTabs: true }],
     'no-mixed-spaces-and-tabs': ['warn', 'smart-tabs'],
     'no-unused-vars': 'warn',
