@@ -1,67 +1,67 @@
-import React from 'react'
-import './profile.css'
+import React from "react";
+import "./profile.css";
 
-import Navbar from '../../Components/Navbar/index'
-import Footer from '../../Components/Footer/index'
-import axios from 'axios'
+import Navbar from "../../Components/Navbar/index";
+import Footer from "../../Components/Footer/index";
+import axios from "axios";
 
-function FormEdit () {
-  const resultToken = localStorage.getItem('token').slice(7)
-  const [preview, setPreview] = React.useState(undefined) // value preview
-  const [file, setFile] = React.useState() // value file photo
-  const [firstName, setFirstName] = React.useState('')
-  const [lastName, setLastName] = React.useState('')
-  const [phoneNumber, setPhoneNumber] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [dataUser, setDataUser] = React.useState([])
-  const [loading, setLoading] = React.useState(false)
-  const [isSucces, setSuccess] = React.useState(false)
-  const [isErr, setErr] = React.useState(false)
+function FormEdit() {
+  const resultToken = localStorage.getItem("token").slice(7);
+  const [preview, setPreview] = React.useState(undefined); // value preview
+  const [file, setFile] = React.useState(); // value file photo
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [dataUser, setDataUser] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [isSucces, setSuccess] = React.useState(false);
+  const [isErr, setErr] = React.useState(false);
   React.useEffect(() => {
     axios
       .get(`${window.env.BE_URL}/user/profile`, {
         headers: {
-          Authorization: `Bearer ${resultToken}`
-        }
+          Authorization: `Bearer ${resultToken}`,
+        },
       })
       .then((res) => {
-        setDataUser(res?.data?.data)
-      })
-  }, [])
+        setDataUser(res?.data?.data);
+      });
+  }, []);
 
   const editPhotoHandler = () => {
-    setLoading(true)
-    const form = new FormData()
-    form.append('user-photo', file)
+    setLoading(true);
+    const form = new FormData();
+    form.append("user-photo", file);
 
     axios
       .post(`${window.env.BE_URL}/user/profile/update-photo`, form, {
         headers: {
           Authorization: `Bearer ${resultToken}`,
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then((res) => {
-        console.log(res)
-        setLoading(false)
-        setSuccess(true)
+        console.log(res);
+        setLoading(false);
+        setSuccess(true);
 
         setTimeout(() => {
-          window.location.reload()
-        }, 2000)
+          window.location.reload();
+        }, 2000);
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
 
-        const errFileEmpty = err?.response?.data?.message
+        const errFileEmpty = err?.response?.data?.message;
 
-        setErr(errFileEmpty)
+        setErr(errFileEmpty);
 
         setTimeout(() => {
-          window.location.reload()
-        }, 3000)
-      })
-  }
+          window.location.reload();
+        }, 3000);
+      });
+  };
 
   const editIdentityHandler = () => {
     axios
@@ -70,129 +70,123 @@ function FormEdit () {
         {
           first_name: firstName,
           last_name: lastName,
-          phone_number: phoneNumber
+          phone_number: phoneNumber,
         },
         {
           headers: {
-            Authorization: `Bearer ${resultToken}`
-          }
+            Authorization: `Bearer ${resultToken}`,
+          },
         }
       )
       .then((res) => {
-        console.log(res)
+        console.log(res);
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }
+        console.log(err);
+      });
+  };
 
   const editPasswordHandler = () => {
     axios
       .put(
         `${window.env.BE_URL}/user/profile/update-password`,
         {
-          password
+          password,
         },
         {
           headers: {
-            Authorization: `Bearer ${resultToken}`
-          }
+            Authorization: `Bearer ${resultToken}`,
+          },
         }
       )
       .then((res) => {
-        console.log(res)
+        console.log(res);
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }
+        console.log(err);
+      });
+  };
 
   return (
     <>
       <Navbar />
 
       <div className="container">
-        {isSucces
-          ? (
-            <div className="alert alert-success" role="alert">
-              <h4 className="alert-heading">Well done! Update data succes</h4>
-            </div>
-          )
-          : null}
+        {isSucces ? (
+          <div className="alert alert-success" role="alert">
+            <h4 className="alert-heading">Well done! Update data succes</h4>
+          </div>
+        ) : null}
 
-        {isErr
-          ? (
-            <div className="alert alert-danger" role="alert">
-              <h4 className="alert-heading">{`Photo canot be empty ${isErr}`}</h4>
-            </div>
-          )
-          : null}
+        {isErr ? (
+          <div className="alert alert-danger" role="alert">
+            <h4 className="alert-heading">{`Photo canot be empty ${isErr}`}</h4>
+          </div>
+        ) : null}
 
         {/* photo */}
         <div className="container card mt-5 shadow">
           <div className="card-body mb-5">
             <div>
-              <h3 style={{ textAlign: 'center', paddingTop: 20 }}>
+              <h3 style={{ textAlign: "center", paddingTop: 20 }}>
                 Edit Photo
               </h3>
             </div>
 
-            <div className="d-flex flex-row justify-content-center gap-5">
-              <div>
-                {preview
-                  ? (
-                    <img
-                      src={preview}
-                      alt="profile"
-                      style={{ width: 80, height: 80, borderRadius: 50 }}
-                    />
-                  )
-                  : (
-                    <img
-                      src={dataUser.photo_profile}
-                      alt="profile"
-                      style={{ width: 80, height: 80, borderRadius: 50 }}
-                    />
-                  )}
+            <div className="row">
+
+              <div className="col-sm-1 col-md-4 mb-2 d-flex justify-content-center">
+                {preview ? (
+                  <img
+                    src={preview}
+                    alt="profile"
+                    style={{ width: 80, height: 80, borderRadius: 50 }}
+                  />
+                ) : (
+                  <img
+                    src={dataUser.photo_profile}
+                    alt="profile"
+                    style={{ width: 80, height: 80, borderRadius: 50 }}
+                  />
+                )}
               </div>
 
-              <div>
-                <input
-                  className="mt-4 "
-                  type="file"
-                  name="myfile"
-                  accept="image/*"
-                  onChange={(e) => {
-                    setFile(e.target.files[0])
-                    setPreview(URL.createObjectURL(e.target.files[0]))
-                  }}
-                />
-              </div>
+                <div className="col-sm-1 col-md-4 mb-4 px-5 mt-4 d-flex align-items-center">
+                  <input
+                    type="file"
+                    name="myfile"
+                    accept="image/*"
+                    onChange={(e) => {
+                      setFile(e.target.files[0]);
+                      setPreview(URL.createObjectURL(e.target.files[0]));
+                    }}
+                  />
+                </div>
 
-              <div>
-                <button
-                  type="button"
-                  className="btn btn-warning mt-3"
-                  disabled={loading}
-                  onClick={() => {
-                    editPhotoHandler()
-                  }}
-                >
-                  {loading
-                    ? 'Loading...'
-                    : 'Update Photo'}
-                </button>
+                <div className="col-sm-1 col-md-4 mb-2 d-flex justify-content-center">
+                  <button
+                    type="button"
+                    className="btn btn-warning m-3"
+                    disabled={loading}
+                    onClick={() => {
+                      editPhotoHandler();
+                    }}
+                  >
+                    {loading ? "Loading..." : "Update Photo"}
+                  </button>
+                </div>
               </div>
             </div>
+            
           </div>
-        </div>
+
         {/* photo */}
 
         {/* identity */}
         <div className="card mt-5 shadow">
           <div className="card-body m-4">
             <div>
-              <h3 style={{ textAlign: 'center', paddingTop: 30 }}>
+              <h3 style={{ textAlign: "center", paddingTop: 30 }}>
                 Edit Profil Identity
               </h3>
             </div>
@@ -226,7 +220,7 @@ function FormEdit () {
             <button
               className="btn btn-primary mt-3"
               onClick={() => {
-                editIdentityHandler()
+                editIdentityHandler();
               }}
             >
               Edit Identity
@@ -239,7 +233,7 @@ function FormEdit () {
         <div className="card mt-5 shadow">
           <div className="card-body m-4">
             <div>
-              <h3 style={{ textAlign: 'center', paddingTop: 30 }}>
+              <h3 style={{ textAlign: "center", paddingTop: 30 }}>
                 Edit Email
               </h3>
             </div>
@@ -267,7 +261,7 @@ function FormEdit () {
         <div className="card mt-5 shadow">
           <div className="card-body m-4">
             <div>
-              <h3 style={{ textAlign: 'center', paddingTop: 30 }}>
+              <h3 style={{ textAlign: "center", paddingTop: 30 }}>
                 Edit Password
               </h3>
             </div>
@@ -280,7 +274,7 @@ function FormEdit () {
                   className="form-control "
                   placeholder="Enter Password"
                   onChange={(item) => {
-                    setPassword(item.target.value)
+                    setPassword(item.target.value);
                   }}
                 />
               </div>
@@ -299,7 +293,7 @@ function FormEdit () {
       </div>
       <Footer />
     </>
-  )
+  );
 }
 
-export default FormEdit
+export default FormEdit;
