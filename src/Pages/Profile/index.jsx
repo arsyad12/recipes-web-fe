@@ -34,7 +34,7 @@ function Profile () {
           <img
             src={dataUser.photo_profile}
             alt="profile"
-            style={{ width: 80, height: 80 }}
+            style={{ width: 80, height: 80, borderRadius:50 }}
           />
         </div>
         <div className="d-flex pt-3">
@@ -61,23 +61,23 @@ function Profile () {
         : null}
 
       <div className="container">
-        <div className="mt-5 row align-items-start">
-          <div className="col-2">My Recipe</div>
-          <div className="col-2">Saved Recipe</div>
-          <div className="col-2">Liked Recipe</div>
+        <div className="mt-5 row  align-items-start">
+          <div className="col-sm-2 ">My Recipe</div>
+          <div className="col-sm-2 ">Saved Recipe</div>
+          <div className="col-sm-2 ">Liked Recipe</div>
         </div>
       </div>
 
       <hr/>
       <div className="container">
         <div className="mt-3 row align-items-start">
-          <div className="col-4">
+          <div className="col-sm-1 col-md-4">
             <img src="/assets/img/popularFood.png" alt="" className="img-list-recipe" />
           </div>
-          <div className="col-4">
+          <div className="col-sm-1 col-md-4">
             <img src="/assets/img/popularFood.png" alt="" className="img-list-recipe" />
           </div>
-          <div className="col-4">
+          <div className="col-sm-1 col-md-4">
             <img src="/assets/img/popularFood.png" alt="" className="img-list-recipe" />
           </div>
         </div>
