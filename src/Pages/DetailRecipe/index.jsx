@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-prototype-builtins */
@@ -43,34 +45,28 @@ export default function DetailRecipe () {
   const [userToken, setUserToken] = React.useState('')
   const [mesgError, setMesgerror] = React.useState(null)
   const [sucesNotif, setSucessNotif] = React.useState(null)
-  const { slug } = useParams()
+  const { slug, recipes_uid } = useParams()
 
   const initpage = async () => {
     try {
       setLoading(true)
       if (Object.keys(foodDetail).length === 0) {
         const food = await axios({
-          method: 'post',
-          url: `${String(window.env.BE_URL)}/recipes/detail`,
-          data: {
-            title: String(slug?.split('-').join(' '))
-          }
+          method: 'get',
+          url: `${String(window.env.BE_URL)}/recipes/${recipes_uid}`
         })
 
-        console.log(String(slug?.split('-').join(' ')))
         setFoodDetail(food?.data?.data[0])
         setRecipesUid(food.data?.data[0]?.recipes_uid)
         setIngredient(food?.data?.data[0]?.ingredients?.ingridient)
         setSteps(food?.data?.data[0]?.ingredients?.steps)
 
-        if (food.data.data[0].recipes_uid) {
-          const comment = await axios({
-            method: 'get',
-            url: `${window.env.BE_URL}/recipes/${food.data.data[0].recipes_uid}/detail/comments`
-          })
-          console.log(comment)
-          setComments(comment.data.data)
-        }
+        const comment = await axios({
+          method: 'get',
+          url: `${window.env.BE_URL}/recipes/${recipes_uid}/detail/comments`
+        })
+        // console.log(comment)
+        setComments(comment.data.data)
         // console.log(food)
       }
     } catch (error) {
@@ -82,7 +78,7 @@ export default function DetailRecipe () {
 
   const commentHandler = async (req, res) => {
     try {
-      const postComment = await axios({
+      await axios({
         method: 'post',
         url: `${String(window.env.BE_URL)}/comments`,
         data: {
@@ -94,9 +90,7 @@ export default function DetailRecipe () {
         }
       })
 
-      if (postComment !== 0) {
-        setSucessNotif('Add comment sucessfully')
-      }
+      window.location.reload()
     } catch (error) {
       if (error?.message === 'Request failed with status code 422') {
         setMesgerror(error?.response?.data?.message)
@@ -119,12 +113,6 @@ export default function DetailRecipe () {
       window.scrollTo(0, 0)
     }
   }, [foodDetail, comments, loading])
-
-  // console.log(foodDetail)
-  // console.log(recipesUid)
-  console.log(userComment)
-  console.log(getDataUser)
-  console.log(userToken.slice(7, -1))
 
   return (
     <div>
@@ -171,10 +159,9 @@ export default function DetailRecipe () {
             </div>
 
             <div>
-              <h3>Description</h3>
-              <ul>
-                <li>{foodDetail?.sort_desc}</li>
-              </ul>
+              <p>
+                {foodDetail?.sort_desc}
+              </p>
             </div>
 
             <div>
@@ -253,7 +240,7 @@ export default function DetailRecipe () {
             <button
               className="btn my-2 shadow-sm"
               style={style.comentBtn}
-              onClick={() => commentHandler()}
+              onClick={commentHandler}
             >
               Comment
             </button>

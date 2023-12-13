@@ -245,10 +245,12 @@ export default function Home () {
                             <hr style={{ borderWidth: '3px', width: '120px' }} />
                             <p>{recipe.sort_desc}</p>
                             <Link
-                              to={`/detail/${String(recipe.title)
-                                .split(' ')
-                                .join('-')
-                                .toLowerCase()}`}
+                              to={
+                                `/detail/${String(recipe.title)
+                                  .split(' ')
+                                  .join('-')
+                                  .toLowerCase()}/${recipe.recipes_uid}`
+                              }
                             >
                               <button
                                 className="btn my-2 shadow-sm"
@@ -320,7 +322,7 @@ export default function Home () {
                               to={`/detail/${String(recipe.title)
                                 .split(' ')
                                 .join('-')
-                                .toLowerCase()}`}
+                                .toLowerCase()}/${recipe.recipes_uid}`}
                             >
                               <button
                                 className="btn my-2 shadow-sm"
@@ -387,7 +389,7 @@ export default function Home () {
                               to={`/detail/${String(recipe.title)
                                 .split(' ')
                                 .join('-')
-                                .toLowerCase()}`}
+                                .toLowerCase()}/${recipe.recipes_uid}`}
                             >
                               <button
                                 className="btn my-2 shadow-sm"
@@ -451,7 +453,7 @@ export default function Home () {
                               to={`/detail/${String(recipe.title)
                                 .split(' ')
                                 .join('-')
-                                .toLowerCase()}`}
+                                .toLowerCase()}/${recipe.recipes_uid}`}
                             >
                               <button
                                 className="btn my-2 shadow-sm"
@@ -496,7 +498,7 @@ export default function Home () {
                               to={`/detail/${String(recipe.title)
                                 .split(' ')
                                 .join('-')
-                                .toLowerCase()}`}
+                                .toLowerCase()}/${recipe.recipes_uid}`}
                             >
                               <div style={{ height: '400px' }}>
                                 <img
