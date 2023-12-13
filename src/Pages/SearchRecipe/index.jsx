@@ -140,7 +140,7 @@ export default function SearchRecipe () {
                         to={`/detail/${String(recipe.title)
                           .split(' ')
                           .join('-')
-                          .toLowerCase()}`}
+                          .toLowerCase()}/${recipe.recipes_uid}`}
                       >
                         <div
                           style={{
@@ -189,7 +189,7 @@ export default function SearchRecipe () {
                         to={`/detail/${String(recipe.title)
                           .split(' ')
                           .join('-')
-                          .toLowerCase()}`}
+                          .toLowerCase()}/${recipe.recipes_uid}`}
                       >
                         <div
                           style={{
