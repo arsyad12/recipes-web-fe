@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     element: <Home />
   },
   {
-    path: '/detail/:slug',
+    path: '/detail/:slug/:recipes_uid',
     element: <DetailRecipe />
   },
   {
