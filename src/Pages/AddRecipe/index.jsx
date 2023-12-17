@@ -33,20 +33,20 @@ export default function AddRecipe () {
   const [loading, setLoading] = React.useState(undefined)
   const navigate = useNavigate()
 
-  const handleAddRecipe = async () => {
+  const handleAddRecipe = async (e) => {
     try {
+      // e.preventDefault()
+      // console.log('ok')
       setLoading(true)
       const form = new FormData()
       form.append('recipe-image', recipeImage)
-      form.append('data', JSON.stringify({
-        title,
-        video,
-        description,
-        ingredients,
-        steps
-      }))
+      form.append('title', title)
+      form.append('video', video)
+      form.append('description', description)
+      form.append('ingredients', JSON.stringify(ingredients))
+      form.append('steps', JSON.stringify(steps))
 
-      await axios.post(
+      const recipeAdd = await axios.post(
         `${String(window.env.BE_URL)}/recipes/add`,
         form,
         {
@@ -57,7 +57,7 @@ export default function AddRecipe () {
         }
       )
 
-      navigate(`/detail/${title.split(' ').join('-').toLowerCase()}`, { state: { reload: true } })
+      navigate(`/detail/${title.split(' ').join('-').toLowerCase()}/${recipeAdd.data.data.recipes_uid}`)
     } catch (error) {
       console.log(error)
     } finally {
@@ -139,10 +139,10 @@ export default function AddRecipe () {
               </div>
 
               <div className='my-3' style={styles.textInputContainer}>
-                <input className='form-control' type="text" placeholder='Title' onChange={e => setTitle(e.target.value)} />
-                <textarea className='form-control' type="text" placeholder='Description' rows={6} onChange={e => setDescription(e.target.value)} />
+                <input className='form-control' type="text" placeholder='Title' onChangeCapture={e => setTitle(e.target.value)} />
+                <textarea className='form-control' type="text" placeholder='Description' rows={6} onChangeCapture={e => setDescription(e.target.value)} />
                 <input className='form-control' type="text" placeholder='Any video? It suggest use youtube videos...'
-                  onChange={e => setVideo(e.target.value)} />
+                  onChangeCapture={e => setVideo(e.target.value)} />
               </div>
 
               <div className='my-3' style={styles.textInputContainer}>

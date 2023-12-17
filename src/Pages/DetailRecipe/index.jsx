@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable camelcase */
+/* eslint-disable multiline-ternary */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-prototype-builtins */
-/* eslint-disable no-unused-vars */
 import axios from 'axios'
 import React from 'react'
 import YouTube from 'react-youtube'
@@ -10,9 +12,6 @@ import { useParams } from 'react-router-dom'
 import Loading from '../../Components/Loading'
 import Error404 from '../../Components/Error404'
 import './detailRecipe.css'
-
-import recipes, * as recipesSlices from '../../slices/home'
-import { useSelector, useDispatch } from 'react-redux'
 
 const style = {
   h1: {
@@ -33,56 +32,42 @@ const style = {
 }
 
 export default function DetailRecipe () {
-  const state = useSelector((state) => state)
-
-  console.log(state)
-
-  const {
-    recipes: { resultFoodDetail, resultRecipesUid, resultIngredients, resultSteps, resultAdvice, resultUtils }
-  } = state
-
-  console.log(resultRecipesUid)
-
-  const dispatch = useDispatch()
-
+  const [foodDetail, setFoodDetail] = React.useState({})
+  const [ingredients, setIngredient] = React.useState([])
+  const [steps, setSteps] = React.useState([])
+  // const [utils, setUtils] = React.useState([])
+  // const [advice, setAdvice] = React.useState([])
   const [comments, setComments] = React.useState([])
   const [loading, setLoading] = React.useState(undefined)
+  const [recipesUid, setRecipesUid] = React.useState([])
   const [getDataUser, setDataUser] = React.useState({})
   const [userComment, setUserComment] = React.useState('')
   const [userToken, setUserToken] = React.useState('')
   const [mesgError, setMesgerror] = React.useState(null)
   const [sucesNotif, setSucessNotif] = React.useState(null)
-  const { slug } = useParams()
+  const { slug, recipes_uid } = useParams()
 
   const initpage = async () => {
     try {
       setLoading(true)
-      if (Object.keys(resultFoodDetail).length === 0) {
+      if (Object.keys(foodDetail).length === 0) {
         const food = await axios({
-          method: 'post',
-          url: `${String(window.env.BE_URL)}/recipes/detail`,
-          data: {
-            title: String(slug?.split('-').join(' '))
-          }
+          method: 'get',
+          url: `${String(window.env.BE_URL)}/recipes/${recipes_uid}`
         })
 
-        console.log(String(slug?.split('-').join(' ')))
+        setFoodDetail(food?.data?.data[0])
+        setRecipesUid(food.data?.data[0]?.recipes_uid)
+        setIngredient(food?.data?.data[0]?.ingredients?.ingridient)
+        setSteps(food?.data?.data[0]?.ingredients?.steps)
 
-        dispatch(recipesSlices.setResultFoodDetail(food?.data?.data[0]))
-        dispatch(recipesSlices.setResultRecipeUid(food.data?.data[0]?.recipes_uid))
-        dispatch(recipesSlices.setResultIngredients(food?.data?.data[0]?.ingredients?.ingridient))
-        dispatch(recipesSlices.setResultSteps(food?.data?.data[0]?.ingredients?.steps))
-        // dispatch(recipesSlices.setResultAdvice(food?.data?.data[0]?.ingredients?.advice))
-        // dispatch(recipesSlices.setResultUtils(food?.data?.data[0]?.ingredients?.utils))
-
-        if (food.data.data[0].recipes_uid) {
-          const comment = await axios({
-            method: 'get',
-            url: `${window.env.BE_URL}/recipes/${food.data.data[0].recipes_uid}/detail/comments`
-          })
-          console.log(comment)
-          setComments(comment.data.data)
-        }
+        const comment = await axios({
+          method: 'get',
+          url: `${window.env.BE_URL}/recipes/${recipes_uid}/detail/comments`
+        })
+        // console.log(comment)
+        setComments(comment.data.data)
+        // console.log(food)
       }
     } catch (error) {
       console.log(error)
@@ -93,11 +78,11 @@ export default function DetailRecipe () {
 
   const commentHandler = async (req, res) => {
     try {
-      const postComment = await axios({
+      await axios({
         method: 'post',
         url: `${String(window.env.BE_URL)}/comments`,
         data: {
-          recipeUid: resultRecipesUid,
+          recipeUid: recipesUid,
           message: userComment
         },
         headers: {
@@ -105,17 +90,14 @@ export default function DetailRecipe () {
         }
       })
 
-      console.log(postComment)
-      if (postComment !== 0) {
-        setSucessNotif('Add comment sucessfully')
-      }
+      window.location.reload()
     } catch (error) {
-      console.log(error)
       if (error?.message === 'Request failed with status code 422') {
         setMesgerror(error?.response?.data?.message)
       } else if (error?.message === 'Request failed with status code 401') {
         setMesgerror('Please Login First')
       }
+      console.log(error)
     }
   }
 
@@ -127,118 +109,169 @@ export default function DetailRecipe () {
       setDataUser(JSON.parse(localStorage.getItem('user')))
     }
 
-    if (!(resultFoodDetail?.hasOwnProperty('id'))) {
+    if (!foodDetail?.hasOwnProperty('id')) {
       window.scrollTo(0, 0)
     }
-  }, [resultFoodDetail, comments, loading])
-
-  // console.log(resultFoodDetail)
-  // console.log(resultRecipeUid)
-  console.log(userComment)
-  console.log(getDataUser)
-  console.log(userToken.slice(7, -1))
+  }, [foodDetail, comments, loading])
 
   return (
     <div>
       <Navbar />
-      {
-        loading === undefined
-          ? ''
-          : loading === true
-            ? <Loading />
-            : !(resultFoodDetail?.hasOwnProperty('id'))
-              ? <div className='d-flex flex-column justify-content-center align-items-center' style={{ height: '43vh' }}>
-                <Error404 />
-                <p style={{ fontWeight: 600 }}>We're Sorry, Page you want to visit not found.</p>
+      {loading === undefined ? (
+        ''
+      ) : loading === true ? (
+        <Loading />
+      ) : !foodDetail?.hasOwnProperty('id') ? (
+        <div
+          className="d-flex flex-column justify-content-center align-items-center"
+          style={{ height: '43vh' }}
+        >
+          <Error404 />
+          <p style={{ fontWeight: 600 }}>
+            We're Sorry, Page you want to visit not found.
+          </p>
+        </div>
+      ) : (
+        <article
+          id="foodRecipeDetail"
+          className="container d-flex flex-column"
+          style={{ padding: '3vh 10vw 3vh 10vw' }}
+        >
+          <section className="container d-flex flex-column m-auto">
+            <h1 style={style.h1}>{foodDetail?.title}</h1>
+
+            <div className="mb-1 m-auto">
+              <figure
+                style={{
+                  textAlign: 'center',
+                  maxWidth: '600px',
+                  margin: '0px 0px 30px 0px'
+                }}
+              >
+                <img
+                  className="my-4"
+                  style={{ borderRadius: '20px', width: '100%' }}
+                  src={foodDetail?.image}
+                  alt="foodDetail.title"
+                />
+                <figcaption>{foodDetail?.title}</figcaption>
+              </figure>
+            </div>
+
+            <div>
+              <p>
+                {foodDetail?.sort_desc}
+              </p>
+            </div>
+
+            <div>
+              <h3>Ingredients</h3>
+              <ul>
+                {ingredients?.map((ingredient, index) => (
+                  <li key={index}>{ingredient}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3>Steps</h3>
+              <ul>
+                {steps?.map((step, index) => (
+                  <li key={index}>{step}</li>
+                ))}
+              </ul>
+            </div>
+
+            {/* <div>
+                    <h3>Advice</h3>
+                    <ul>
+                      {advice?.map(
+                        (sugest) => <li>{sugest}</li>
+                      )}
+                    </ul>
+                  </div> */}
+
+            <div>
+              <h3>Videos</h3>
+
+              <div className="mt-2 desktop-component">
+                <YouTube videoId={foodDetail?.video_url?.split('=')[1]} />
               </div>
-              : <article id='foodRecipeDetail' className='container d-flex flex-column' style={{ padding: '3vh 10vw 3vh 10vw' }}>
-                <section className='container d-flex flex-column m-auto'>
 
-                  <h1 style={style.h1}>{resultFoodDetail?.title}</h1>
+              <ul className="mobile-component">
+                <li>
+                  <a href={foodDetail?.video_url} target="blank">
+                    See Video On Youtube.
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </section>
 
-                  <div className='mb-1 m-auto'>
-                    <figure style={{ textAlign: 'center', maxWidth: '600px', margin: '0px 0px 30px 0px' }}>
-                      <img className='my-4' style={{ borderRadius: '20px', width: '100%' }} src={resultFoodDetail?.image} alt="resultFoodDetail.title" />
-                      <figcaption>{resultFoodDetail?.title}</figcaption>
-                    </figure>
-                  </div>
+          {sucesNotif
+            ? (
+              <div className="alert alert-success" role="alert">
+                {sucesNotif}
+              </div>
+            )
+            : null}
 
+          {mesgError
+            ? (
+              <div className="alert alert-danger" role="alert">
+                {mesgError}
+              </div>
+            )
+            : null}
+
+          <div
+            id="form-coment"
+            className="text-center my-5 m-auto"
+            style={{ width: '900px', maxWidth: '90%' }}
+          >
+            <textarea
+              className="form-control mb-2"
+              rows="3"
+              style={{ backgroundColor: '#F6F5F4' }}
+              onChange={(item) => {
+                setUserComment(item.target.value)
+              }}
+            />
+            <button
+              className="btn my-2 shadow-sm"
+              style={style.comentBtn}
+              onClick={commentHandler}
+            >
+              Comment
+            </button>
+          </div>
+
+          <div>
+            <h2 className="mb-4" style={{ fontWeight: 600 }}>
+              Comments
+            </h2>
+            {comments.length === 0
+              ? 'No Comment Found'
+              : comments?.map((item, index) => (
+                <div key={index} className="d-flex flex-row gap-3 mt-3">
                   <div>
-                    <h3>Ingredients</h3>
-                    <ul>
-                      {resultIngredients?.map(
-                        (ingredient, index) => <li key={index}>{ingredient}</li>
-                      )}
-                    </ul>
+                    <img
+                      style={{ width: '64px', borderRadius: '50%' }}
+                      src={item.photo}
+                      alt="profile"
+                    />
                   </div>
-
                   <div>
-                    <h3>Steps</h3>
-                    <ul>
-                      {resultSteps?.map(
-                        (step, index) => <li key={index}>{step}</li>
-                      )}
-                    </ul>
+                    <p>
+                      <strong>{item.name}</strong>
+                    </p>
+                    <p>Berkata "{item.message}"</p>
                   </div>
-
-                  <div>
-                    <h3>Videos</h3>
-
-                    <div className='mt-2 desktop-component'>
-                      <YouTube videoId={resultFoodDetail?.video_url?.split('=')[1]} />
-                    </div>
-
-                    <ul className='mobile-component'>
-                      <li><a href={resultFoodDetail?.video_url} target='blank' >
-                        See Video On Youtube.
-                      </a></li>
-                    </ul>
-
-                  </div>
-
-                </section>
-
-                {sucesNotif
-                  ? (
-                    <div className="alert alert-success" role="alert">
-                      {sucesNotif}
-                    </div>
-                  )
-                  : null}
-
-                {mesgError
-                  ? (
-                    <div className="alert alert-danger" role="alert">
-                      {mesgError}
-                    </div>
-                  )
-                  : null}
-
-                <div id='form-coment' className='text-center my-5 m-auto' style={{ width: '900px', maxWidth: '90%' }}>
-                  <textarea className='form-control mb-2' rows="3" style={{ backgroundColor: '#F6F5F4' }} onChange={((item) => { setUserComment(item.target.value) })} />
-                  <button className='btn my-2 shadow-sm' style={style.comentBtn} onClick={() => commentHandler()}>
-                    Comment
-                  </button>
                 </div>
-
-                <div >
-                  <h2 className='mb-4' style={{ fontWeight: 600 }}>Comments</h2>
-                  {comments.length === 0
-                    ? 'No Comment Found'
-                    : comments?.map((item, index) => (
-                      <div key={index} className='d-flex flex-row gap-3 mt-3'>
-                        <div>
-                          <img style={{ width: '64px', borderRadius: '50%' }} src={item.photo} alt="profile" />
-                        </div>
-                        <div>
-                          <p><strong>{item.name}</strong></p>
-                          <p>Berkata "{item.message}"</p>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </article>
-      }
+              ))}
+          </div>
+        </article>
+      )}
       <Footer />
     </div>
   )
