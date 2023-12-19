@@ -2,9 +2,35 @@
 	display: none;
 }
 
-@media screen and (max-width: 992px) {
+@media only screen and (max-width: 992px)  {
 	.youtube-btn {
 		display: unset;
-	}
-	
+	}	
+
+
 }
+
+.containerimgDekstop{
+	display: flex;
+	width: 45%;
+	position: absolute;
+	align-items: center;
+	justify-content: flex-end;
+	padding-right: 20px;
+	gap: 10px;
+	padding-top: 350px;
+}
+
+
+
+@media screen and (max-width: 400px) {
+.containerimgMobile{
+	position: absolute;
+	display: flex;
+	height: 50px;
+	width: 70% !important;
+	padding-top: 180px;
+	justify-content: flex-end;
+	gap: 10px;
+} }
+
