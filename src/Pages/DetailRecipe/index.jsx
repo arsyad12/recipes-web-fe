@@ -114,6 +114,44 @@ export default function DetailRecipe () {
     }
   }, [foodDetail, comments, loading])
 
+  const likeHandler = async () => {
+    try {
+      const like = await axios({
+        method: 'post',
+        url: `${String(window.env.BE_URL)}/recipes/like`,
+        data: {
+          recipes_uid: recipesUid
+        },
+        headers: {
+          Authorization: userToken
+        }
+      })
+
+      console.log(like)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const bookMarkHandler = async () => {
+    try {
+      const like = await axios({
+        method: 'post',
+        url: `${String(window.env.BE_URL)}/recipes/bookmark`,
+        data: {
+          recipes_uid: recipesUid
+        },
+        headers: {
+          Authorization: userToken
+        }
+      })
+
+      console.log(like)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div>
       <Navbar />
@@ -148,20 +186,37 @@ export default function DetailRecipe () {
                   margin: '0px 0px 30px 0px'
                 }}
               >
-                <img
-                  className="my-4"
-                  style={{ borderRadius: '20px', width: '100%' }}
-                  src={foodDetail?.image}
-                  alt="foodDetail.title"
-                />
+                <div
+                  className="containerimgDekstop containerimgMobile"
+
+                >
+                  <img
+                    src="../assets/icons/Group 73.png"
+                    style={{ height: 30, width: 30 }}
+                    onClick={(() => bookMarkHandler())}
+                  />
+                  <img
+                    src="../assets/icons/Vector.png"
+                    style={{ height: 30, width: 30 }}
+                    onClick={(() => likeHandler())}
+                  />
+                </div>
+
+                <div>
+                  <img
+                    className="my-4"
+                    style={{ borderRadius: '20px', width: '100%' }}
+                    src={foodDetail?.image}
+                    alt="foodDetail.title"
+                  />
+                </div>
+
                 <figcaption>{foodDetail?.title}</figcaption>
               </figure>
             </div>
 
             <div>
-              <p>
-                {foodDetail?.sort_desc}
-              </p>
+              <p>{foodDetail?.sort_desc}</p>
             </div>
 
             <div>
@@ -208,21 +263,17 @@ export default function DetailRecipe () {
             </div>
           </section>
 
-          {sucesNotif
-            ? (
-              <div className="alert alert-success" role="alert">
-                {sucesNotif}
-              </div>
-            )
-            : null}
+          {sucesNotif ? (
+            <div className="alert alert-success" role="alert">
+              {sucesNotif}
+            </div>
+          ) : null}
 
-          {mesgError
-            ? (
-              <div className="alert alert-danger" role="alert">
-                {mesgError}
-              </div>
-            )
-            : null}
+          {mesgError ? (
+            <div className="alert alert-danger" role="alert">
+              {mesgError}
+            </div>
+          ) : null}
 
           <div
             id="form-coment"

@@ -137,8 +137,9 @@ function FormEdit () {
               </h3>
             </div>
 
-            <div className="d-flex flex-row justify-content-center gap-5">
-              <div>
+            <div className="row">
+
+              <div className="col-sm-1 col-md-4 mb-2 d-flex justify-content-center">
                 {preview
                   ? (
                     <img
@@ -156,9 +157,8 @@ function FormEdit () {
                   )}
               </div>
 
-              <div>
+              <div className="col-sm-1 col-md-4 mb-4 px-5 mt-4 d-flex align-items-center">
                 <input
-                  className="mt-4 "
                   type="file"
                   name="myfile"
                   accept="image/*"
@@ -169,23 +169,23 @@ function FormEdit () {
                 />
               </div>
 
-              <div>
+              <div className="col-sm-1 col-md-4 mb-2 d-flex justify-content-center">
                 <button
                   type="button"
-                  className="btn btn-warning mt-3"
+                  className="btn btn-warning m-3"
                   disabled={loading}
                   onClick={() => {
                     editPhotoHandler()
                   }}
                 >
-                  {loading
-                    ? 'Loading...'
-                    : 'Update Photo'}
+                  {loading ? 'Loading...' : 'Update Photo'}
                 </button>
               </div>
             </div>
           </div>
+
         </div>
+
         {/* photo */}
 
         {/* identity */}
