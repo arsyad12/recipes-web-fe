@@ -133,6 +133,25 @@ export default function DetailRecipe () {
     }
   }
 
+  const bookMarkHandler = async () => {
+    try {
+      const like = await axios({
+        method: 'post',
+        url: `${String(window.env.BE_URL)}/recipes/bookmark`,
+        data: {
+          recipes_uid: recipesUid
+        },
+        headers: {
+          Authorization: userToken
+        }
+      })
+
+      console.log(like)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div>
       <Navbar />
@@ -174,6 +193,7 @@ export default function DetailRecipe () {
                   <img
                     src="../assets/icons/Group 73.png"
                     style={{ height: 30, width: 30 }}
+                    onClick={(() => bookMarkHandler())}
                   />
                   <img
                     src="../assets/icons/Vector.png"
