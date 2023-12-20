@@ -19,6 +19,7 @@ Preview : <https://recipes-web-fe.vercel.app>
 	- [How to Run](#how-to-run)
 		- [Run on local](#run-on-local)
 		- [Run on production](#run-on-production)
+	- [Releated Project](#releated-project)
 
 ## Screenshoots
 
@@ -37,3 +38,9 @@ To run this app, you need to running the the backend first, get backend at <http
 ### Run on production
 
 On production has a variety way to run the application, but the most important is **Environment Setup** and **The Knowledge about your cloud provider, to run this app.** for this you can read the documentation that provided by your cloud provider.
+
+## Releated Project
+
+- [✨ Mama Recipe Web Demo](https://recipes-web-fe.vercel.app)
+- [✨ Mama Recipe Web Frontend](https://github.com/Team-A-Pijarcamp-Batch-15/recipes-web-fe)
+- [✨ Mama Recipe Web Backend](https://github.com/Team-A-Pijarcamp-Batch-15/receipes-web-be)
