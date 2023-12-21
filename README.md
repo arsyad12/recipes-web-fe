@@ -4,6 +4,16 @@
 
 This website is a place where you can find and share delicious recipes from various cuisines. You can search for your favorite food, or browse through the popular dishes that are recommended for you. You can also learn how to make nasi goreng, soto ayam, semur kikil, and many other mouth-watering dishes from the comfort of your home. Whether you are a beginner or a master chef, you will find something that suits your taste and skill level. You can also upload your own recipe and show off your culinary talent to the world. Join this website today and eating, cooking, and repeating!
 
+Feature :
+
+ - Login
+ - Register
+ - Add Recipe
+ - Search Recipe
+ - Change Photo
+ - Change Info
+ - Change Password
+
 Developer :
 
 ![developer](https://contrib.rocks/image?repo=Team-A-Pijarcamp-Batch-15/receipes-web-be&anon=false)
