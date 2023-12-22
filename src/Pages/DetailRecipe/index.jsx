@@ -126,7 +126,6 @@ export default function DetailRecipe () {
           Authorization: userToken
         }
       })
-
       console.log(like)
     } catch (error) {
       console.log(error)
@@ -175,6 +174,60 @@ export default function DetailRecipe () {
           className="container d-flex flex-column"
           style={{ padding: '3vh 10vw 3vh 10vw' }}
         >
+          <div
+            className="modal fade"
+            id="bookmarkModal"
+            tabIndex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <div className="alert alert-info" role="alert">
+                    Success
+                  </div>
+                  <div className='text-center'> Saved Succes, ChecK Your Profile</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className="modal fade"
+            id="likeModal"
+            tabIndex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <div className="alert alert-info" role="alert">
+                    Success
+                  </div>
+                  <div className='text-center'>Like has added on your profile</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <section className="container d-flex flex-column m-auto">
             <h1 style={style.h1}>{foodDetail?.title}</h1>
 
@@ -186,19 +239,20 @@ export default function DetailRecipe () {
                   margin: '0px 0px 30px 0px'
                 }}
               >
-                <div
-                  className="containerimgDekstop containerimgMobile"
-
-                >
+                <div className="containerimgDekstop containerimgMobile">
                   <img
                     src="../assets/icons/Group 73.png"
                     style={{ height: 30, width: 30 }}
-                    onClick={(() => bookMarkHandler())}
+                    onClick={() => bookMarkHandler()}
+                    data-bs-toggle="modal"
+                    data-bs-target="#bookmarkModal"
                   />
                   <img
                     src="../assets/icons/Vector.png"
                     style={{ height: 30, width: 30 }}
-                    onClick={(() => likeHandler())}
+                    onClick={() => likeHandler()}
+                    data-bs-toggle="modal"
+                    data-bs-target="#likeModal"
                   />
                 </div>
 
