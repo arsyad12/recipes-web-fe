@@ -5,14 +5,14 @@ import Navbar from '../../Components/Navbar/index'
 import Footer from '../../Components/Footer/index'
 import { Player } from '@lottiefiles/react-lottie-player'
 import Loading from '../../Components/Loading'
-
+import './addRecipe.css'
 const styles = {
   recipeImageContainer: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 40,
-    justifyContent: 'center',
-    alignContent: 'center'
+    gap: 40
+    // justifyContent: 'center',
+    // alignContent: 'center'
   },
   textInputContainer: {
     display: 'flex',
@@ -37,7 +37,7 @@ export default function AddRecipe () {
     try {
       // e.preventDefault()
       // console.log('ok')
-      setLoading(true)
+      // setLoading(true)
       const form = new FormData()
       form.append('recipe-image', recipeImage)
       form.append('title', title)
@@ -118,14 +118,18 @@ export default function AddRecipe () {
           loading
             ? <Loading />
             : <div className='row mx-auto' style={{ maxWidth: 640 }}>
-              <div className='my-3 justify-content-center' style={styles.recipeImageContainer}>
-                <div className='mx-auto' style={{ width: 600, height: 300 }}>
+              <div className='container my-3 justify-content-center' style={styles.recipeImageContainer}>
+                <div className='container mx-auto animation' style={{ width: 600, height: 300 }}>
                   {
                     preview === undefined
                       ? <>
+
                         <Player autoplay loop
                           src="/lotties/search.json" style={{ height: '300px', width: '300px' }} />
-                        <p className='text-center' style={{ marginTop: -30 }}>Add Recipe Photo</p></>
+                        <p className='text-center' style={{ marginTop: -30 }}>Add Recipe Photo</p>
+
+                      </>
+
                       : <img style={{ width: '100%', height: '100%', borderRadius: 20, objectFit: 'cover', objectPosition: 'center' }}
                         src={preview} alt="preview" />
                   }
