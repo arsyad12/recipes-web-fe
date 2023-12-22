@@ -6,6 +6,8 @@ import Footer from '../../Components/Footer/index'
 import { Player } from '@lottiefiles/react-lottie-player'
 import Loading from '../../Components/Loading'
 import './addRecipe.css'
+import { useSelector } from 'react-redux'
+
 const styles = {
   recipeImageContainer: {
     display: 'flex',
@@ -27,11 +29,11 @@ export default function AddRecipe () {
   const [video, setVideo] = React.useState('')
   const [title, setTitle] = React.useState('')
   const [description, setDescription] = React.useState('')
-  const [token, setToken] = React.useState('')
   const [recipeImage, setRecipeImage] = React.useState(undefined)
   const [preview, setPreview] = React.useState(undefined)
   const [loading, setLoading] = React.useState(undefined)
   const navigate = useNavigate()
+  const { user, token } = useSelector(state => state.auth)
 
   const handleAddRecipe = async (e) => {
     try {
@@ -106,8 +108,10 @@ export default function AddRecipe () {
   }
 
   React.useEffect(() => {
-    if (token === '') setToken(localStorage.getItem('token'))
-  }, [token])
+    if (!user & !token) {
+      navigate('/')
+    }
+  }, [])
 
   return (
     <div id='AddRecipe'>

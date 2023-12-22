@@ -4,34 +4,31 @@ import axios from 'axios'
 
 import Navbar from '../../Components/Navbar/index'
 import Footer from '../../Components/Footer/index'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 function Profile () {
-  const resultToken = localStorage.getItem('token').slice(7)
   const [isNavOpen, setIsNavOpen] = React.useState(false)
   const [dataUser, setDataUser] = React.useState([])
   const [tabRecipes, setTabRecipes] = React.useState('bookmark')
   const [bookmark, setBookmark] = React.useState([])
   const [like, setLike] = React.useState([])
+  const navigate = useNavigate()
 
-  console.log(dataUser)
-
-  console.log(tabRecipes)
-
-  console.log(isNavOpen)
+  const { token, user } = useSelector(state => state.auth)
 
   const responseHandler = async () => {
     try {
       const userResponse = await axios.get(`${window.env.BE_URL}/user/profile`, {
         headers: {
-          Authorization: `Bearer ${resultToken}`
+          Authorization: token
         }
       })
       setDataUser(userResponse?.data?.data)
 
       const bookmarkResponse = await axios.get(`${window.env.BE_URL}/recipes/getmybookmark`, {
         headers: {
-          Authorization: `Bearer ${resultToken}`
+          Authorization: token
         }
       })
       setBookmark(bookmarkResponse?.data?.data)
@@ -39,7 +36,7 @@ function Profile () {
 
       const likedResponse = await axios.get(`${window.env.BE_URL}/recipes/getmylikes`, {
         headers: {
-          Authorization: `Bearer ${resultToken}`
+          Authorization: token
         }
       })
       setLike(likedResponse?.data?.data)
@@ -49,6 +46,9 @@ function Profile () {
     }
   }
   React.useEffect(() => {
+    if (!user && !token) {
+      navigate('/')
+    }
     responseHandler()
   }, [])
 
@@ -61,7 +61,7 @@ function Profile () {
           <img
             src={dataUser.photo_profile}
             alt="profile"
-            style={{ width: 80, height: 80, borderRadius: 50 }}
+            style={{ width: 200, height: 200, objectFit: 'cover', objectPosition: 'center', borderRadius: 100 }}
           />
         </div>
         <div className="d-flex pt-3">

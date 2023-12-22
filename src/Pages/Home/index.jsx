@@ -9,7 +9,7 @@ import './Home.css'
 import Loading from '../../Components/Loading'
 import Error404 from '../../Components/Error404'
 
-import recipes, * as recipesSlices from '../../slices/home'
+import * as recipesSlices from '../../slices/home'
 import { useSelector, useDispatch } from 'react-redux'
 
 const style = {
@@ -102,7 +102,7 @@ const style = {
 export default function Home () {
   const state = useSelector((state) => state)
 
-  console.log(state)
+  // console.log(state)
 
   const {
     recipes: { resultList, resultNewRecipe, resultPopular }
