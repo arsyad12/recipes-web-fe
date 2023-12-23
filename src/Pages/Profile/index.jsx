@@ -3,6 +3,7 @@ import './profile.css'
 import axios from 'axios'
 import * as Icons from 'react-feather'
 
+import RecipeCardPrivate from '../../Components/RecipeCardPrivate'
 import Navbar from '../../Components/Navbar/index'
 import Footer from '../../Components/Footer/index'
 import { useNavigate } from 'react-router-dom'
@@ -85,24 +86,10 @@ function Profile () {
           <h4 style={{ fontWeight: 800 }}>Saved Recipes</h4>
         </div>
 
-        <div className="mt-3 text-center d-flex flex-wrap">
-          {bookmark?.map((item, key) => (
-            <div key={key} className=""
-              style={{
-                backgroundImage: `url(${item.image})`,
-                height: 160,
-                width: 260,
-                margin: 10,
-                borderRadius: 10,
-                objectFit: 'cover',
-                backgroundRepeat: 'unset',
-                backgroundSize: '100%',
-                backgroundPosition: 'center',
-                display: 'flex',
-                alignItems: 'flex-end'
-              }}>
-              <h5 className='p-2' style={{ backgroundColor: '#00000088', color: 'white' }}>{item.title}</h5>
-            </div>
+        <div className={`mt-3 text-center d-flex flex-wrap ${bookmark?.length > 3 ? 'justify-content-around' : ''}`}>
+          {bookmark?.map((item, index) => (
+            <RecipeCardPrivate image={item.image} title={item.title} key={index}
+              removeHandler={() => { alert('Sorry the feature are coming soon') }} />
           ))}
         </div>
       </div>
@@ -110,27 +97,12 @@ function Profile () {
       <div className='container card shadow-sm d-flex flex-column p-5 my-5'>
 
         <div>
-          <h4 style={{ fontWeight: 800 }}>Likes Recipes</h4>
+          <h4 style={{ fontWeight: 800 }}>Saved Recipes</h4>
         </div>
 
-        <div className="mt-3 text-center d-flex flex-wrap">
-          {like?.map((item, key) => (
-            <div key={key} className=""
-              style={{
-                backgroundImage: `url(${item.image})`,
-                height: 160,
-                width: 260,
-                margin: 10,
-                borderRadius: 10,
-                objectFit: 'cover',
-                backgroundRepeat: 'unset',
-                backgroundSize: '100%',
-                backgroundPosition: 'center',
-                display: 'flex',
-                alignItems: 'flex-end'
-              }}>
-              <h5 className='p-2' style={{ backgroundColor: '#00000088', color: 'white' }}>{item.title}</h5>
-            </div>
+        <div className={`mt-3 text-center d-flex flex-wrap ${like?.length > 3 ? 'justify-content-around' : ''}`}>
+          {like?.map((item, index) => (
+            <RecipeCardPrivate image={item.image} title={item.title} key={index} />
           ))}
         </div>
       </div>
