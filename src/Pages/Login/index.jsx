@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react'
 import '../../Styles/Page-Auth.css'
@@ -5,6 +6,8 @@ import '../../index.css'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../../Components/Navbar'
+import * as auth from '../../slices/auth'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function Login () {
   const [email, setEmail] = React.useState([])
@@ -12,63 +15,56 @@ export default function Login () {
   const [isLoading, setIsLoading] = React.useState(false)
   const [authError, setAuthError] = React.useState('')
   const [inputError, setInputError] = React.useState(null)
-  const [pageLoginState, setPageLoginState] = React.useState(false)
   const navigate = useNavigate()
   const [timeLeft, setTimeLeft] = React.useState(5)
 
-  console.log(inputError)
+  const dispatch = useDispatch()
+  const { user, token } = useSelector(state => state.auth)
 
-  const signButtonHandler = () => {
-    axios({
-      method: 'post',
-      url: `${window.env.BE_URL}/user/login`,
-      data: {
-        email,
-        password
+  console.log(user)
+
+  // console.log(inputError)
+
+  const signButtonHandler = async () => {
+    try {
+      const login = await axios({
+        method: 'post',
+        url: `${window.env.BE_URL}/user/login`,
+        data: {
+          email,
+          password
+        }
+      })
+
+      dispatch(auth.setToken(`Bearer ${login.data.token}`))
+
+      const getDetail = await axios.get(`${window.env.BE_URL}/user/profile`, {
+        headers: {
+          Authorization: `Bearer ${login.data.token}`
+        }
+      })
+
+      dispatch(auth.setUser(getDetail.data.data))
+    } catch (error) {
+      console.log(error)
+
+      if (error.response.status === 404) {
+        setInputError(error.response.data.massage)
       }
-    })
-      .then((res) => {
-        localStorage.setItem('user', JSON.stringify(res.data.data))
-        localStorage.setItem('token', `Bearer ${res.data.token}`)
-        setPageLoginState(true)
-      })
-      .catch((err) => {
-        if (err.response.status === 404) {
-          setInputError(err.response.data.massage)
-        }
 
-        if (err.response.status === 401) {
-          setAuthError(err.response.data.message)
-        }
-
-        // if (err.response.data.messages === 'Wrong password') {
-        // setAuthError(err.response.data.messages)
-        // }
-        console.log(err)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+      if (error.response.status === 401) {
+        setAuthError(error.response.data.message)
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   React.useEffect(() => {
-    if (pageLoginState) {
-      setTimeout(() => {
-        for (let time = timeLeft; time > 0; time--) {
-          setTimeLeft(timeLeft - 1)
-        }
-        if (timeLeft === 0) {
-          return navigate('/')
-        }
-      }, 1000)
+    if (user && token) {
+      navigate('/')
     }
-
-    if (!pageLoginState) {
-      if (localStorage.getItem('user') || localStorage.getItem('token')) {
-        navigate('/')
-      }
-    }
-  }, [isLoading, authError, pageLoginState, navigate, timeLeft])
+  }, [isLoading, authError, navigate, timeLeft])
 
   return (
     <>
@@ -98,14 +94,6 @@ export default function Login () {
                 hidden={authError === ''}
               >
                 {authError}
-              </div>
-
-              <div
-                className="alert alert-success"
-                role="alert"
-                hidden={!pageLoginState}
-              >
-                Login success, redirect to home in {timeLeft}
               </div>
 
               {inputError

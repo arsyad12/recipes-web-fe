@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable camelcase */
 /* eslint-disable multiline-ternary */
-/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-prototype-builtins */
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable camelcase */
 import axios from 'axios'
 import React from 'react'
 import YouTube from 'react-youtube'
@@ -12,6 +11,7 @@ import { useParams } from 'react-router-dom'
 import Loading from '../../Components/Loading'
 import Error404 from '../../Components/Error404'
 import './detailRecipe.css'
+import { useSelector } from 'react-redux'
 
 const style = {
   h1: {
@@ -32,7 +32,7 @@ const style = {
 }
 
 export default function DetailRecipe () {
-  const [foodDetail, setFoodDetail] = React.useState({})
+  const [foodDetail, setFoodDetail] = React.useState(undefined)
   const [ingredients, setIngredient] = React.useState([])
   const [steps, setSteps] = React.useState([])
   // const [utils, setUtils] = React.useState([])
@@ -40,17 +40,17 @@ export default function DetailRecipe () {
   const [comments, setComments] = React.useState([])
   const [loading, setLoading] = React.useState(undefined)
   const [recipesUid, setRecipesUid] = React.useState([])
-  const [getDataUser, setDataUser] = React.useState({})
   const [userComment, setUserComment] = React.useState('')
-  const [userToken, setUserToken] = React.useState('')
   const [mesgError, setMesgerror] = React.useState(null)
-  const [sucesNotif, setSucessNotif] = React.useState(null)
-  const { slug, recipes_uid } = useParams()
+  const [sucesNotif] = React.useState(null)
+  const { recipes_uid } = useParams()
+  const { token } = useSelector(state => state.auth)
 
   const initpage = async () => {
     try {
       setLoading(true)
-      if (Object.keys(foodDetail).length === 0) {
+
+      if (!foodDetail) {
         const food = await axios({
           method: 'get',
           url: `${String(window.env.BE_URL)}/recipes/${recipes_uid}`
@@ -86,7 +86,7 @@ export default function DetailRecipe () {
           message: userComment
         },
         headers: {
-          Authorization: userToken
+          Authorization: token
         }
       })
 
@@ -103,12 +103,6 @@ export default function DetailRecipe () {
 
   React.useEffect(() => {
     initpage()
-
-    if (localStorage.getItem('user') && localStorage.getItem('token')) {
-      setUserToken(localStorage.getItem('token'))
-      setDataUser(JSON.parse(localStorage.getItem('user')))
-    }
-
     if (!foodDetail?.hasOwnProperty('id')) {
       window.scrollTo(0, 0)
     }
@@ -123,7 +117,7 @@ export default function DetailRecipe () {
           recipes_uid: recipesUid
         },
         headers: {
-          Authorization: userToken
+          Authorization: token
         }
       })
       console.log(like)
@@ -141,7 +135,7 @@ export default function DetailRecipe () {
           recipes_uid: recipesUid
         },
         headers: {
-          Authorization: userToken
+          Authorization: token
         }
       })
 
