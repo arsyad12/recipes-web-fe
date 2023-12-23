@@ -1,11 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit'
-
-// import data state dari slice/movie.js ke store
-import recipesSlices from './slices/home'
-import commentSlices from './slices/comment'
-import authSliceReducer from './slices/auth'
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
+import { configureStore } from '@reduxjs/toolkit'
 import storage from 'redux-persist/lib/storage'
+import authSliceReducer from './slices/auth'
+import recipeSliceReducer from './slices/recipes'
 
 const authPersist = persistReducer({
   key: 'auth',
@@ -25,8 +22,7 @@ authSliceReducer
 
 export const store = configureStore({
   reducer: {
-    recipes: recipesSlices,
-    comment: commentSlices,
+    recipes: recipeSliceReducer,
     auth: authPersist
   },
   middleware: (getDefaultMiddleware) =>

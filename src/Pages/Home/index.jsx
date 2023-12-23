@@ -9,8 +9,8 @@ import './Home.css'
 import Loading from '../../Components/Loading'
 import Error404 from '../../Components/Error404'
 
-import * as recipesSlices from '../../slices/home'
 import { useSelector, useDispatch } from 'react-redux'
+import * as recipes from '../../slices/recipes'
 
 const style = {
   h1: {
@@ -100,36 +100,35 @@ const style = {
 }
 
 export default function Home () {
-  const state = useSelector((state) => state)
-
-  // console.log(state)
-
-  const {
-    recipes: { resultList, resultNewRecipe, resultPopular }
-  } = state
-
   const dispatch = useDispatch()
-
+  const { popular, latest, list } = useSelector((state) => state.recipes)
   const [loading, setLoading] = React.useState(undefined)
 
   const initPage = async () => {
     try {
       setLoading(true)
-      const list = await axios({
-        method: 'get',
-        url: `${window.env.BE_URL}/home/list`
-      })
-      const popular = await axios({
-        method: 'get',
-        url: `${window.env.BE_URL}/home/popular`
-      })
-      const newRcp = await axios({
-        method: 'get',
-        url: `${window.env.BE_URL}/home/new`
-      })
-      dispatch(recipesSlices.setResultList(list?.data?.data))
-      dispatch(recipesSlices.setResultPopular(popular?.data?.data))
-      dispatch(recipesSlices.setResultNewRecipe(newRcp?.data?.data))
+      if (!popular || !latest || !list) {
+        const list = await axios({
+          method: 'get',
+          url: `${window.env.BE_URL}/home/list`
+        })
+
+        dispatch(recipes.setList(list?.data?.data))
+
+        const popular = await axios({
+          method: 'get',
+          url: `${window.env.BE_URL}/home/popular`
+        })
+
+        dispatch(recipes.setPopular(popular?.data?.data))
+
+        const newRcp = await axios({
+          method: 'get',
+          url: `${window.env.BE_URL}/home/new`
+        })
+
+        dispatch(recipes.setLatest(newRcp?.data?.data))
+      }
     } catch (error) {
       console.log(error)
     } finally {
@@ -138,19 +137,7 @@ export default function Home () {
   }
 
   React.useEffect(() => {
-    if (
-      resultList.length === 0 ||
-      resultPopular.length === 0 ||
-      resultNewRecipe?.length === 0
-    ) {
-      initPage()
-    } else if (
-      resultList.length > 0 ||
-      resultPopular.length > 0 ||
-      resultNewRecipe?.length > 0
-    ) {
-      initPage()
-    }
+    initPage()
   }, [])
 
   return (
@@ -185,7 +172,7 @@ export default function Home () {
           ? ''
           : loading === true
             ? <Loading />
-            : resultList?.length === 0
+            : list?.length === 0
               ? <div
                 className="d-flex flex-column justify-content-center align-items-center"
                 style={{ height: '43vh' }}
@@ -195,7 +182,7 @@ export default function Home () {
               </div>
               : <>
                 {/* Popular Recipe Section */}
-                {resultPopular?.map((recipe, index) => {
+                {popular?.map((recipe, index) => {
                   return (
                     <section key={index} className="container desktop-component">
                       <div className="row">
@@ -268,7 +255,7 @@ export default function Home () {
                 {/* End of Popular Recipe Section */}
 
                 {/* New Recipe Section */}
-                {resultNewRecipe?.map((recipe, index) => {
+                {latest?.map((recipe, index) => {
                   return (
                     <section key={index} className="container desktop-component">
                       <div className="row">
@@ -340,7 +327,7 @@ export default function Home () {
                 {/* End of New Recipe Section */}
 
                 {/* Mobile Component */}
-                {resultPopular?.map((recipe, index) => {
+                {popular?.map((recipe, index) => {
                   return (
                     <div key={index} className="container mobile-component">
                       <div className="row">
@@ -404,7 +391,7 @@ export default function Home () {
                     </div>
                   )
                 })}
-                {resultNewRecipe?.map((recipe, index) => {
+                {latest?.map((recipe, index) => {
                   return (
                     <div key={index} className="container mobile-component">
                       <div className="row">
@@ -482,7 +469,7 @@ export default function Home () {
                 </div>
                 <div className="container" style={{ margin: '0 auto' }}>
                   <div className="row">
-                    {resultList?.map((recipe, index) => {
+                    {list?.map((recipe, index) => {
                       return (
                         <>
                           <div

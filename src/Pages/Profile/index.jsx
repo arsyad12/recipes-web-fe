@@ -1,56 +1,53 @@
 import React from 'react'
 import './profile.css'
 import axios from 'axios'
+import * as Icons from 'react-feather'
 
 import Navbar from '../../Components/Navbar/index'
 import Footer from '../../Components/Footer/index'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 function Profile () {
-  const [isNavOpen, setIsNavOpen] = React.useState(false)
-  const [dataUser, setDataUser] = React.useState([])
-  const [tabRecipes, setTabRecipes] = React.useState('bookmark')
-  const [bookmark, setBookmark] = React.useState([])
-  const [like, setLike] = React.useState([])
+  const [bookmark, setBookmark] = React.useState(undefined)
+  const [like, setLike] = React.useState(undefined)
   const navigate = useNavigate()
 
   const { token, user } = useSelector(state => state.auth)
 
-  const responseHandler = async () => {
+  const initialize = async () => {
     try {
-      const userResponse = await axios.get(`${window.env.BE_URL}/user/profile`, {
-        headers: {
-          Authorization: token
-        }
-      })
-      setDataUser(userResponse?.data?.data)
-
       const bookmarkResponse = await axios.get(`${window.env.BE_URL}/recipes/getmybookmark`, {
         headers: {
           Authorization: token
         }
       })
+
       setBookmark(bookmarkResponse?.data?.data)
-      // console.log(bookmarkResponse?.data?.data)
 
       const likedResponse = await axios.get(`${window.env.BE_URL}/recipes/getmylikes`, {
         headers: {
           Authorization: token
         }
       })
+
       setLike(likedResponse?.data?.data)
-      // console.log(bookmarkResponse?.data?.data)
     } catch (error) {
       console.log(error)
     }
   }
+
   React.useEffect(() => {
     if (!user && !token) {
       navigate('/')
     }
-    responseHandler()
+    initialize()
   }, [])
+
+  const styles = {
+    imgProfile: { width: 200, height: 200, objectFit: 'cover', objectPosition: 'center', borderRadius: 100 },
+    button: { backgroundColor: 'var(--recipe-color-yellow)', fontWeight: 800, color: 'var(--recipe-color-lavender)' }
+  }
 
   return (
     <>
@@ -59,87 +56,84 @@ function Profile () {
       <div className="d-flex flex-column mb-3 align-items-center mt-5">
         <div>
           <img
-            src={dataUser.photo_profile}
+            src={user?.photo_profile}
             alt="profile"
-            style={{ width: 200, height: 200, objectFit: 'cover', objectPosition: 'center', borderRadius: 100 }}
+            style={styles.imgProfile}
           />
         </div>
-        <div className="d-flex pt-3">
-          <h4>{dataUser.first_name}</h4>
-          <img
-            src="/assets/img/pen.jpg"
-            alt="edit profile"
-            style={{ width: 40, height: 35 }}
-            onClick={() => setIsNavOpen((isFalse) => !isFalse)}
-          />
+        <div className="d-flex flex-column pt-3">
+          <h4>
+            {
+              String(`${user?.first_name} ${user?.last_name}`)
+                .split(' ')
+                .map(word => word[0].toUpperCase() + word.substring(1))
+                .join(' ')
+            }
+          </h4>
+          <button className='btn d-flex gap-2 justify-content-center align-items-center'
+            style={styles.button}
+            onClick={() => navigate('/form-edit')}>
+            <Icons.Settings size={20} />
+            Setting
+          </button>
         </div>
       </div>
 
-      {isNavOpen
-        ? (
-          <div className="container">
-            <div className="mt-3 d-flex flex-column align-items-center">
-              <Link to='/form-edit'>
-                <button type="button" className="btn btn-secondary">Edit Profile</button>
-              </Link>
-            </div>
-          </div>
-        )
-        : null}
+      <div className='container card shadow-sm d-flex flex-column p-5 my-5'>
 
-      <div className="container">
-        <div className="mt-5 row  align-items-start">
-          <div className="col-sm-2 " onClick={(() => setTabRecipes('myrecipes'))}>My Recipe</div>
-          <div className="col-sm-2 " onClick={(() => setTabRecipes('bookmark'))}>Bookmark Recipe</div>
-          <div className="col-sm-2 " onClick={(() => setTabRecipes('liked'))}>Liked Recipe</div>
+        <div>
+          <h4 style={{ fontWeight: 800 }}>Saved Recipes</h4>
+        </div>
+
+        <div className="mt-3 text-center d-flex flex-wrap">
+          {bookmark?.map((item, key) => (
+            <div key={key} className=""
+              style={{
+                backgroundImage: `url(${item.image})`,
+                height: 160,
+                width: 260,
+                margin: 10,
+                borderRadius: 10,
+                objectFit: 'cover',
+                backgroundRepeat: 'unset',
+                backgroundSize: '100%',
+                backgroundPosition: 'center',
+                display: 'flex',
+                alignItems: 'flex-end'
+              }}>
+              <h5 className='p-2' style={{ backgroundColor: '#00000088', color: 'white' }}>{item.title}</h5>
+            </div>
+          ))}
         </div>
       </div>
 
-      <hr/>
+      <div className='container card shadow-sm d-flex flex-column p-5 my-5'>
 
-      {tabRecipes === 'myrecipes'
-        ? (
-          <div className="container">
-            <div className="mt-3 row align-items-start">
-              <div className="col-sm-1 col-md-4">
-                <img src="/assets/img/popularFood.png" alt="" className="img-list-recipe" />
-              </div>
-            </div>
-          </div>
-        )
-        : null}
+        <div>
+          <h4 style={{ fontWeight: 800 }}>Likes Recipes</h4>
+        </div>
 
-      {tabRecipes === 'bookmark'
-        ? (
-          <div>
-            <div className="container">
-              <div className="mt-3 row align-items-start text-center">
-                {bookmark?.map((item, key) => (
-                  <div key={key} className="col-sm-1 col-md-4">
-                    <img src={item.image} alt="" className="img-list-recipe" />
-                    <h5 className='pt-3'>{item.title}</h5>
-                  </div>
-                ))}
-              </div>
+        <div className="mt-3 text-center d-flex flex-wrap">
+          {like?.map((item, key) => (
+            <div key={key} className=""
+              style={{
+                backgroundImage: `url(${item.image})`,
+                height: 160,
+                width: 260,
+                margin: 10,
+                borderRadius: 10,
+                objectFit: 'cover',
+                backgroundRepeat: 'unset',
+                backgroundSize: '100%',
+                backgroundPosition: 'center',
+                display: 'flex',
+                alignItems: 'flex-end'
+              }}>
+              <h5 className='p-2' style={{ backgroundColor: '#00000088', color: 'white' }}>{item.title}</h5>
             </div>
-          </div>
-        )
-        : null}
-
-      {tabRecipes === 'liked'
-        ? (
-          <div className="container">
-            <div className="mt-3 row align-items-start text-center">
-              {like?.map((item, key) => (
-                <div key={key}className="col-sm-1 col-md-4">
-                  <img src={item.image} alt="" className="img-list-recipe" />
-                  <h5 className='pt-3'>{item.title}</h5>
-                </div>
-              ))}
-            </div>
-          </div>
-        )
-        : null}
+          ))}
+        </div>
+      </div>
 
       <Footer />
     </>
