@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from 'react'
 import './profile.css'
 import axios from 'axios'
@@ -6,17 +7,32 @@ import * as Icons from 'react-feather'
 import RecipeCardPrivate from '../../Components/RecipeCardPrivate'
 import Navbar from '../../Components/Navbar/index'
 import Footer from '../../Components/Footer/index'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 function Profile () {
   const [bookmark, setBookmark] = React.useState(undefined)
   const [like, setLike] = React.useState(undefined)
+  const [created, setCreated] = React.useState(undefined)
   const navigate = useNavigate()
 
   const { token, user } = useSelector(state => state.auth)
 
-  const initialize = async () => {
+  const myRecipe = React.useCallback(async () => {
+    try {
+      const myRecipe = await axios.get(`${window.env.BE_URL}/recipes/getmyrecipe`, {
+        headers: {
+          Authorization: token
+        }
+      })
+
+      setCreated(myRecipe?.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
+  const myBookmark = React.useCallback(async () => {
     try {
       const bookmarkResponse = await axios.get(`${window.env.BE_URL}/recipes/getmybookmark`, {
         headers: {
@@ -25,7 +41,13 @@ function Profile () {
       })
 
       setBookmark(bookmarkResponse?.data?.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
 
+  const myLikes = React.useCallback(async () => {
+    try {
       const likedResponse = await axios.get(`${window.env.BE_URL}/recipes/getmylikes`, {
         headers: {
           Authorization: token
@@ -36,13 +58,16 @@ function Profile () {
     } catch (error) {
       console.log(error)
     }
-  }
+  }, [])
 
   React.useEffect(() => {
     if (!user && !token) {
       navigate('/')
     }
-    initialize()
+
+    myRecipe()
+    myBookmark()
+    myLikes()
   }, [])
 
   const styles = {
@@ -83,14 +108,23 @@ function Profile () {
       <div className='container card shadow-sm d-flex flex-column p-5 my-5'>
 
         <div>
-          <h4 style={{ fontWeight: 800 }}>Saved Recipes</h4>
+          <h4 style={{ fontWeight: 800 }}>Created Recipes</h4>
         </div>
 
-        <div className={`mt-3 text-center d-flex flex-wrap ${bookmark?.length > 3 ? 'justify-content-around' : ''}`}>
-          {bookmark?.map((item, index) => (
-            <RecipeCardPrivate image={item.image} title={item.title} key={index}
-              removeHandler={() => { alert('Sorry the feature are coming soon') }} />
-          ))}
+        <div className={`mt-3 text-center d-flex flex-wrap ${created?.length > 3 ? 'justify-content-around' : ''}`}>
+          {
+            !created
+              ? <p>Sorry you haven't made any recipes yet</p>
+              : created?.map((item, index) => (
+                <Link key={index} to={`/detail/${String(item.title)
+                  .split(' ')
+                  .join('-')
+                  .toLowerCase()}/${item.recipes_uid}`}>
+                  <RecipeCardPrivate image={item.image} title={item.title} key={index}
+                    removeHandler={() => { alert('Sorry the feature are coming soon') }} />
+                </Link>
+              ))
+          }
         </div>
       </div>
 
@@ -100,10 +134,43 @@ function Profile () {
           <h4 style={{ fontWeight: 800 }}>Saved Recipes</h4>
         </div>
 
+        <div className={'mt-3 text-center d-flex flex-wrap'}>
+          {
+            !bookmark
+              ? <p>Sorry you haven't saved any recipes</p>
+              : bookmark?.map((item, index) => (
+                <Link key={index} to={`/detail/${String(item.title)
+                  .split(' ')
+                  .join('-')
+                  .toLowerCase()}/${item.recipes_uid}`}>
+                  <RecipeCardPrivate image={item.image} title={item.title} key={index}
+                    removeHandler={() => { alert('Sorry the feature are coming soon') }} />
+                </Link>
+              ))
+          }
+        </div>
+      </div>
+
+      <div className='container card shadow-sm d-flex flex-column p-5 my-5'>
+
+        <div>
+          <h4 style={{ fontWeight: 800 }}>Like Recipes</h4>
+        </div>
+
         <div className={`mt-3 text-center d-flex flex-wrap ${like?.length > 3 ? 'justify-content-around' : ''}`}>
-          {like?.map((item, index) => (
-            <RecipeCardPrivate image={item.image} title={item.title} key={index} />
-          ))}
+          {
+            !like
+              ? <p>Sorry you haven't liked any recipes yet</p>
+              : like?.map((item, index) => (
+                <Link key={index} to={`/detail/${String(item.title)
+                  .split(' ')
+                  .join('-')
+                  .toLowerCase()}/${item.recipes_uid}`}>
+                  <RecipeCardPrivate image={item.image} title={item.title} key={index}
+                    removeHandler={() => { alert('Sorry the feature are coming soon') }} />
+                </Link>
+              ))
+          }
         </div>
       </div>
 

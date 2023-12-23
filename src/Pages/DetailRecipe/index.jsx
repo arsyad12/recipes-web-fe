@@ -12,6 +12,7 @@ import Loading from '../../Components/Loading'
 import Error404 from '../../Components/Error404'
 import './detailRecipe.css'
 import { useSelector } from 'react-redux'
+import * as Icons from 'react-feather'
 
 const style = {
   h1: {
@@ -225,43 +226,38 @@ export default function DetailRecipe () {
           <section className="container d-flex flex-column m-auto">
             <h1 style={style.h1}>{foodDetail?.title}</h1>
 
-            <div className="mb-1 m-auto">
-              <figure
-                style={{
-                  textAlign: 'center',
-                  maxWidth: '600px',
-                  margin: '0px 0px 30px 0px'
-                }}
-              >
-                <div className="containerimgDekstop containerimgMobile">
-                  <img
-                    src="../assets/icons/Group 73.png"
-                    style={{ height: 30, width: 30 }}
-                    onClick={() => bookMarkHandler()}
-                    data-bs-toggle="modal"
-                    data-bs-target="#bookmarkModal"
-                  />
-                  <img
-                    src="../assets/icons/Vector.png"
-                    style={{ height: 30, width: 30 }}
-                    onClick={() => likeHandler()}
-                    data-bs-toggle="modal"
-                    data-bs-target="#likeModal"
-                  />
-                </div>
+            <figure className='d-flex flex-column justify-content-center align-items-center'
+            >
 
-                <div>
-                  <img
-                    className="my-4"
-                    style={{ borderRadius: '20px', width: '100%' }}
-                    src={foodDetail?.image}
-                    alt="foodDetail.title"
-                  />
-                </div>
+              <div>
+                <img
+                  className="my-4"
+                  style={{ borderRadius: '20px', width: '100', height: 400 }}
+                  src={foodDetail?.image}
+                  alt="foodDetail.title"
+                />
+              </div>
 
-                <figcaption>{foodDetail?.title}</figcaption>
-              </figure>
-            </div>
+              <figcaption>{foodDetail?.title}</figcaption>
+              <div className='mx-auto'>
+
+                <button
+                  className='btn'
+                  onClick={() => likeHandler()}
+                  data-bs-toggle="modal"
+                  data-bs-target="#likeModal">
+                  <Icons.ThumbsUp/>
+                </button>
+
+                <button
+                  className='btn'
+                  onClick={() => bookMarkHandler()}
+                  data-bs-toggle="modal"
+                  data-bs-target="#bookmarkModal">
+                  <Icons.Bookmark/>
+                </button>
+              </div>
+            </figure>
 
             <div>
               <p>{foodDetail?.sort_desc}</p>
