@@ -43,19 +43,16 @@ export default function SearchRecipe () {
     }
   }
 
-  const handlePagination = async (pageParams) => {
+  const handlePagination = async (incrementValueButton) => {
     try {
       setLoading(true)
-      const getData = await axios.get(`${window.env.BE_URL}/recipes/search?page=${pageParams}&amount=${amount}&sortBy=${sortBy}&sort=${sortType}`)
+      const getData = await axios.get(`${window.env.BE_URL}/recipes/search?page=${incrementValueButton}&amount=${amount}&sortBy=${sortBy}&sort=${sortType}`)
       console.log(getData)
-      setListRecipe(getData.data.data.search)
-
       const list = await axios({
         method: 'get',
         url: `${window.env.BE_URL}/home/list`
       })
-
-      setListRecipe(list.data.data)
+      setListRecipe(getData.data.data.search)
     } catch (error) {
       console.log(error)
     } finally {
@@ -66,7 +63,6 @@ export default function SearchRecipe () {
   const handleTanyaButton = async () => {
     try {
       setLoading(true)
-
       const result = await axios({
         method: 'get',
         url: `${window.env.BE_URL}/recipes/search?title=${search}`
