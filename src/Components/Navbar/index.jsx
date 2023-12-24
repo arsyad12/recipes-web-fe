@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import './Navbar.css'
+import { useSelector } from 'react-redux'
+import { persistor } from '../../store'
 
 const style = {
   navLeftLink: {
@@ -11,19 +13,16 @@ const style = {
 }
 
 export default function Navbar () {
-  const [profile, setProfile] = React.useState({})
+  const { user, token } = useSelector(state => state.auth)
 
   React.useEffect(() => {
-    if (localStorage.getItem('token') !== undefined && localStorage.getItem('user') !== undefined) {
-      setProfile(JSON.parse(localStorage.getItem('user')))
-    }
   }, [])
 
   return (
 
     <nav className="container d-flex justify-content-between my-4 align-items-center">
       <div className="nav-left d-flex gap-2 align-items-center">
-        {!localStorage.getItem('token') && !localStorage.getItem('user')
+        {!user && !token
           ? (
             <>
               <Link to="/">
@@ -122,7 +121,7 @@ export default function Navbar () {
 
       <div className="nav-right d-flex">
         {/* Desktop Menu */}
-        {!localStorage.getItem('token') && !localStorage.getItem('user')
+        {!user && !token
           ? (
             <Link to="/user/login">
               <div
@@ -150,13 +149,13 @@ export default function Navbar () {
               >
                 <div>
                   <span style={style.navLeftLink} className="nav-right-link">
-                    Hi, {profile?.first_name}
+                    Hi, {user?.first_name}
                   </span>
                 </div>
                 <img
                   className="shadow-sm"
-                  style={{ height: '48px', borderRadius: '50%' }}
-                  src={profile?.photo_profile}
+                  style={{ width: 48, height: 48, objectFit: 'cover', objectPosition: 'center', borderRadius: '50%' }}
+                  src={user?.photo_profile}
                   alt="logo"
                 />
               </div>
@@ -166,9 +165,8 @@ export default function Navbar () {
                     className="dropdown-item shadow-sm text-center"
                     type="button"
                     onClick={() => {
-                      setProfile({})
-                      localStorage.removeItem('user')
-                      localStorage.removeItem('token')
+                      persistor.purge()
+                      window.location.reload()
                     }}
                   >
                     Logout
@@ -178,9 +176,9 @@ export default function Navbar () {
             </div>
           )}
         {/* End Of Desktop Menu */}
-        {/* Burger Menu */}
 
-        {!localStorage.getItem('token') && !localStorage.getItem('user')
+        {/* Mobile Nav */}
+        {!user && !token
           ? (
             <div className="btn-group">
               <div
@@ -228,29 +226,19 @@ export default function Navbar () {
               >
                 <img
                   className="shadow-sm"
-                  style={{ height: '48px', borderRadius: '50%' }}
-                  src={profile?.photo_profile}
+                  style={{ width: 48, height: 48, objectFit: 'cover', objectPosition: 'center', borderRadius: '50%' }}
+                  src={user?.photo_profile}
                   alt="logo"
                 />
               </div>
               <ul className="dropdown-menu dropdown-menu-lg-end">
                 <li>
-                  <Link style={{ textAlign: 'center' }} to="/user/profile">
+                  <Link style={{ textAlign: 'center' }} to="/profile">
                     <button
                       className="dropdown-item shadow text-center my-1 mobile-component"
                       type="button"
                     >
                       <div>Profile</div>
-                    </button>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/user/recipes">
-                    <button
-                      className="dropdown-item shadow text-center my-1 mobile-component"
-                      type="button"
-                    >
-                      Add Recipe
                     </button>
                   </Link>
                 </li>
@@ -265,13 +253,32 @@ export default function Navbar () {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/search">
+                    <button
+                      className="dropdown-item shadow text-center my-1 mobile-component"
+                      type="button"
+                    >
+                      Search Recipe
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/add-recipe">
+                    <button
+                      className="dropdown-item shadow text-center my-1 mobile-component"
+                      type="button"
+                    >
+                      Add Recipe
+                    </button>
+                  </Link>
+                </li>
+                <li>
                   <button
                     className="dropdown-item shadow text-center my-1 mobile-component"
                     type="button"
                     onClick={() => {
-                      setProfile({})
-                      localStorage.removeItem('user')
-                      localStorage.removeItem('token')
+                      persistor.purge()
+                      window.location.reload()
                     }}
                   >
                     Logout
@@ -280,7 +287,8 @@ export default function Navbar () {
               </ul>
             </div>
           )}
-        {/* End of Burger Menu */}
+        {/* Mobile Nav */}
+
       </div>
     </nav>
 

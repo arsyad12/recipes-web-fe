@@ -4,86 +4,121 @@ import './profile.css'
 import Navbar from '../../Components/Navbar/index'
 import Footer from '../../Components/Footer/index'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import * as auth from '../../slices/auth'
+import { useNavigate } from 'react-router-dom'
 
 function FormEdit () {
-  const resultToken = localStorage.getItem('token').slice(7)
+  const { user, token } = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const [preview, setPreview] = React.useState(undefined) // value preview
   const [file, setFile] = React.useState() // value file photo
-  const [firstName, setFirstName] = React.useState('')
-  const [lastName, setLastName] = React.useState('')
-  const [phoneNumber, setPhoneNumber] = React.useState('')
+  const [firstName, setFirstName] = React.useState(user?.first_name)
+  const [lastName, setLastName] = React.useState(user?.last_name)
+  const [phoneNumber, setPhoneNumber] = React.useState(user?.phone_number)
   const [password, setPassword] = React.useState('')
-  const [dataUser, setDataUser] = React.useState([])
   const [loading, setLoading] = React.useState(false)
   const [isSucces, setSuccess] = React.useState(false)
   const [isErr, setErr] = React.useState(false)
+
   React.useEffect(() => {
-    axios
-      .get(`${window.env.BE_URL}/user/profile`, {
-        headers: {
-          Authorization: `Bearer ${resultToken}`
-        }
-      })
-      .then((res) => {
-        setDataUser(res?.data?.data)
-      })
+    if (!user && !token) {
+      navigate('/')
+    }
   }, [])
 
-  const editPhotoHandler = () => {
-    setLoading(true)
-    const form = new FormData()
-    form.append('user-photo', file)
-
-    axios
-      .post(`${window.env.BE_URL}/user/profile/update-photo`, form, {
-        headers: {
-          Authorization: `Bearer ${resultToken}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then((res) => {
-        console.log(res)
-        setLoading(false)
-        setSuccess(true)
-
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000)
-      })
-      .catch((err) => {
-        console.log(err)
-
-        const errFileEmpty = err?.response?.data?.message
-
-        setErr(errFileEmpty)
-
-        setTimeout(() => {
-          window.location.reload()
-        }, 3000)
-      })
+  const styles = {
+    imgProfile: { width: 200, height: 200, objectFit: 'cover', objectPosition: 'center', borderRadius: 100 },
+    button: { backgroundColor: 'var(--recipe-color-yellow)', fontWeight: 800, color: 'var(--recipe-color-lavender)' }
   }
 
-  const editIdentityHandler = () => {
-    axios
-      .put(
-        `${window.env.BE_URL}/user/profile/edit`,
-        {
-          first_name: firstName,
-          last_name: lastName,
-          phone_number: phoneNumber
-        },
-        {
+  const editPhotoHandler = async () => {
+    try {
+      setLoading(true)
+      const form = new FormData()
+      form.append('user-photo', file)
+
+      await axios
+        .post(`${window.env.BE_URL}/user/profile/update-photo`, form, {
           headers: {
-            Authorization: `Bearer ${resultToken}`
+            Authorization: token,
+            'Content-Type': 'multipart/form-data'
           }
+        })
+
+      const getDetail = await axios.get(`${window.env.BE_URL}/user/profile`, {
+        headers: {
+          Authorization: token
         }
-      )
-      .then((res) => {
-        console.log(res)
       })
-      .catch((err) => {
-        console.log(err)
+
+      dispatch(auth.setUser({ ...user, ...getDetail.data.data }))
+
+      setSuccess(true)
+      setTimeout(() => {
+        setSuccess(false)
+      }, 3000)
+    } catch (error) {
+      console.log(error)
+
+      const errFileEmpty = error?.response?.data?.message
+
+      setErr(errFileEmpty)
+
+      setTimeout(() => {
+        window.location.reload()
+      }, 3000)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const editIdentityHandler = async () => {
+    try {
+      setLoading(true)
+
+      await axios
+        .put(
+          `${window.env.BE_URL}/user/profile/edit`,
+          {
+            first_name: firstName,
+            last_name: lastName,
+            phone_number: phoneNumber
+          },
+          {
+            headers: {
+              Authorization: token
+            }
+          }
+        )
+
+      const getDetail = await axios.get(`${window.env.BE_URL}/user/profile`, {
+        headers: {
+          Authorization: token
+        }
       })
+
+      dispatch(auth.setUser({ ...user, ...getDetail.data.data }))
+
+      setSuccess(true)
+      setTimeout(() => {
+        setSuccess(false)
+      }, 3000)
+    } catch (error) {
+      console.log(error)
+
+      const errFileEmpty = error?.response?.data?.message
+
+      setErr(errFileEmpty)
+
+      setTimeout(() => {
+        window.location.reload()
+      }, 3000)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const editPasswordHandler = () => {
@@ -95,7 +130,7 @@ function FormEdit () {
         },
         {
           headers: {
-            Authorization: `Bearer ${resultToken}`
+            Authorization: token
           }
         }
       )
@@ -129,59 +164,58 @@ function FormEdit () {
           : null}
 
         {/* photo */}
-        <div className="container card mt-5 shadow">
-          <div className="card-body mb-5">
+        <div className="container card mt-5 p-5 shadow-sm">
+
+          <div>
+            <h3 className='text-center pb-3'>
+              Change Photo
+            </h3>
+          </div>
+
+          <div className='gap-3' style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+
             <div>
-              <h3 style={{ textAlign: 'center', paddingTop: 20 }}>
-                Edit Photo
-              </h3>
+              {preview
+                ? (
+                  <img
+                    src={preview}
+                    alt="profile"
+                    style={styles.imgProfile}
+                  />
+                )
+                : (
+                  <img
+                    src={user?.photo_profile}
+                    alt="profile"
+                    style={styles.imgProfile}
+                  />
+                )}
             </div>
 
-            <div className="row">
+            <input
+              className='form-control'
+              style={{ maxWidth: 300 }}
+              type="file"
+              name="myfile"
+              accept="image/*"
+              onChange={(e) => {
+                setFile(e.target.files[0])
+                setPreview(URL.createObjectURL(e.target.files[0]))
+              }}
+            />
 
-              <div className="col-sm-1 col-md-4 mb-2 d-flex justify-content-center">
-                {preview
-                  ? (
-                    <img
-                      src={preview}
-                      alt="profile"
-                      style={{ width: 80, height: 80, borderRadius: 50 }}
-                    />
-                  )
-                  : (
-                    <img
-                      src={dataUser.photo_profile}
-                      alt="profile"
-                      style={{ width: 80, height: 80, borderRadius: 50 }}
-                    />
-                  )}
-              </div>
+            <button
+              className='btn'
+              type="button"
+              style={styles.button}
+              disabled={loading}
+              onClick={() => {
+                editPhotoHandler()
+              }}
+            >
+              {loading ? 'Loading...' : 'Change'}
+            </button>
 
-              <div className="col-sm-1 col-md-4 mb-4 px-5 mt-4 d-flex align-items-center">
-                <input
-                  type="file"
-                  name="myfile"
-                  accept="image/*"
-                  onChange={(e) => {
-                    setFile(e.target.files[0])
-                    setPreview(URL.createObjectURL(e.target.files[0]))
-                  }}
-                />
-              </div>
-
-              <div className="col-sm-1 col-md-4 mb-2 d-flex justify-content-center">
-                <button
-                  type="button"
-                  className="btn btn-warning m-3"
-                  disabled={loading}
-                  onClick={() => {
-                    editPhotoHandler()
-                  }}
-                >
-                  {loading ? 'Loading...' : 'Update Photo'}
-                </button>
-              </div>
-            </div>
           </div>
 
         </div>
@@ -189,111 +223,82 @@ function FormEdit () {
         {/* photo */}
 
         {/* identity */}
-        <div className="card mt-5 shadow">
-          <div className="card-body m-4">
-            <div>
-              <h3 style={{ textAlign: 'center', paddingTop: 30 }}>
-                Edit Profil Identity
-              </h3>
-            </div>
-            <div className="form-group">
-              <label htmlFor="exampleInputEmail1" className="mt-4">
-                First Name
-              </label>
-              <input
-                className="form-control "
-                defaultValue={dataUser.first_name}
-                onChange={(item) => setFirstName(item.target.value)}
-              />
-              <label htmlFor="exampleInputEmail1" className="mt-4">
-                Last Name
-              </label>
-              <input
-                className="form-control "
-                defaultValue={dataUser.last_name}
-                onChange={(item) => setLastName(item.target.value)}
-              />
-              <label htmlFor="exampleInputEmail1" className="mt-4">
-                Phone Number
-              </label>
-              <input
-                className="form-control "
-                defaultValue={dataUser.phone_number}
-                onChange={(item) => setPhoneNumber(item.target.value)}
-              />
-            </div>
+        <div className="card mt-5 shadow-sm p-5 gap-3">
 
-            <button
-              className="btn btn-primary mt-3"
-              onClick={() => {
-                editIdentityHandler()
-              }}
-            >
-              Edit Identity
-            </button>
-          </div>
+          <h3 className='text-center'>
+            Change Info
+          </h3>
+
+          <label htmlFor="exampleInputEmail1" >
+            First Name
+          </label>
+
+          <input
+            className="form-control "
+            defaultValue={user?.first_name}
+            onChange={(item) => setFirstName(item.target.value)}
+          />
+
+          <label htmlFor="exampleInputEmail1" >
+            Last Name
+          </label>
+
+          <input
+            className="form-control "
+            defaultValue={user?.last_name}
+            onChange={(item) => setLastName(item.target.value)}
+          />
+
+          <label htmlFor="exampleInputEmail1" >
+            Phone Number
+          </label>
+
+          <input
+            className="form-control "
+            defaultValue={user?.phone_number}
+            onChange={(item) => setPhoneNumber(item.target.value)}
+          />
+
+          <button
+            className='btn'
+            style={styles.button}
+            onClick={() => {
+              editIdentityHandler()
+            }}
+          >
+            Change
+          </button>
         </div>
         {/* identity */}
 
-        {/* email */}
-        <div className="card mt-5 shadow">
-          <div className="card-body m-4">
-            <div>
-              <h3 style={{ textAlign: 'center', paddingTop: 30 }}>
-                Edit Email
-              </h3>
-            </div>
-
-            <div>
-              <div className="form-group">
-                <label htmlFor="exampleInputEmail1" className="mt-4">
-                  Email
-                </label>
-                <input
-                  className="form-control "
-                  defaultValue={dataUser.email}
-                />
-              </div>
-
-              <button type="submit" className="btn btn-primary mt-3">
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-        {/* email */}
-
         {/* password */}
-        <div className="card mt-5 shadow">
-          <div className="card-body m-4">
-            <div>
-              <h3 style={{ textAlign: 'center', paddingTop: 30 }}>
-                Edit Password
-              </h3>
-            </div>
-            <div>
-              <div className="form-group">
-                <label htmlFor="exampleInputEmail1" className="mt-4">
-                  Password
-                </label>
-                <input
-                  className="form-control "
-                  placeholder="Enter Password"
-                  onChange={(item) => {
-                    setPassword(item.target.value)
-                  }}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="btn btn-primary mt-3"
-                onClick={() => editPasswordHandler()}
-              >
-                Edit Password
-              </button>
-            </div>
+        <div className="card mt-5 shadow-sm p-5 gap-3" >
+          <div>
+            <h3 className='text-center'>
+              Change Password
+            </h3>
           </div>
+
+          <label htmlFor="exampleInputEmail1">
+              Password
+          </label>
+
+          <input
+            className="form-control "
+            placeholder="Enter Password"
+            onChange={(item) => {
+              setPassword(item.target.value)
+            }}
+          />
+
+          <button
+            type="submit"
+            className="btn"
+            style={styles.button}
+            onClick={() => editPasswordHandler()}>
+              Change
+          </button>
+
         </div>
         {/* password */}
       </div>

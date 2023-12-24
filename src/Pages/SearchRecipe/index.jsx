@@ -6,21 +6,18 @@ import Footer from '../../Components/Footer'
 // import Loading from "../../Components/Loading";
 // import Error404 from "../../Components/Error404";
 import { Player } from '@lottiefiles/react-lottie-player'
-import recipes, * as recipesSlices from '../../slices/home'
-import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Loading from '../../Components/Loading'
 import { current } from '@reduxjs/toolkit'
 
 export default function SearchRecipe () {
-  const state = useSelector((state) => state)
-
   const [loading, setLoading] = React.useState(undefined)
   const [searchR, setSearchR] = React.useState(undefined)
   const [search, setSearch] = React.useState('')
   const [listRecipe, setListRecipe] = React.useState(undefined)
   const [mesgError, setMesgerror] = React.useState(null)
+
   const [curentPage, setCurentPage] = React.useState(1)
   const [amount, setAmount] = React.useState(6)
   const [sortBy, setSortBy] = React.useState('date')
@@ -52,6 +49,13 @@ export default function SearchRecipe () {
       const getData = await axios.get(`${window.env.BE_URL}/recipes/search?page=${pageParams}&amount=${amount}&sortBy=${sortBy}&sort=${sortType}`)
       console.log(getData)
       setListRecipe(getData.data.data.search)
+
+      const list = await axios({
+        method: 'get',
+        url: `${window.env.BE_URL}/home/list`
+      })
+
+      setListRecipe(list.data.data)
     } catch (error) {
       console.log(error)
     } finally {
@@ -65,14 +69,13 @@ export default function SearchRecipe () {
 
       const result = await axios({
         method: 'get',
-        url: `${window.env.BE_URL}/recipes/search?title=${search || '%'}`
+        url: `${window.env.BE_URL}/recipes/search?title=${search}`
       })
 
       setSearchR(result.data.data.search)
-      //   console.log(result.data.data.search);
     } catch (error) {
       if (error.response.status === 502) {
-        setMesgerror('Something wrong in our server')
+        setMesgerror('Bad Gateway')
       }
     } finally {
       setLoading(false)
@@ -117,6 +120,7 @@ export default function SearchRecipe () {
         >
           <input
             className="form-control px-2 py-1"
+            autoFocus={true}
             style={{ height: '53px', borderRadius: 50, borderWidth: 2 }}
             type="search"
             name="search"
@@ -124,6 +128,7 @@ export default function SearchRecipe () {
             placeholder="Mau cari resep apa...?"
             onChange={(e) => setSearch(e.target.value)}
           />
+
           <button
             className="btn"
             onClick={handleTanyaButton}

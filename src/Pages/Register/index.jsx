@@ -6,6 +6,7 @@ import '../../index.css'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../../Components/Navbar'
+import { useSelector } from 'react-redux'
 
 export default function Register () {
   const [email, setEmail] = React.useState('')
@@ -21,6 +22,7 @@ export default function Register () {
   const [isLoading, setIsLoading] = React.useState(false)
   const [timeLeft, setTimeLeft] = React.useState(5)
   const navigate = useNavigate()
+  const { user, token } = useSelector(state => state.auth)
 
   const registerButtonHandler = () => {
     axios({
@@ -56,7 +58,7 @@ export default function Register () {
   }
 
   React.useEffect(() => {
-    if (localStorage.getItem('user') || localStorage.getItem('token')) {
+    if (user && token) {
       navigate('/')
     }
 
